@@ -1,0 +1,266 @@
+
+/*
+ * javaCC options
+ */
+options {
+	STATIC = false;
+	VISITOR = true;
+	NODE_DEFAULT_VOID = false;
+	NODE_USES_PARSER = true;
+	NODE_PREFIX = "ASL";
+	MULTI = true;
+}
+
+/*
+ * parser definition block
+ */
+PARSER_BEGIN(ASL)
+package parser.asl;
+
+public class ASL {}
+PARSER_END(ASL)
+
+/*
+ * white space
+ */
+SKIP:
+{
+    " " |
+    "\t" |
+    "\n" |
+    "\r" |
+    "\f"
+}
+
+/*
+ * reserved words
+ */
+TOKEN :
+{
+    <DEFINITION: "definition"> |
+    <SCRIPTID: "scriptID"> |
+    <AUTHOR: "author"> |
+    <DATE: "date"> |
+    <COMMENT: "comment"> |
+    <OBSERVATIONS: "obs"> |
+    <EXECUTE: "execute"> |
+    <MIGRATE: "migrate"> |
+    <TO: "to"> |
+    <TRACE: "trace"> |
+    <CLONE: "clone"> |
+    <RUN: "run"> |
+    <FROM: "from"> |
+    <REPORTNOW: "reportnow"> |
+    <REPORTCALLBACK: "reportcallback"> |
+    <REPORTMAIL: "reportmail"> |
+    <SMTP: "smtp"> |
+    <REPORTFINAL: "reportfinal"> |
+    <OUTPUTCALLBACK: "outputcallback"> |
+    <OUTPUT: "output">
+}
+
+/*
+ * literals
+ */
+TOKEN :
+{
+  < INTEGER_LITERAL:
+        <DECIMAL_LITERAL> (["l","L"])?
+  >
+|
+  < #DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >
+|
+  < CHARACTER_LITERAL:
+      "'"
+      (   (~["'","\\","\n","\r"])
+        | ("\\"
+            ( ["n","t","b","r","f","\\","'","\""]
+            | ["0"-"7"] ( ["0"-"7"] )?
+            | ["0"-"3"] ["0"-"7"] ["0"-"7"]
+            )
+          )
+      )
+      "'"
+  >
+|
+  < DATE_LITERAL: "\"" <DIGIT><DIGIT>"."<DIGIT><DIGIT>"."<DIGIT><DIGIT> "\"">
+|
+  < STRING_LITERAL:
+      "\""
+      (   (~["\"","\\","\n","\r"])
+        | ("\\"
+            ( ["n","t","b","r","f","\\","'","\""]
+            | ["0"-"7"] ( ["0"-"7"] )?
+            | ["0"-"3"] ["0"-"7"] ["0"-"7"]
+            )
+          )
+      )*
+      "\""
+  >
+}
+
+/*
+ * identifiers
+ */ 
+TOKEN:
+{
+ < IDENTIFIER: <LETTER> (<LETTER>|<DIGIT>)* >
+|
+  < #LETTER:
+      [
+       "\u0024",
+       "\u0041"-"\u005a",
+       "\u005f",
+       "\u0061"-"\u007a",
+       "\u00c0"-"\u00d6",
+       "\u00d8"-"\u00f6",
+       "\u00f8"-"\u00ff",
+       "\u0100"-"\u1fff",
+       "\u3040"-"\u318f",
+       "\u3300"-"\u337f",
+       "\u3400"-"\u3d2d",
+       "\u4e00"-"\u9fff",
+       "\uf900"-"\ufaff"
+      ]
+  >
+|
+  < #DIGIT:
+      [
+       "\u0030"-"\u0039",
+       "\u0660"-"\u0669",
+       "\u06f0"-"\u06f9",
+       "\u0966"-"\u096f",
+       "\u09e6"-"\u09ef",
+       "\u0a66"-"\u0a6f",
+       "\u0ae6"-"\u0aef",
+       "\u0b66"-"\u0b6f",
+       "\u0be7"-"\u0bef",
+       "\u0c66"-"\u0c6f",
+       "\u0ce6"-"\u0cef",
+       "\u0d66"-"\u0d6f",
+       "\u0e50"-"\u0e59",
+       "\u0ed0"-"\u0ed9",
+       "\u1040"-"\u1049"
+      ]
+  >
+}
+
+/*
+ * separators
+ */
+TOKEN:
+{
+  < LPAREN: "(" >
+| < RPAREN: ")" >
+| < LBRACE: "{" >
+| < RBRACE: "}" >
+| < LBRACKET: "[" >
+| < RBRACKET: "]" >
+| < SEMICOLON: ";" >
+| < COMMA: "," >
+| < DOT: "." >
+| < AT: "@" >
+}
+
+/*
+ * special tokens
+ */
+TOKEN :
+{
+    <CLASSNAME: "$"<IDENTIFIER>(<DOT><IDENTIFIER>)+> |
+    <HOSTNAME: <IDENTIFIER>(<DOT><IDENTIFIER>)+> |
+    <EMAIL: <IDENTIFIER><AT>(<IDENTIFIER>|<DOT>)+ > |
+    <URLDIR: <IDENTIFIER>> |
+    <IP_ADDRESS: (<DIGIT>)+<DOT>(<DIGIT>)+<DOT>(<DIGIT>)+<DOT>(<DIGIT>)+>
+}
+
+ASLStartNode Start() #StartNode:
+{}
+{
+    "definition" <LBRACE> AgentDefinition() <RBRACE>
+    "execute" <LBRACE> Exec() <RBRACE> (Report())?
+    { return jjtThis; }
+}
+
+void AgentDefinition() #AgentDefinitionNode :
+{
+	Token scriptID;
+	Token author;
+	Token date;
+	Token comment;
+	Token obs;
+}
+{
+    "scriptID" ":" scriptID = <STRING_LITERAL>
+    "author" ":" author = <STRING_LITERAL>
+    "date" ":" date = <DATE_LITERAL>
+    "comment" ":" comment = <STRING_LITERAL>
+    "obs" ":" obs = <STRING_LITERAL>
+    {
+    		jjtn000.scriptID = scriptID.image;
+    		jjtn000.author = author.image;
+    		jjtn000.date = date.image;
+    		jjtn000.comment = comment.image;
+    		jjtn000.obs = obs.image;
+    }
+}
+
+void Exec() #ExecNode:
+{}
+{
+    (Migrate())*
+}
+
+void Migrate() #MigrateNode:
+{
+	Token ipAddress;
+}
+{
+    ( ("migrate" "to" ipAddress = <IP_ADDRESS>) ("trace")?
+    <LBRACE> ( Action() )* <RBRACE> ( Report() | Output() )? )
+    {
+    		jjtn000.ipAddress = ipAddress.image;
+    	}
+}
+
+void Action() #ActionNode:
+{
+	Token classname;
+	Token urldir;
+}
+{
+    ("clone") <LBRACE> (Exec()) <RBRACE> |
+    ("run" classname = <CLASSNAME> <LPAREN> (Params())? <RPAREN>) ("from" urldir = <URLDIR>)?
+ }
+
+void Report() #ReportNode:
+{}
+{
+    "reportcallback" |
+    "reportnow" |
+    "reportmail" <EMAIL> "smtp" <HOSTNAME> |
+    "reportfinal" (<URLDIR>|<EOF>)
+}
+
+void Output() #OutputNode:
+{}
+{
+	"outputcallback" |
+	"output"
+}
+
+void Params() #ParamsNode:
+{}
+{
+    <IDENTIFIER> ("," <IDENTIFIER>)*
+}
+
+ASLStartNode Input() #InputNode:
+{
+	ASLStartNode start;
+}
+{
+    start = Start() <EOF>
+    { return start; }
+}
+

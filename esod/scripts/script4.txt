@@ -1,0 +1,25 @@
+definition {
+    scriptID: "0987612345"
+    author: "HJ"
+    date: "12.04.04"
+    comment: "Este script e um teste."
+    obs: "nada relevante"
+}
+
+execute {
+    migrate to 10.0.5.123 trace {
+                run $esod.agent.action.OSDetailsAction()
+   }
+    migrate to 10.0.5.125 trace {
+                run $esod.agent.action.OSDetailsAction()
+   }
+    migrate to 10.0.5.123 trace {
+                run $esod.agent.action.OSDetailsAction()
+   }
+    migrate to 10.0.5.125 trace {
+                run $esod.agent.action.OSDetailsAction()
+   }
+    migrate to 10.0.5.187 trace {
+                run $esod.agent.action.OSDetailsAction()
+   }
+} reportfinal

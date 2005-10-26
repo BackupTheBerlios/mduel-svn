@@ -1,0 +1,33 @@
+definition {
+    scriptID: "987654321"
+    author: "Henry John"
+    date: "12.04.04"
+    comment: "Este script e um teste."
+    obs: "nada de relevante"
+}
+
+execute {
+    migrate to 127.0.0.1 trace {
+        
+        clone {
+            migrate to 127.0.0.1 trace {                             
+                run $esod.agent.action.OSDetailsAction()
+            } reportnow
+        }
+        clone {
+            migrate to 127.0.0.1 trace {               
+                run $esod.agent.action.OSDetailsAction()
+                clone {
+                    migrate to 127.0.0.1 trace {               
+                        run $esod.agent.action.OSDetailsAction()
+                        clone {
+                            migrate to 127.0.0.1 trace {               
+                                run $esod.agent.action.OSDetailsAction()
+                            } reportnow
+                        }
+                    } reportnow
+                }
+            } reportnow
+        }
+   }
+} reportfinal
