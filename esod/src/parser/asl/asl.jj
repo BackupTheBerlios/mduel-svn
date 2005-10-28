@@ -169,7 +169,7 @@ TOKEN :
     <CLASSNAME: "$"<IDENTIFIER>(<DOT><IDENTIFIER>)+> |
     <HOSTNAME: <IDENTIFIER>(<DOT><IDENTIFIER>)+> |
     <EMAIL: <IDENTIFIER><AT>(<IDENTIFIER>|<DOT>)+ > |
-    <URLDIR: <IDENTIFIER>> |
+    <URLDIR: (<IDENTIFIER>|<DOT>)+> |
     <IP_ADDRESS: (<DIGIT>)+<DOT>(<DIGIT>)+<DOT>(<DIGIT>)+<DOT>(<DIGIT>)+>
 }
 
@@ -218,11 +218,11 @@ void AgentDefinition()                      :
         boolean jjtc000 = true;
         jjtree.openNodeScope(jjtn000);
 /*@egen*/
-	Token scriptID;
-	Token author;
-	Token date;
-	Token comment;
-	Token obs;
+	Token scriptID = null;
+	Token author = null;
+	Token date = null;
+	Token comment = null;
+	Token obs = null;
 }
 {/*@bgen(jjtree) AgentDefinitionNode */
     try {
@@ -290,12 +290,13 @@ void Migrate()             :
         boolean jjtc000 = true;
         jjtree.openNodeScope(jjtn000);
 /*@egen*/
-	Token ipAddress;
+	Token ipAddress = null;
+	Token trace = null;
 }
 {/*@bgen(jjtree) MigrateNode */
     try {
 /*@egen*/
-    ( ("migrate" "to" ipAddress = <IP_ADDRESS>) ("trace")?
+    ( ("migrate" "to" ipAddress = <IP_ADDRESS>) (trace = <TRACE>)?
     <LBRACE> ( Action() )* <RBRACE> ( Report() | Output() )? )/*@bgen(jjtree)*/
     {
       jjtree.closeNodeScope(jjtn000, true);
@@ -304,7 +305,9 @@ void Migrate()             :
 /*@egen*/
     {
     		jjtn000.ipAddress = ipAddress.image;
-    	}/*@bgen(jjtree)*/
+    		if (trace != null)
+	    		jjtn000.trace = trace.image;
+    }/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -333,14 +336,28 @@ void Action()            :
         boolean jjtc000 = true;
         jjtree.openNodeScope(jjtn000);
 /*@egen*/
-	Token classname;
-	Token urldir;
+	Token clone = null;
+	Token classname = null;
+	Token urldir = null;
 }
 {/*@bgen(jjtree) ActionNode */
     try {
 /*@egen*/
-    ("clone") <LBRACE> (Exec()) <RBRACE> |
-    ("run" classname = <CLASSNAME> <LPAREN> (Params())? <RPAREN>) ("from" urldir = <URLDIR>)?/*@bgen(jjtree)*/
+    (clone = <CLONE>) <LBRACE> (Exec()) <RBRACE> |
+    ("run" classname = <CLASSNAME> <LPAREN> (Params())? <RPAREN>) ("from" urldir = <HOSTNAME>)?/*@bgen(jjtree)*/
+    {
+      jjtree.closeNodeScope(jjtn000, true);
+      jjtc000 = false;
+    }
+/*@egen*/
+    {
+    	if (clone != null)
+    		jjtn000.clone = clone.image;
+    	if (classname != null)
+    		jjtn000.classname = classname.image;
+    	if (urldir != null)
+    		jjtn000.urldir = urldir.image;
+    }/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -365,17 +382,37 @@ void Action()            :
 
 void Report()            :
 {/*@bgen(jjtree) ReportNode */
-  ASLReportNode jjtn000 = new ASLReportNode(this, JJTREPORTNODE);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
+        ASLReportNode jjtn000 = new ASLReportNode(this, JJTREPORTNODE);
+        boolean jjtc000 = true;
+        jjtree.openNodeScope(jjtn000);
+/*@egen*/
+	Token report = null;
+	Token email = null;
+	Token smtp = null;
+	Token host = null;
+}
 {/*@bgen(jjtree) ReportNode */
     try {
 /*@egen*/
-    "reportcallback" |
-    "reportnow" |
-    "reportmail" <EMAIL> "smtp" <HOSTNAME> |
-    "reportfinal" (<URLDIR>|<EOF>)/*@bgen(jjtree)*/
+    report = <REPORTCALLBACK> |
+    report = <REPORTNOW> |
+    report = <REPORTMAIL> email = <EMAIL> "smtp" smtp = <HOSTNAME> |
+    report = <REPORTFINAL> (host = <HOSTNAME>)?/*@bgen(jjtree)*/
+    {
+      jjtree.closeNodeScope(jjtn000, true);
+      jjtc000 = false;
+    }
+/*@egen*/
+    {
+    	jjtn000.report = report.image;
+    	if (email != null) {
+    		jjtn000.email = email.image;
+    		jjtn000.smtp = smtp.image;
+    	}
+    	if (host != null) {
+    		jjtn000.host = host.image;
+    	}
+    }/*@bgen(jjtree)*/
     } finally {
       if (jjtc000) {
         jjtree.closeNodeScope(jjtn000, true);
@@ -386,15 +423,25 @@ void Report()            :
 
 void Output()            :
 {/*@bgen(jjtree) OutputNode */
-  ASLOutputNode jjtn000 = new ASLOutputNode(this, JJTOUTPUTNODE);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
+        ASLOutputNode jjtn000 = new ASLOutputNode(this, JJTOUTPUTNODE);
+        boolean jjtc000 = true;
+        jjtree.openNodeScope(jjtn000);
+/*@egen*/
+	Token output = null;
+}
 {/*@bgen(jjtree) OutputNode */
         try {
 /*@egen*/
-	"outputcallback" |
-	"output"/*@bgen(jjtree)*/
+	output = <OUTPUTCALLBACK> |
+	output = <OUTPUT>/*@bgen(jjtree)*/
+        {
+          jjtree.closeNodeScope(jjtn000, true);
+          jjtc000 = false;
+        }
+/*@egen*/
+	{
+		jjtn000.output = output.image;
+	}/*@bgen(jjtree)*/
         } finally {
           if (jjtc000) {
             jjtree.closeNodeScope(jjtn000, true);

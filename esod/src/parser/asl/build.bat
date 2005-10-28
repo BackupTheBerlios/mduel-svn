@@ -1,4 +1,4 @@
-del ASL*.java
+del ASL.java
 del Token*.java
 del Parse*.java
 jjtree asl.jjt

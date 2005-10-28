@@ -4,7 +4,6 @@ import java.io.*;
 import parser.asl.*;
 
 public class RunParser {
-	// teste de svn 
 	public static void main(String[] args) {
 		FileInputStream fis = null;
 

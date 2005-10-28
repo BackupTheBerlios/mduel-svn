@@ -4,6 +4,7 @@ package parser.asl;
 
 public class ASLMigrateNode extends SimpleNode {
 	public String ipAddress;
+	public String trace;
 
   public ASLMigrateNode(int id) {
     super(id);

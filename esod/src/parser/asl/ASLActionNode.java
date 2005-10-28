@@ -3,6 +3,10 @@
 package parser.asl;
 
 public class ASLActionNode extends SimpleNode {
+	public String clone;
+	public String classname;
+	public String urldir;
+	
   public ASLActionNode(int id) {
     super(id);
   }

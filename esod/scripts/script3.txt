@@ -17,13 +17,13 @@ execute {
         clone {
             migrate to 127.0.0.1 trace {                             
                 run $esod.agent.action.OSDetailsAction()
-            }
+            } output
             migrate to 127.0.0.1 trace {                             
                 run $esod.agent.action.OSDetailsAction()
-            }
+            } reportnow
             migrate to 10.0.5.187 trace {               
                 run $esod.agent.action.OSDetailsAction() 
             } reportmail myemail@xpto.di.fct.unl.pt smtp mail.fct.unl.pt
         }
-   }
+   } outputcallback
 } reportfinal

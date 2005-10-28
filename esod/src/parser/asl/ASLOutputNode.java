@@ -3,6 +3,8 @@
 package parser.asl;
 
 public class ASLOutputNode extends SimpleNode {
+	public String output;
+	
   public ASLOutputNode(int id) {
     super(id);
   }

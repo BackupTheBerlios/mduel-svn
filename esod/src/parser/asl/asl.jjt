@@ -170,7 +170,7 @@ TOKEN :
     <CLASSNAME: "$"<IDENTIFIER>(<DOT><IDENTIFIER>)+> |
     <HOSTNAME: <IDENTIFIER>(<DOT><IDENTIFIER>)+> |
     <EMAIL: <IDENTIFIER><AT>(<IDENTIFIER>|<DOT>)+ > |
-    <URLDIR: <IDENTIFIER>> |
+    <URLDIR: (<IDENTIFIER>|<DOT>)+> |
     <IP_ADDRESS: (<DIGIT>)+<DOT>(<DIGIT>)+<DOT>(<DIGIT>)+<DOT>(<DIGIT>)+>
 }
 
@@ -184,11 +184,11 @@ ASLStartNode Start() #StartNode:
 
 void AgentDefinition() #AgentDefinitionNode :
 {
-	Token scriptID;
-	Token author;
-	Token date;
-	Token comment;
-	Token obs;
+	Token scriptID = null;
+	Token author = null;
+	Token date = null;
+	Token comment = null;
+	Token obs = null;
 }
 {
     "scriptID" ":" scriptID = <STRING_LITERAL>
@@ -213,40 +213,72 @@ void Exec() #ExecNode:
 
 void Migrate() #MigrateNode:
 {
-	Token ipAddress;
+	Token ipAddress = null;
+	Token trace = null;
 }
 {
-    ( ("migrate" "to" ipAddress = <IP_ADDRESS>) ("trace")?
+    ( ("migrate" "to" ipAddress = <IP_ADDRESS>) (trace = <TRACE>)?
     <LBRACE> ( Action() )* <RBRACE> ( Report() | Output() )? )
     {
     		jjtn000.ipAddress = ipAddress.image;
-    	}
+    		if (trace != null)
+	    		jjtn000.trace = trace.image;
+    }
 }
 
 void Action() #ActionNode:
 {
-	Token classname;
-	Token urldir;
+	Token clone = null;
+	Token classname = null;
+	Token urldir = null;
 }
 {
-    ("clone") <LBRACE> (Exec()) <RBRACE> |
-    ("run" classname = <CLASSNAME> <LPAREN> (Params())? <RPAREN>) ("from" urldir = <URLDIR>)?
+    (clone = <CLONE>) <LBRACE> (Exec()) <RBRACE> |
+    ("run" classname = <CLASSNAME> <LPAREN> (Params())? <RPAREN>) ("from" urldir = <HOSTNAME>)?
+    {
+    	if (clone != null)
+    		jjtn000.clone = clone.image;
+    	if (classname != null)
+    		jjtn000.classname = classname.image;
+    	if (urldir != null)
+    		jjtn000.urldir = urldir.image;
+    }
  }
 
 void Report() #ReportNode:
-{}
 {
-    "reportcallback" |
-    "reportnow" |
-    "reportmail" <EMAIL> "smtp" <HOSTNAME> |
-    "reportfinal" (<URLDIR>|<EOF>)
+	Token report = null;
+	Token email = null;
+	Token smtp = null;
+	Token host = null;
+}
+{
+    report = <REPORTCALLBACK> |
+    report = <REPORTNOW> |
+    report = <REPORTMAIL> email = <EMAIL> "smtp" smtp = <HOSTNAME> |
+    report = <REPORTFINAL> (host = <HOSTNAME>)?
+    {
+    	jjtn000.report = report.image;
+    	if (email != null) {
+    		jjtn000.email = email.image;
+    		jjtn000.smtp = smtp.image;
+    	}
+    	if (host != null) {
+    		jjtn000.host = host.image;
+    	}
+    }
 }
 
 void Output() #OutputNode:
-{}
 {
-	"outputcallback" |
-	"output"
+	Token output = null;
+}
+{
+	output = <OUTPUTCALLBACK> |
+	output = <OUTPUT>
+	{
+		jjtn000.output = output.image;
+	}
 }
 
 void Params() #ParamsNode:

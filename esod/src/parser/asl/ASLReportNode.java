@@ -3,6 +3,11 @@
 package parser.asl;
 
 public class ASLReportNode extends SimpleNode {
+	public String report;
+	public String email;
+	public String smtp;
+	public String host;
+
   public ASLReportNode(int id) {
     super(id);
   }
