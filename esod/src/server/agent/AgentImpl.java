@@ -1,19 +1,24 @@
 package server.agent;
 
-import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.util.LinkedList;
 import java.util.Stack;
 import server.*;
+import server.action.Action;
 
 public class AgentImpl implements Agent {
 	private static final long serialVersionUID = 3258125839102259509L;
+
 	private AgentHost agentHome;
+
 	private AgentHost currentServer;
+
 	private AgentScript agentScript;
+
 	private Stack reportStack;
 
 	/*
-	 * o agentID Ž resultado da concatena?‹o dos seguintes campos:
+	 * o agentID é resultado da concatenaçã dos seguintes campos:
 	 *  - o scriptID
 	 *  - MD5 hash do script
 	 *  - timestamp
@@ -26,12 +31,12 @@ public class AgentImpl implements Agent {
 	public AgentImpl() {
 		super();
 	}
-	
+
 	public void setScript(AgentScript script) {
 		this.agentScript = script;
 		agentID = generateID();
 	}
-	
+
 	public AgentScript getScript() {
 		return this.agentScript;
 	}
@@ -41,21 +46,20 @@ public class AgentImpl implements Agent {
 		String id = null;
 
 		try {
-			id = agentScript.getScriptID() + "-" +
-				agentScript.getMD5Hash() + "-" +
-				String.valueOf(System.currentTimeMillis()) + "-" +
-				agentHome.getHostname();
+			id = agentScript.getScriptID() + "-" + agentScript.getMD5Hash()
+					+ "-" + String.valueOf(System.currentTimeMillis()) + "-"
+					+ agentHome.getHostname();
 		} catch (RemoteException ex) {
 			ex.printStackTrace();
 		}
-		
+
 		return id;
 	}
-	
+
 	public Object getID() {
 		return agentID;
 	}
-	
+
 	public void init() {
 		System.out.println("initiating agent...");
 		// contact mediator
@@ -65,12 +69,19 @@ public class AgentImpl implements Agent {
 		init();
 		System.out.println("starting agent...");
 
-		try {
-			agentHome.moveTo(this, "//192.168.0.2/AgentHost");
-		} catch (RemoteException e) {
-			e.printStackTrace();
+		/*try {
+		 agentHome.moveTo(this, "//localhost/" + AgentHost.class.getName());
+		 } catch (RemoteException e) {
+		 e.printStackTrace();
+		 }*/
+		while (agentScript.getActions().size() > 0) {
+			LinkedList actions = agentScript.getActions();
+			Action a = (Action)actions.getFirst();
+			actions.removeFirst();
+			agentScript.setActions(actions);
+			a.run(this);
 		}
-		
+
 		stop();
 		finish();
 	}
@@ -99,6 +110,10 @@ public class AgentImpl implements Agent {
 
 	public Object getHistory() {
 		return null;
+	}
+
+	public AgentHost getHome() {
+		return this.agentHome;
 	}
 
 	public void setHome(AgentHost host) {

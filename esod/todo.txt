@@ -1,0 +1,10 @@
+
+NOTAS
+=====
+
+- Client installations should contain the JDK and the client side of the application .
+This includes any remote interfaces because the client knows about these. It does
+_not_ include RMI servers, skeletons or stubs. Servers and stubs do not belong at
+clients at all; stubs can be downloaded if the system is set up correctly.
+The client installation should also exclude any classes which you specifically want
+to download to the client.

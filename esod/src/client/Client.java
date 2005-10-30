@@ -2,6 +2,8 @@ package client;
 
 import java.net.*;
 import java.rmi.*;
+
+import parser.ASLParser;
 import server.*;
 import server.agent.*;
 
@@ -9,9 +11,11 @@ public class Client {
 
 	public static void main(String[] args) {
 		try {
-			AgentHost host = (AgentHost) Naming.lookup("//192.168.0.1/AgentHost");
+			AgentHost host = (AgentHost) Naming.lookup("//localhost/" + AgentHost.class.getName());
 			Agent agent = new AgentImpl();
-			AgentScript script = new AgentScript("myScript", "mmoura", "10.10.2005", "comment", "obs", "text");
+			ASLParser parser = new ASLParser();
+			AgentScript script = parser.LoadScript(args[0]);
+
 			agent.setHome(host);
 			agent.setScript(script);
 			host.accept(agent);

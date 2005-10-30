@@ -8,9 +8,8 @@ import java.rmi.*;
 import java.util.*;
 
 public class MediatorImpl extends UnicastRemoteObject implements Mediator {
-
+	private static final long serialVersionUID = -5563370450807830696L;
 	private Hashtable table;
-
 	
 	public MediatorImpl() throws RemoteException
 	{

@@ -12,11 +12,12 @@ public interface Agent extends Serializable, Runnable {
 	void finish();
 
 	void setScript(AgentScript script);
-
 	AgentScript getScript();
 	Object getID();
 	Object getInfo();
 	Object getHistory();
 	Object getReport();
+
+	AgentHost getHome();
 	void setHome(AgentHost host);
 }

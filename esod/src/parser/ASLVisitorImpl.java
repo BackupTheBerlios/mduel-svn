@@ -1,8 +1,27 @@
 package parser;
 
+import java.util.LinkedList;
+
 import parser.asl.*;
+import server.action.*;
+import server.agent.AgentScript;
 
 public class ASLVisitorImpl implements ASLVisitor {
+	private AgentScript script;
+	private LinkedList actions;
+
+	public ASLVisitorImpl() {
+		actions = new LinkedList();
+	}
+
+	public AgentScript getParsedScript() {
+		script.setActions(actions);
+		return script;
+	}
+	
+	public LinkedList getActions() {
+		return actions;
+	}
 	
 	public Object visit(SimpleNode node, Object data) {
 		node.childrenAccept(this, null);
@@ -15,13 +34,13 @@ public class ASLVisitorImpl implements ASLVisitor {
 	}
 
 	public Object visit(ASLAgentDefinitionNode node, Object data) {
-		System.out.println(">> Agent Definition <<");
-		System.out.println("scriptID: " + node.scriptID);
-		System.out.println("author: " + node.author);
-		System.out.println("date: " + node.date);
-		System.out.println("comment: " + node.comment);
-		System.out.println("obs: " + node.obs);
-		System.out.println(">> Agent Definition <<");
+		script = new AgentScript(
+					node.scriptID,
+					node.author,
+					node.date,
+					node.comment,
+					node.obs,
+					"");
 
 		node.childrenAccept(this, null);
 		return null;
@@ -33,6 +52,7 @@ public class ASLVisitorImpl implements ASLVisitor {
 	}
 
 	public Object visit(ASLMigrateNode node, Object data) {
+		actions.addLast(new MigrateAction(node.ipAddress));
 		System.out.println("migrate to " + node.ipAddress);
 		if (node.trace != null)
 			System.out.println("--> with trace");
@@ -48,6 +68,19 @@ public class ASLVisitorImpl implements ASLVisitor {
 		else if (node.classname != null)
 		{
 			System.out.println("running " + node.classname);
+
+			ClassLoader cl = ClassLoader.getSystemClassLoader();
+			try {
+				Action a = (Action)cl.loadClass(node.classname.substring(1)).newInstance();
+				actions.addLast(a);
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+
 			if (node.urldir != null)
 			{
 				System.out.println("--> from " + node.urldir);

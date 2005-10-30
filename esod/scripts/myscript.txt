@@ -7,12 +7,12 @@ definition {
 }
 
 execute {
-	migrate to 127.0.0.1 trace {
-		clone {
-			migrate to 127.0.0.1 {
-				run $esod.agent.action.OSDetailsAction()
-				run $esod.agent.action.OSDetailsAction() from my.a.b.c
-			}
-		}
+	migrate to 192.168.0.1 {
+		run $server.action.OSDetailsAction()
+		run $server.action.UserInfoAction()
 	}
-} reportfinal
+	migrate to 192.168.0.196 {
+		run $server.action.OSDetailsAction()
+		run $server.action.UserInfoAction()
+	}
+}

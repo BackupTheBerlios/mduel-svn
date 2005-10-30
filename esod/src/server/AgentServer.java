@@ -11,7 +11,7 @@ public class AgentServer {
 			AgentHostImpl ah = new AgentHostImpl();
 			System.out.println("starting AgentServer on '" + ah.getHostname() + "'...");
 			System.out.print("> rebinding... ");
-			Naming.rebind("AgentHost", ah);
+			Naming.rebind(AgentHost.class.getName(), ah);
 			System.out.println("ok!");
 			System.out.println("> waiting for agents...");
 			while (true) {
@@ -25,5 +25,4 @@ public class AgentServer {
 	public static void main(String[] args) {
 		new AgentServer();
 	}
-
 }

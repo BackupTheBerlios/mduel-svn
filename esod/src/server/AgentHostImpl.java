@@ -8,6 +8,7 @@ import java.rmi.server.*;
 import java.util.Hashtable;
 import java.util.Stack;
 
+import server.action.*;
 import server.agent.Agent;
 
 public class AgentHostImpl extends UnicastRemoteObject implements AgentHost  {
@@ -42,7 +43,7 @@ public class AgentHostImpl extends UnicastRemoteObject implements AgentHost  {
 		AgentHost host = null;
 
 		try {
-			host = (AgentHost) Naming.lookup(newHost);
+			host = (AgentHost) Naming.lookup("//" + newHost + "/" + AgentHost.class.getName());
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (RemoteException e) {
@@ -69,5 +70,11 @@ public class AgentHostImpl extends UnicastRemoteObject implements AgentHost  {
 		}
 		
 		return hostname;
+	}
+	
+	public Action getNextAction() {
+		return null;
+		//return new UserInfoAction();
+		//return new OSDetailsAction();
 	}
 }
