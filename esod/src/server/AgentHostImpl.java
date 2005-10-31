@@ -19,7 +19,7 @@ public class AgentHostImpl extends UnicastRemoteObject implements AgentHost  {
 		super();
 	}
 
-	public void accept(Agent agent) throws RemoteException {
+	public synchronized void accept(Agent agent) throws RemoteException {
 		System.out.println("> accepting agent '" + agent.getID() + "'");
 		agent.setHome(this);
 		todo.push(agent);
@@ -29,15 +29,17 @@ public class AgentHostImpl extends UnicastRemoteObject implements AgentHost  {
 		if (todo.empty())
 			return;
 
+		System.out.println(todo);
 		Agent agent = (Agent) todo.pop();
+		//System.out.println(agent.getMediator().getAgentInfo(agent).getActionList(););
 		Thread t = new Thread((Runnable) agent);
+		threadPool.put(agent.getID(), t);
 		t.setDaemon(true);
 		t.setPriority(1);
 		t.start();
-		threadPool.put(agent.getID(), t);
 	}
 
-	public synchronized void moveTo(Agent agent, String newHost) throws RemoteException {
+	public void moveTo(Agent agent, String newHost) throws RemoteException {
 		AgentHost host = null;
 
 		try {
@@ -52,9 +54,9 @@ public class AgentHostImpl extends UnicastRemoteObject implements AgentHost  {
 
 		Thread t = (Thread)threadPool.get(agent.getID());
 		if (t != null) {
-			host.accept(agent);
 			t.interrupt();
 			threadPool.remove(agent.getID());
+			host.accept(agent);
 		}
  	}
 	

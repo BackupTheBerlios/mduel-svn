@@ -21,14 +21,14 @@ public class AgentInfo {
 		return agentID;
 	}
 
-	public LinkedList getTaskList() {
+	public LinkedList getActionList() {
 		return taskList;
 	}
 	
-	public void setTaskList(LinkedList list) {
+	public void setActionList(LinkedList list) {
 		this.taskList = list;
 	}
-	
+
 	public void linkCompleted(Object agentHostID){
 		this.pathCompleted.add(agentHostID);
 	}
