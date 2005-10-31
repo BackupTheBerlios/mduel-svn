@@ -9,7 +9,6 @@ public class AgentInfo {
 	private Object taskTree;
 	private Object currentTask;
 	
-
 	public AgentInfo(Object agentID, Object taskTree, Object currentTask)
 	{
 		this.agentID = agentID;

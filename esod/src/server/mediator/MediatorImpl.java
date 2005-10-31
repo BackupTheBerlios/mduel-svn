@@ -1,5 +1,6 @@
 package server.mediator;
 
+import server.action.Action;
 import server.agent.Agent;
 
 import java.rmi.RemoteException;
@@ -18,15 +19,18 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 	
 	public void registerAgent(Agent agent) {
 		AgentInfo ai = new AgentInfo(agent.getID(), null, null);
+		agent.setMediator(this);
 		table.put(ai.getID(), ai);
+		System.out.println("> registered agent " + agent.getID());
+		agent.start();
 	}
 
 	public void unregisterAgent(Agent agent) {
-		agent.stop();
 		table.remove(agent.getID());
+		System.out.println("> unregistered agent " + agent.getID());
 	}
 
-	public Object findAgent(Object agentID) throws RemoteException {
+	public Agent findAgent(Object agentID) throws RemoteException {
 		
 		Agent a = null;
 		try {
@@ -39,11 +43,28 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 		return a;
 	}
 	
-	public void insertTask(Object agentID, Object task) {
+	public void insertAction(Object agentID, Action action) {
 		//TODO
 		/*
 		 * não sei bem como funciona a inserção
 		 * de novas tarefas na arvore...
 		 */
+	}
+	
+	public Action getNextAction(Agent a) {
+		LinkedList actions = a.getScript().getActions();
+
+		if (actions.size() > 0) {
+			Action action = (Action)actions.getFirst();
+			actions.removeFirst();
+			a.getScript().setActions(actions);
+			return action;
+		}
+		else
+			return null;
+	}
+
+	public synchronized void run() throws RemoteException {
+		//for ()
 	}
 }

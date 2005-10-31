@@ -3,6 +3,7 @@ package server.agent;
 import java.io.Serializable;
 
 import server.AgentHost;
+import server.mediator.Mediator;
 
 public interface Agent extends Serializable, Runnable {
 	
@@ -18,6 +19,9 @@ public interface Agent extends Serializable, Runnable {
 	Object getHistory();
 	Object getReport();
 
+	Mediator getMediator();
+	void setMediator(Mediator m);
+	
 	AgentHost getHome();
 	void setHome(AgentHost host);
 }

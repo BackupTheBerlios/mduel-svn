@@ -7,8 +7,6 @@ import java.rmi.*;
 import java.rmi.server.*;
 import java.util.Hashtable;
 import java.util.Stack;
-
-import server.action.*;
 import server.agent.Agent;
 
 public class AgentHostImpl extends UnicastRemoteObject implements AgentHost  {
@@ -24,6 +22,7 @@ public class AgentHostImpl extends UnicastRemoteObject implements AgentHost  {
 	public void accept(Agent agent) throws RemoteException {
 		System.out.println("> accepting agent '" + agent.getID() + "'");
 		agent.setHome(this);
+		System.out.println(agent.getScript().getActions());
 		todo.push(agent);
 	}
 	
@@ -62,19 +61,11 @@ public class AgentHostImpl extends UnicastRemoteObject implements AgentHost  {
 		
 		try {
 			InetAddress addr = InetAddress.getLocalHost();
-			
-			//byte[] ipAddr = addr.getAddress();
 			hostname = addr.getHostName();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
 		
 		return hostname;
-	}
-	
-	public Action getNextAction() {
-		return null;
-		//return new UserInfoAction();
-		//return new OSDetailsAction();
 	}
 }

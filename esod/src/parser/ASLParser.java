@@ -23,14 +23,13 @@ public class ASLParser {
 		
 		try {
 			script = parse(new FileInputStream(file));
-			
+
 			FileInputStream fis = new FileInputStream(file);
 			int numBytes = fis.available();
 			byte[] buffer = new byte[numBytes];
 			fis.read(buffer);
 			script.setScript(new String(buffer));
 			fis.close();
-
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

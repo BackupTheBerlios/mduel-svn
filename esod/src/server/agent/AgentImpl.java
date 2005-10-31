@@ -5,9 +5,12 @@ import java.util.LinkedList;
 import java.util.Stack;
 import server.*;
 import server.action.Action;
+import server.mediator.Mediator;
 
 public class AgentImpl implements Agent {
 	private static final long serialVersionUID = 3258125839102259509L;
+
+	private Mediator mediator;
 
 	private AgentHost agentHome;
 
@@ -18,11 +21,8 @@ public class AgentImpl implements Agent {
 	private Stack reportStack;
 
 	/*
-	 * o agentID é resultado da concatenaçã dos seguintes campos:
-	 *  - o scriptID
-	 *  - MD5 hash do script
-	 *  - timestamp
-	 *  - hostname (ip address) do n— inicial
+	 * o agentID é resultado da concatenaçã dos seguintes campos: - o scriptID -
+	 * MD5 hash do script - timestamp - hostname (ip address) do n— inicial
 	 * 
 	 * exemplo: myScript123-0f3ea423d23423a3-22342342-192.168.0.1
 	 */
@@ -69,17 +69,14 @@ public class AgentImpl implements Agent {
 		init();
 		System.out.println("starting agent...");
 
-		/*try {
-		 agentHome.moveTo(this, "//localhost/" + AgentHost.class.getName());
-		 } catch (RemoteException e) {
-		 e.printStackTrace();
-		 }*/
-		while (agentScript.getActions().size() > 0) {
-			LinkedList actions = agentScript.getActions();
-			Action a = (Action)actions.getFirst();
-			actions.removeFirst();
-			agentScript.setActions(actions);
-			a.run(this);
+		try {
+			Action action = null;
+			do {
+				action = mediator.getNextAction(this);
+				action.run(this);
+			} while (action != null);
+		} catch (RemoteException e) {
+			e.printStackTrace();
 		}
 
 		stop();
@@ -91,7 +88,11 @@ public class AgentImpl implements Agent {
 	}
 
 	public void finish() {
-		// tell mediator we are over
+		try {
+			mediator.unregisterAgent(this);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 		System.out.println("finishing agent...");
 	}
 
@@ -118,5 +119,13 @@ public class AgentImpl implements Agent {
 
 	public void setHome(AgentHost host) {
 		this.agentHome = host;
+	}
+
+	public Mediator getMediator() {
+		return mediator;
+	}
+
+	public void setMediator(Mediator m) {
+		this.mediator = m;
 	}
 }

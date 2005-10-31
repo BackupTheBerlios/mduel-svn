@@ -9,5 +9,4 @@ public interface AgentHost extends Remote {
 	void accept(Agent agent) throws RemoteException;
 	void moveTo(Agent agent, String newHost) throws RemoteException;
 	String getHostname() throws RemoteException;
-	Action getNextAction() throws RemoteException;
 }
