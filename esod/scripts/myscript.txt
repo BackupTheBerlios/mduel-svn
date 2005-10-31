@@ -7,12 +7,7 @@ definition {
 }
 
 execute {
-	migrate to 192.168.0.1 {
+	migrate to 127.0.0.1 {
 		run $server.action.OSDetailsAction()
-		run $server.action.UserInfoAction()
-	}
-	migrate to 192.168.0.196 {
-		run $server.action.OSDetailsAction()
-		run $server.action.UserInfoAction()
 	}
 }

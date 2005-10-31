@@ -41,7 +41,6 @@ public class AgentImpl implements Agent {
 		return this.agentScript;
 	}
 
-	// should the agentHost be responsible for this?
 	private String generateID() {
 		String id = null;
 
@@ -60,34 +59,38 @@ public class AgentImpl implements Agent {
 		return agentID;
 	}
 
-	public void init() {
+	public synchronized void init() {
 		System.out.println("initiating agent...");
-		// contact mediator
+		try {
+			this.mediator.registerAgent(this);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void start() {
+	public synchronized void start() {
 		init();
 		System.out.println("starting agent...");
 
 		try {
-			Action action = null;
-			do {
-				action = mediator.getNextAction(this);
+			Action action = mediator.getNextAction(this);
+			while (action != null) {
 				action.run(this);
-			} while (action != null);
-		} catch (RemoteException e) {
+				action = (Action) mediator.getNextAction(this);
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		stop();
+		
 		finish();
+		stop();
 	}
 
-	public void stop() {
+	public synchronized void stop() {
 		System.out.println("stoping agent...");
 	}
 
-	public void finish() {
+	public synchronized void finish() {
 		try {
 			mediator.unregisterAgent(this);
 		} catch (RemoteException e) {
@@ -96,7 +99,7 @@ public class AgentImpl implements Agent {
 		System.out.println("finishing agent...");
 	}
 
-	public void run() {
+	public synchronized void run() {
 		System.out.println("running agent...");
 		start();
 	}

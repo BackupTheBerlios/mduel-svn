@@ -6,39 +6,39 @@ public class AgentInfo {
 	
 	private Object agentID;
 	private LinkedList pathCompleted;
-	private Object taskTree;
-	private Object currentTask;
+	private LinkedList taskList;
+	private boolean runComplete;
 	
-	public AgentInfo(Object agentID, Object taskTree, Object currentTask)
+	public AgentInfo(Object agentID, LinkedList tasks)
 	{
 		this.agentID = agentID;
-		this.taskTree = taskTree;
+		this.taskList = tasks;
 		this.pathCompleted = new LinkedList();
-		this.currentTask = currentTask;
+		this.runComplete = false;
 	}
 	
 	public Object getID(){
 		return agentID;
 	}
-	
-	public Object getTree(){
-		return taskTree;
+
+	public LinkedList getTaskList() {
+		return taskList;
 	}
 	
-	public Object getCurrentTask(){
-		return currentTask;
-	}
-	
-	public void setCurrentTask(Object newTask){
-		this.currentTask = newTask;
-	}
-	
-	public void setNewTree(Object newTree){
-		this.taskTree = newTree;
+	public void setTaskList(LinkedList list) {
+		this.taskList = list;
 	}
 	
 	public void linkCompleted(Object agentHostID){
 		this.pathCompleted.add(agentHostID);
+	}
+	
+	public boolean isRunComplete() {
+		return runComplete;
+	}
+	
+	public void setRunComplete(boolean b) {
+		runComplete = b;
 	}
 }
 

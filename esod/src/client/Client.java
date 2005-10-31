@@ -16,6 +16,8 @@ public class Client {
 			AgentFactory af = new AgentFactoryImpl();
 			Agent agent = af.create(host, args[0]);
 			mediator.registerAgent(agent);
+			agent.setMediator(mediator);
+			host.accept(agent);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (RemoteException e) {
