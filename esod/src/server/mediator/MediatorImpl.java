@@ -65,18 +65,23 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 	}
 
 	public synchronized Action getNextAction(Agent a) {
-		AgentInfo ai = (AgentInfo) agentTable.get(a.getID());
-		LinkedList actions = ai.getActionList();
+		try {
+			AgentInfo ai = (AgentInfo) agentTable.get(a.getID());
+			LinkedList actions = ai.getActionList();
 
-		if (actions.size() > 0) {
-			Action action = (Action) actions.getFirst();
-			actions.removeFirst();
-			ai.setActionList(actions);
-			agentTable.put(a.getID(), ai);
-			ai.setRunComplete(false);
-			return action;
-		} else {
-			ai.setRunComplete(true);
+			if (actions.size() > 0) {
+				//Thread.sleep(100);
+				Action action = (Action) actions.getFirst();
+				actions.removeFirst();
+				ai.setActionList(actions);
+				agentTable.put(a.getID(), ai);
+				return action;
+			} else {
+				ai.setRunComplete(true);
+				return null;
+			}
+		} catch (Exception ex) {
+			//ex.printStackTrace();
 			return null;
 		}
 	}
@@ -85,6 +90,7 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 	}
 
 	public LinkedList getActionList(Agent agent) throws RemoteException {
-		return null;
+		AgentInfo ai = (AgentInfo) this.agentTable.get(agent.getID());
+		return ai.getActionList();
 	}
 }

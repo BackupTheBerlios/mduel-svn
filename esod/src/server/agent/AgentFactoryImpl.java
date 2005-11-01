@@ -8,7 +8,7 @@ import server.AgentHost;
 public class AgentFactoryImpl extends AgentFactory {
 	private static final long serialVersionUID = 949261756085028206L;
 
-	public AgentFactoryImpl() throws RemoteException {
+	public AgentFactoryImpl() {
 		super();
 	}
 

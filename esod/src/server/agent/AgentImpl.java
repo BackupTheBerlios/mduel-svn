@@ -60,7 +60,6 @@ public class AgentImpl implements Agent {
 	}
 
 	public synchronized void init() {
-		System.out.println("initiating agent...");
 		try {
 			this.mediator.registerAgent(this);
 		} catch (RemoteException e) {
@@ -70,11 +69,11 @@ public class AgentImpl implements Agent {
 
 	public synchronized void start() {
 		init();
-		System.out.println("starting agent...");
 
 		try {
 			Action action = mediator.getNextAction(this);
 			while (action != null) {
+				Thread.yield();
 				action.run(this);
 				action = (Action) mediator.getNextAction(this);
 			}
@@ -87,7 +86,6 @@ public class AgentImpl implements Agent {
 	}
 
 	public synchronized void stop() {
-		System.out.println("stoping agent...");
 	}
 
 	public synchronized void finish() {
@@ -96,11 +94,9 @@ public class AgentImpl implements Agent {
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-		System.out.println("finishing agent...");
 	}
 
 	public synchronized void run() {
-		System.out.println("running agent...");
 		start();
 	}
 

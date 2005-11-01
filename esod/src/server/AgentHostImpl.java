@@ -14,6 +14,7 @@ public class AgentHostImpl extends UnicastRemoteObject implements AgentHost  {
 
 	private Stack todo = new Stack();
 	private Hashtable threadPool = new Hashtable();
+	private volatile Thread agentThread;
 
 	public AgentHostImpl() throws RemoteException {
 		super();
@@ -21,7 +22,6 @@ public class AgentHostImpl extends UnicastRemoteObject implements AgentHost  {
 
 	public synchronized void accept(Agent agent) throws RemoteException {
 		System.out.println("> accepting agent '" + agent.getID() + "'");
-		agent.setHome(this);
 		todo.push(agent);
 	}
 	
@@ -29,14 +29,12 @@ public class AgentHostImpl extends UnicastRemoteObject implements AgentHost  {
 		if (todo.empty())
 			return;
 
-		System.out.println(todo);
 		Agent agent = (Agent) todo.pop();
-		//System.out.println(agent.getMediator().getAgentInfo(agent).getActionList(););
-		Thread t = new Thread((Runnable) agent);
-		threadPool.put(agent.getID(), t);
-		t.setDaemon(true);
-		t.setPriority(1);
-		t.start();
+		agentThread = new Thread((Runnable) agent);
+		threadPool.put(agent.getID(), agentThread);
+		agentThread.setDaemon(true);
+		agentThread.setPriority(1);
+		agentThread.start();
 	}
 
 	public void moveTo(Agent agent, String newHost) throws RemoteException {
@@ -52,18 +50,22 @@ public class AgentHostImpl extends UnicastRemoteObject implements AgentHost  {
 			e.printStackTrace();
 		}
 
-		Thread t = (Thread)threadPool.get(agent.getID());
-		if (t != null) {
-			t.interrupt();
+		agentThread = (Thread)threadPool.get(agent.getID());
+		if (agentThread != null) {
+			Thread.yield();
+			agentThread.interrupt();
+			agentThread = null;
 			threadPool.remove(agent.getID());
 			host.accept(agent);
 		}
  	}
 	
 	public synchronized void kill(Agent agent) {
-		Thread t = (Thread)threadPool.get(agent.getID());
-		if (t != null) {
-			t.interrupt();
+		agentThread = (Thread)threadPool.get(agent.getID());
+		if (agentThread != null) {
+			Thread.yield();
+			agentThread.interrupt();
+			agentThread = null;
 			threadPool.remove(agent.getID());
 		}
 	}
