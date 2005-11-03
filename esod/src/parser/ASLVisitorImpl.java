@@ -91,15 +91,26 @@ public class ASLVisitorImpl implements ASLVisitor {
 	}
 
 	public Object visit(ASLReportNode node, Object data) {
+		
 		System.out.println("reporting: " + node.report);
-		if (node.email != null)
-		{
-			System.out.println("--> email to " + node.email + " (via " + node.smtp + ")");
+		
+		if (node.report.equals("reportfinal"))
+			actions.addLast(new ReportFinalAction(node.host));	
+		
+		else if (node.report.equals("reportnow"))
+			;
+
+		else if (node.report.equals("reportcallback"))
+			;
+		
+		else if (node.report.equals("reportmail")) {
+			
+			//TODO
+			if (node.email != null) {
+				System.out.println("--> email to " + node.email + " (via " + node.smtp + ")");
+			}
 		}
-		else if (node.host != null)
-		{
-			System.out.println("--> to host " + node.host);
-		}
+		
 		node.childrenAccept(this, null);
 		return null;
 	}
