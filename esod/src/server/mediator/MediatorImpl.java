@@ -29,6 +29,7 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 	}
 
 	public synchronized void unregisterAgent(Agent agent) {
+		
 		if (agentTable.containsKey(agent.getID())) {
 			AgentInfo ai = (AgentInfo) agentTable.get(agent.getID());
 			if (ai.isRunComplete()) {
@@ -65,10 +66,25 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 	}
 
 	public synchronized Action getNextAction(Agent a) {
+		
 		try {
 			AgentInfo ai = (AgentInfo) agentTable.get(a.getID());
 			LinkedList actions = ai.getActionList();
-
+			
+			if (ai.getNextAction() < actions.size() && !ai.isRunComplete()) {
+				
+				System.out.println("ACTIONLIST: " + actions.size() + "CURRENTACTION: " + ai.getNextAction());
+				Action action = (Action)actions.get(ai.getNextAction());
+				ai.setAction(ai.getNextAction()+1);
+				agentTable.put(a.getID(), ai);
+				return action;
+			
+			} else {
+				ai.setRunComplete(true);
+				return null;
+			}
+			
+			/*
 			if (actions.size() > 0) {
 				//Thread.sleep(100);
 				Action action = (Action) actions.getFirst();
@@ -80,6 +96,8 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 				ai.setRunComplete(true);
 				return null;
 			}
+			*/
+			
 		} catch (Exception ex) {
 			//ex.printStackTrace();
 			return null;
