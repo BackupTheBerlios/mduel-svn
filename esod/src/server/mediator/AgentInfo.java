@@ -8,6 +8,7 @@ public class AgentInfo {
 	private LinkedList pathCompleted;
 	private LinkedList taskList;
 	private boolean runComplete;
+	private int actionCounter;
 	
 	public AgentInfo(Object agentID, LinkedList tasks)
 	{
@@ -15,12 +16,21 @@ public class AgentInfo {
 		this.taskList = tasks;
 		this.pathCompleted = new LinkedList();
 		this.runComplete = false;
+		this.actionCounter = 0;
 	}
 	
 	public Object getID(){
 		return agentID;
 	}
 
+	public void setAction(int counter) {
+		this.actionCounter = counter;
+	}
+	
+	public int getNextAction() {
+		return actionCounter;
+	}
+	
 	public LinkedList getActionList() {
 		return taskList;
 	}
