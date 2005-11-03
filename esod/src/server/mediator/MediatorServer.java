@@ -5,6 +5,7 @@ import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
 
 public class MediatorServer {
+	
 	public MediatorServer () {
 		System.setSecurityManager(new RMISecurityManager());
 		try {

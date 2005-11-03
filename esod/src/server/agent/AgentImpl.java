@@ -6,19 +6,27 @@ import java.util.Stack;
 import server.*;
 import server.action.Action;
 import server.mediator.Mediator;
+import server.repository.Repository;
 
 public class AgentImpl implements Agent {
 	private static final long serialVersionUID = 3258125839102259509L;
 
 	private Mediator mediator;
-
+	private Repository repository;
 	private AgentHost agentHome;
-
 	private AgentHost currentServer;
-
 	private AgentScript agentScript;
 
-	private Stack reportStack;
+	/*
+	 * contem objectos do tipo 
+	 * TaskeReport(Action task, Object output, Object timeStamp)
+	 * sempre que acaba o "serviço" num host
+	 * envia a lista para o repositório
+	 * e reinicia a estrutura
+	 */
+	private LinkedList reportList;
+	
+	//private Stack reportStack;
 
 	/*
 	 * o agentID é resultado da concatenaçã dos seguintes campos: - o scriptID -
@@ -76,6 +84,7 @@ public class AgentImpl implements Agent {
 				Thread.yield();
 				action.run(this);
 				action = (Action) mediator.getNextAction(this);
+				//System.out.println("AGENTID: " + this.agentID + " TASK: " + action);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -100,18 +109,6 @@ public class AgentImpl implements Agent {
 		start();
 	}
 
-	public Object getReport() {
-		return null;
-	}
-
-	public Object getInfo() {
-		return null;
-	}
-
-	public Object getHistory() {
-		return null;
-	}
-
 	public AgentHost getHome() {
 		return this.agentHome;
 	}
@@ -126,5 +123,25 @@ public class AgentImpl implements Agent {
 
 	public void setMediator(Mediator m) {
 		this.mediator = m;
+	}
+	
+	public Repository getRepository() {
+		return repository;
+	}
+	
+	public void setRepository(Repository r) {
+		this.repository = r;
+	}
+	
+	public Object getReport() {
+		return null;
+	}
+
+	public Object getInfo() {
+		return null;
+	}
+
+	public Object getHistory() {
+		return null;
 	}
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import server.AgentHost;
 import server.mediator.Mediator;
+import server.repository.Repository;
 
 public interface Agent extends Serializable, Runnable {
 	
@@ -21,6 +22,9 @@ public interface Agent extends Serializable, Runnable {
 
 	Mediator getMediator();
 	void setMediator(Mediator m);
+	
+	Repository getRepository();
+	void setRepository(Repository r);
 	
 	AgentHost getHome();
 	void setHome(AgentHost host);
