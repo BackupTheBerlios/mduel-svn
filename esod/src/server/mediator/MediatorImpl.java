@@ -1,10 +1,10 @@
 package server.mediator;
 
 import server.action.Action;
-import server.agent.Agent;
+import server.agent.*;
 
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
+import java.net.MalformedURLException;
+import java.rmi.server.*;
 import java.rmi.*;
 import java.util.*;
 
@@ -15,34 +15,43 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 
 	public MediatorImpl() throws RemoteException {
 		agentTable = new Hashtable();
-	}
+		AgentFactory agentFactory = new AgentFactoryImpl();
 
-	public synchronized void registerAgent(Agent agent) {
-		if (!agentTable.containsKey(agent.getID())) {
-			AgentInfo ai = new AgentInfo(agent.getID(), agent.getScript().getActions());
-			agent.setMediator(this);
-			agentTable.put(ai.getID(), ai);
-			System.out.println("> registered agent " + agent.getID());
-		} else {
-			System.out.println("> updating agent " + agent.getID() + " info");
+		try {
+			Naming.rebind(AgentFactory.class.getName(), agentFactory);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
 		}
 	}
 
-	public synchronized void unregisterAgent(Agent agent) {
-		
-		if (agentTable.containsKey(agent.getID())) {
-			AgentInfo ai = (AgentInfo) agentTable.get(agent.getID());
-			if (ai.isRunComplete()) {
-				agentTable.remove(agent.getID());
-				try {
-					agent.getHome().kill(agent);
-				} catch (RemoteException e) {
-					e.printStackTrace();
+	public void registerAgent(Agent agent) {
+		try {
+				if (!agentTable.containsKey(agent.getID())) {
+					AgentInfo ai = new AgentInfo(agent.getID(), agent
+							.getScript().getActions());
+					agent.setMediator(this);
+					agentTable.put(ai.getID(), ai);
+					System.out.println("> registered agent " + agent.getID());
+				} else {
+					//System.out.println("> updating agent " + agent.getID()
+					//		+ " info");
 				}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	public void unregisterAgent(Agent agent) {
+		try {
+			if (agentTable.containsKey(agent.getID())) {
+				agentTable.remove(agent.getID());
 				System.out.println("> unregistered agent " + agent.getID());
 			} else {
+				return;
 			}
-		} else { return; }
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	public Agent findAgent(Object agentID) throws RemoteException {
@@ -59,56 +68,45 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 	}
 
 	public void insertAction(Object agentID, Action action) {
-		// TODO
-		/*
-		 * não sei bem como funciona a inserção de novas tarefas na arvore...
-		 */
 	}
 
-	public synchronized Action getNextAction(Agent a) {
-		
+	public Action getNextAction(Agent a) {
+		LinkedList actions = null;
+
 		try {
 			AgentInfo ai = (AgentInfo) agentTable.get(a.getID());
-			LinkedList actions = ai.getActionList();
-			
-			if (ai.getNextAction() < actions.size() && !ai.isRunComplete()) {
-				
-				System.out.println("ACTIONLIST: " + actions.size() + "CURRENTACTION: " + ai.getNextAction());
-				Action action = (Action)actions.get(ai.getNextAction());
-				ai.setAction(ai.getNextAction()+1);
-				agentTable.put(a.getID(), ai);
-				return action;
-			
-			} else {
-				ai.setRunComplete(true);
-				return null;
-			}
-			
-			/*
-			if (actions.size() > 0) {
-				//Thread.sleep(100);
-				Action action = (Action) actions.getFirst();
-				actions.removeFirst();
-				ai.setActionList(actions);
-				agentTable.put(a.getID(), ai);
-				return action;
-			} else {
-				ai.setRunComplete(true);
-				return null;
-			}
-			*/
-			
+			actions = ai.getActionList();
+			return ((TaskList) actions.getFirst()).getNextAction();
 		} catch (Exception ex) {
-			//ex.printStackTrace();
+			if (actions != null)
+				actions.removeFirst();
 			return null;
 		}
 	}
 
-	public synchronized void run() throws RemoteException {
+	public void run() throws RemoteException {
+		// main loop
 	}
 
 	public LinkedList getActionList(Agent agent) throws RemoteException {
 		AgentInfo ai = (AgentInfo) this.agentTable.get(agent.getID());
 		return ai.getActionList();
+	}
+
+	public AgentFactory getAgentFactory() throws RemoteException {
+		AgentFactory agentFactory = null;
+
+		try {
+			agentFactory = (AgentFactory) Naming.lookup("//localhost/"
+					+ AgentFactory.class.getName());
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		} catch (NotBoundException e) {
+			e.printStackTrace();
+		}
+
+		return agentFactory;
 	}
 }

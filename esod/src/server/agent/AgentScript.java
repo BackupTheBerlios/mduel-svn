@@ -35,9 +35,9 @@ public class AgentScript implements Serializable {
 	}
 
 	public String getScriptID() {
-		return scriptID;
+		return scriptID.replaceAll("\"", "");
 	}
-	
+
 	public String getAuthor() {
 		return author;
 	}
@@ -81,6 +81,12 @@ public class AgentScript implements Serializable {
 			e.printStackTrace();
 		}
 
-		return hash;
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < hash.length(); i++) {
+			char c = hash.charAt(i);
+			sb.append(Integer.toHexString(c));
+		}
+
+		return sb.toString();
 	}
 }

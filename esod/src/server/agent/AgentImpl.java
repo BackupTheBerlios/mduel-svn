@@ -1,20 +1,20 @@
 package server.agent;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.LinkedList;
-import java.util.Stack;
+
 import server.*;
 import server.action.Action;
 import server.mediator.Mediator;
 import server.repository.Repository;
 
-public class AgentImpl implements Agent {
+public class AgentImpl extends UnicastRemoteObject implements Agent {
 	private static final long serialVersionUID = 3258125839102259509L;
 
 	private Mediator mediator;
 	private Repository repository;
-	private AgentHost agentHome;
-	private AgentHost currentServer;
+	private AgentHost agentHost;
 	private AgentScript agentScript;
 
 	/*
@@ -35,27 +35,27 @@ public class AgentImpl implements Agent {
 	 * exemplo: myScript123-0f3ea423d23423a3-22342342-192.168.0.1
 	 */
 	private String agentID;
-
-	public AgentImpl() {
+	
+	public AgentImpl() throws RemoteException {
 		super();
 	}
 
-	public void setScript(AgentScript script) {
+	public void setScript(AgentScript script) throws RemoteException {
 		this.agentScript = script;
 		agentID = generateID();
 	}
 
-	public AgentScript getScript() {
+	public AgentScript getScript() throws RemoteException {
 		return this.agentScript;
 	}
 
-	private String generateID() {
+	private String generateID() throws RemoteException {
 		String id = null;
 
 		try {
 			id = agentScript.getScriptID() + "-" + agentScript.getMD5Hash()
 					+ "-" + String.valueOf(System.currentTimeMillis()) + "-"
-					+ agentHome.getHostname();
+					+ agentHost.getHostname();
 		} catch (RemoteException ex) {
 			ex.printStackTrace();
 		}
@@ -63,11 +63,21 @@ public class AgentImpl implements Agent {
 		return id;
 	}
 
-	public Object getID() {
+	public String getID() throws RemoteException {
 		return agentID;
 	}
 
-	public synchronized void init() {
+	public String getNewHost() throws RemoteException {
+		try {
+			return ((TaskList) mediator.getActionList(this).getFirst()).getHost();
+		} catch (Exception e) {
+	        	return null;
+	    }
+	}
+
+	public void init(AgentHost host) throws RemoteException{
+		setHost(host);
+		
 		try {
 			this.mediator.registerAgent(this);
 		} catch (RemoteException e) {
@@ -75,54 +85,46 @@ public class AgentImpl implements Agent {
 		}
 	}
 
-	public synchronized void start() {
-		init();
+	public void start() throws RemoteException, NullPointerException {
+		AgentHost host = null;
 
-		try {
-			Action action = mediator.getNextAction(this);
-			while (action != null) {
-				Thread.yield();
-				action.run(this);
-				action = (Action) mediator.getNextAction(this);
-				//System.out.println("AGENTID: " + this.agentID + " TASK: " + action);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		Action action = mediator.getNextAction(this);
+		while (action != null) {
+			action.run(this);
+			action = mediator.getNextAction(this);
 		}
-		
-		finish();
-		stop();
+
+		host = this.agentHost;
+		this.agentHost = null;
+		host.kill(this);
 	}
 
-	public synchronized void stop() {
-	}
-
-	public synchronized void finish() {
+	public void finish() throws RemoteException {
 		try {
 			mediator.unregisterAgent(this);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 	}
-
-	public synchronized void run() {
-		start();
+	
+	public Object getReport() throws RemoteException {
+		return null;
 	}
 
-	public AgentHost getHome() {
-		return this.agentHome;
-	}
-
-	public void setHome(AgentHost host) {
-		this.agentHome = host;
-	}
-
-	public Mediator getMediator() {
+	public Mediator getMediator() throws RemoteException {
 		return mediator;
 	}
 
-	public void setMediator(Mediator m) {
+	public void setMediator(Mediator m) throws RemoteException {
 		this.mediator = m;
+	}
+
+	public AgentHost getHost() throws RemoteException {
+		return agentHost;
+	}
+
+	public void setHost(AgentHost host) throws RemoteException {
+		agentHost = host;
 	}
 	
 	public Repository getRepository() {
@@ -131,17 +133,5 @@ public class AgentImpl implements Agent {
 	
 	public void setRepository(Repository r) {
 		this.repository = r;
-	}
-	
-	public Object getReport() {
-		return null;
-	}
-
-	public Object getInfo() {
-		return null;
-	}
-
-	public Object getHistory() {
-		return null;
 	}
 }

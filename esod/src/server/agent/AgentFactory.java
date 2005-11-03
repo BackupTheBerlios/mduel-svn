@@ -1,11 +1,9 @@
 package server.agent;
 
 import server.AgentHost;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 
-public abstract class AgentFactory implements RemoteFactory {
-	public AgentFactory()  {
-		super();
-	}
-
-	public abstract Agent create(AgentHost host, String scriptFile); 
+public interface AgentFactory extends Remote {
+	public Agent create(AgentHost host, String scriptFile) throws RemoteException;
 }

@@ -1,78 +1,74 @@
 package server;
 
 import java.net.InetAddress;
-import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.rmi.*;
 import java.rmi.server.*;
-import java.util.Hashtable;
-import java.util.Stack;
+import java.util.LinkedList;
 import server.agent.Agent;
 
 public class AgentHostImpl extends UnicastRemoteObject implements AgentHost  {
 	private static final long serialVersionUID = 3257001064375988534L;
 
-	private Stack todo = new Stack();
-	private Hashtable threadPool = new Hashtable();
-	private volatile Thread agentThread;
+	private LinkedList agentList;
 
 	public AgentHostImpl() throws RemoteException {
 		super();
+		agentList = new LinkedList();
 	}
 
-	public synchronized void accept(Agent agent) throws RemoteException {
+	public void accept(Agent agent) throws RemoteException {
 		System.out.println("> accepting agent '" + agent.getID() + "'");
-		todo.push(agent);
+
+		agent.init(this);
+
+		synchronized(agentList) {
+			if (!agentList.contains(agent)) {
+				agentList.addLast(agent);
+				agentList.notify();
+			}
+		}
+		
+		new AgentRunner(agent).start();
 	}
 	
-	public synchronized void exec() {
-		if (todo.empty())
-			return;
-
-		Agent agent = (Agent) todo.pop();
-		agentThread = new Thread((Runnable) agent);
-		threadPool.put(agent.getID(), agentThread);
-		agentThread.setDaemon(true);
-		agentThread.setPriority(1);
-		agentThread.start();
+	public void exec() throws RemoteException {
+		// void
 	}
 
-	public void moveTo(Agent agent, String newHost) throws RemoteException {
+	public void moveTo(Agent agent) throws RemoteException {
 		AgentHost host = null;
+
+		String newHost = agent.getNewHost();
+		if (newHost == null) {
+			agent.finish();
+			return;
+		}
 
 		try {
 			host = (AgentHost) Naming.lookup("//" + newHost + "/" + AgentHost.class.getName());
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		} catch (NotBoundException e) {
-			e.printStackTrace();
-		}
-
-		agentThread = (Thread)threadPool.get(agent.getID());
-		if (agentThread != null) {
-			Thread.yield();
-			agentThread.interrupt();
-			agentThread = null;
-			threadPool.remove(agent.getID());
 			host.accept(agent);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
  	}
 	
-	public synchronized void kill(Agent agent) {
-		agentThread = (Thread)threadPool.get(agent.getID());
-		if (agentThread != null) {
-			Thread.yield();
-			agentThread.interrupt();
-			agentThread = null;
-			threadPool.remove(agent.getID());
+	public void kill(Agent agent) {
+		synchronized (agentList) {
+			agentList.remove(agent);
+			agentList.notify();
+		}
+		
+		try {
+			moveTo(agent);
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 
 	public String getHostname() throws RemoteException {
 		String hostname = null;
-		
+
 		try {
 			InetAddress addr = InetAddress.getLocalHost();
 			hostname = addr.getHostName();

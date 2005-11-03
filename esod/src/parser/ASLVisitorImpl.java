@@ -5,20 +5,23 @@ import java.util.LinkedList;
 import parser.asl.*;
 import server.action.*;
 import server.agent.AgentScript;
+import server.agent.TaskList;
 
 public class ASLVisitorImpl implements ASLVisitor {
 	private AgentScript script;
 	private LinkedList actions;
+	private TaskList tasklist;
 
 	public ASLVisitorImpl() {
 		actions = new LinkedList();
 	}
 
 	public AgentScript getParsedScript() {
+		actions.add(tasklist);
 		script.setActions(actions);
 		return script;
 	}
-	
+
 	public LinkedList getActions() {
 		return actions;
 	}
@@ -52,10 +55,16 @@ public class ASLVisitorImpl implements ASLVisitor {
 	}
 
 	public Object visit(ASLMigrateNode node, Object data) {
-		actions.addLast(new MigrateAction(node.ipAddress));
+		if (tasklist != null) {
+			actions.add(tasklist);
+		}
+
+		tasklist = new TaskList(node.ipAddress);
+		//actions.addLast(new MigrateAction(node.ipAddress));
 		System.out.println("migrate to " + node.ipAddress);
 		if (node.trace != null)
 			System.out.println("--> with trace");
+
 		node.childrenAccept(this, null);
 		return null;
 	}
@@ -72,7 +81,8 @@ public class ASLVisitorImpl implements ASLVisitor {
 			ClassLoader cl = ClassLoader.getSystemClassLoader();
 			try {
 				Action a = (Action)cl.loadClass(node.classname.substring(1)).newInstance();
-				actions.addLast(a);
+				tasklist.addTask(a);
+				//actions.addLast(a);
 			} catch (InstantiationException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {

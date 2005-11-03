@@ -1,31 +1,29 @@
 package server.agent;
 
 import java.io.Serializable;
+import java.rmi.*;
 
 import server.AgentHost;
 import server.mediator.Mediator;
 import server.repository.Repository;
 
-public interface Agent extends Serializable, Runnable {
-	
-	void init();
-	void start();
-	void stop();
-	void finish();
+public interface Agent extends Serializable, Remote {
 
-	void setScript(AgentScript script);
-	AgentScript getScript();
-	Object getID();
-	Object getInfo();
-	Object getHistory();
-	Object getReport();
+	void init(AgentHost host) throws RemoteException;
+	void start() throws RemoteException, NullPointerException;
+	void finish() throws RemoteException;
 
-	Mediator getMediator();
-	void setMediator(Mediator m);
+	void setScript(AgentScript script) throws RemoteException;
+	AgentScript getScript() throws RemoteException;
+	String getID() throws RemoteException;
+	Object getReport() throws RemoteException;
+
+	Mediator getMediator() throws RemoteException;
+	void setMediator(Mediator m) throws RemoteException;
+	Repository getRepository() throws RemoteException;
+	void setRepository(Repository r) throws RemoteException;
 	
-	Repository getRepository();
-	void setRepository(Repository r);
-	
-	AgentHost getHome();
-	void setHome(AgentHost host);
+	AgentHost getHost() throws RemoteException;
+	void setHost(AgentHost host) throws RemoteException;
+	String getNewHost() throws RemoteException;
 }

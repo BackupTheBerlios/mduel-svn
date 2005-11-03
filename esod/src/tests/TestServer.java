@@ -18,7 +18,13 @@ public class TestServer extends TestCase {
 	}
 
 	protected void TestSomething() {
-		Agent agent = new AgentImpl();
+		Agent agent = null;
+
+		try {
+			agent = new AgentImpl();
+		} catch (RemoteException e1) {
+			e1.printStackTrace();
+		}
 		try {
 			agentHost.accept(agent);
 		} catch (RemoteException e) {
