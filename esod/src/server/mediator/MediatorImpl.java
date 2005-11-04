@@ -33,8 +33,7 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 					agentTable.put(ai.getID(), ai);
 					System.out.println("> registered agent " + agent.getID());
 				} else {
-					//System.out.println("> updating agent " + agent.getID()
-					//		+ " info");
+					// something in the way she moves
 				}
 		} catch (Exception ex) {
 			ex.printStackTrace();

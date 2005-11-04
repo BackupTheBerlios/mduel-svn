@@ -8,6 +8,4 @@ _not_ include RMI servers, skeletons or stubs. Servers and stubs do not belong a
 clients at all; stubs can be downloaded if the system is set up correctly.
 The client installation should also exclude any classes which you specifically want
 to download to the client.
-
- - separar as Actions (do script) das Tasks a executar (c—digo remoto)
  

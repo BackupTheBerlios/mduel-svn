@@ -1,9 +1,21 @@
 package server;
 
+import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
 
+import server.http.ClassFileServer;
+
 public class AgentServer {
+	public static void main(String[] args) {
+		try {
+			new ClassFileServer(2005, "./bin/");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		new AgentServer();
+	}
 
 	public AgentServer() {
 		System.setSecurityManager(new RMISecurityManager());
@@ -21,9 +33,5 @@ public class AgentServer {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
-	}
-	
-	public static void main(String[] args) {
-		new AgentServer();
 	}
 }

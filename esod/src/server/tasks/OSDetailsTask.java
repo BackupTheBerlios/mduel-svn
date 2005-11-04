@@ -1,10 +1,9 @@
-package server.action;
+package server.tasks;
 
 import java.util.Properties;
-
 import server.agent.Agent;
 
-public class OSDetailsAction implements Action {
+public class OSDetailsTask implements Task {
 	private static final long serialVersionUID = 6490718136536673610L;
 
 	public void run(Agent agent) {

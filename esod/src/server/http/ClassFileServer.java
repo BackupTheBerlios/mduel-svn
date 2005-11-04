@@ -48,7 +48,7 @@ public class ClassFileServer extends ClassServer {
 			ClassNotFoundException {
 		System.out.println("reading: " + path);
 		File f = new File(classpath + File.separator
-				+ path.replace('.', File.separatorChar) + ".jar");
+				+ path.replace('.', File.separatorChar) + ".class");
 		int length = (int) (f.length());
 		if (length == 0) {
 			throw new IOException("File length is zero: " + path);

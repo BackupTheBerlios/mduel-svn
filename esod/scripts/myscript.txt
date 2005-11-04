@@ -8,21 +8,10 @@ definition {
 
 execute {
 	migrate to 127.0.0.1 {
-		run $server.action.OSDetailsAction()
-		run $server.action.UserInfoAction()
+		run $server.tasks.OSDetailsTask() from steel.local
+		run $server.tasks.UserInfoTask() from steel.local
 	}
 	migrate to 127.0.0.1 {
-		run $server.action.OSDetailsAction()
-	}
-	migrate to 127.0.0.1 {
-		run $server.action.OSDetailsAction()
-	}
-	migrate to 127.0.0.1 {
-		run $server.action.UserInfoAction()
-		run $server.action.UserInfoAction()
-		run $server.action.UserInfoAction()
-		run $server.action.UserInfoAction()
-		run $server.action.UserInfoAction()
-		run $server.action.UserInfoAction()
+		run $server.agent.AgentImpl.sayHello()
 	}
 }

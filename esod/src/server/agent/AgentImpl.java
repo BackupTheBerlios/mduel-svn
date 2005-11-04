@@ -77,10 +77,10 @@ public class AgentImpl extends UnicastRemoteObject implements Agent {
 
 	public void init(AgentHost host) throws RemoteException{
 		setHost(host);
-		
+
 		try {
-			this.mediator.registerAgent(this);
-		} catch (RemoteException e) {
+			mediator.registerAgent(this);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -96,7 +96,7 @@ public class AgentImpl extends UnicastRemoteObject implements Agent {
 
 		host = this.agentHost;
 		this.agentHost = null;
-		host.kill(this);
+		host.remove(this);
 	}
 
 	public void finish() throws RemoteException {
@@ -133,5 +133,9 @@ public class AgentImpl extends UnicastRemoteObject implements Agent {
 	
 	public void setRepository(Repository r) {
 		this.repository = r;
+	}
+	
+	public void sayHello() throws RemoteException {
+		System.out.println("hello from agent " + getID());
 	}
 }

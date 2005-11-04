@@ -5,7 +5,10 @@ import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
 
 public class MediatorServer {
-	
+	public static void main(String args[]) {
+		new MediatorServer();
+	}
+
 	public MediatorServer () {
 		System.setSecurityManager(new RMISecurityManager());
 		try {
@@ -22,9 +25,5 @@ public class MediatorServer {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
-	}
-	
-	public static void main(String args[]) {
-		new MediatorServer();
 	}
 }

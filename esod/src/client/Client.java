@@ -7,7 +7,6 @@ import server.agent.*;
 import server.mediator.Mediator;
 import server.repository.Repository;
 
-
 public class Client {
 	
 	public static void main(String[] args) {
@@ -15,8 +14,14 @@ public class Client {
 		try {
 			AgentHost host = (AgentHost) Naming.lookup("//localhost/" + AgentHost.class.getName());
 			Mediator mediator = (Mediator) Naming.lookup("//localhost/" + Mediator.class.getName());
-			Agent agent = mediator.getAgentFactory().create(host, args[0]);
 			Repository repository = (Repository) Naming.lookup("//localhost/" + Repository.class.getName());
+
+			Agent agent = mediator.getAgentFactory().create(host, args[0]);
+			
+			if (agent == null) {
+				System.out.println("erro ao criar agente");
+				return;
+			}
 
 			agent.setMediator(mediator);
 			agent.setRepository(repository);

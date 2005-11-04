@@ -4,9 +4,10 @@ import java.net.InetAddress;
 import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
 
-
 public class RepositoryServer {
-
+	public static void main(String[] args) {
+		new RepositoryServer();
+	}
 
 	public RepositoryServer() {
 		System.setSecurityManager(new RMISecurityManager());
@@ -26,11 +27,4 @@ public class RepositoryServer {
 		}		
 		
 	}
-	
-	
-	public static void main(String[] args) {
-
-		new RepositoryServer();
-	}
-
 }

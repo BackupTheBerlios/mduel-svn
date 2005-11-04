@@ -76,24 +76,16 @@ public class ASLVisitorImpl implements ASLVisitor {
 		}
 		else if (node.classname != null)
 		{
-			System.out.println("running " + node.classname);
-
-			ClassLoader cl = ClassLoader.getSystemClassLoader();
-			try {
-				Action a = (Action)cl.loadClass(node.classname.substring(1)).newInstance();
-				tasklist.addTask(a);
-				//actions.addLast(a);
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
+			node.classname = node.classname.substring(1);
+			if (node.urldir == null) {
+				System.out.println("running " + node.classname);
+				tasklist.addTask(new MobileCodeAction(node.classname));
 			}
-
-			if (node.urldir != null)
+			else if (node.urldir != null)
 			{
 				System.out.println("--> from " + node.urldir);
+				tasklist.addTask(new RemoteCodeAction(node.urldir, node.classname));
+				//actions.addLast(a);
 			}
 		}
 		node.childrenAccept(this, null);
@@ -114,8 +106,6 @@ public class ASLVisitorImpl implements ASLVisitor {
 			;
 		
 		else if (node.report.equals("reportmail")) {
-			
-			//TODO
 			if (node.email != null) {
 				System.out.println("--> email to " + node.email + " (via " + node.smtp + ")");
 			}

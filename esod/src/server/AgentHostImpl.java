@@ -21,6 +21,11 @@ public class AgentHostImpl extends UnicastRemoteObject implements AgentHost  {
 		System.out.println("> accepting agent '" + agent.getID() + "'");
 
 		agent.init(this);
+		try {
+			Naming.rebind(agent.getID(), this);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 
 		synchronized(agentList) {
 			if (!agentList.contains(agent)) {
@@ -53,13 +58,14 @@ public class AgentHostImpl extends UnicastRemoteObject implements AgentHost  {
 		}
  	}
 	
-	public void kill(Agent agent) {
+	public void remove(Agent agent) {
 		synchronized (agentList) {
 			agentList.remove(agent);
 			agentList.notify();
 		}
 		
 		try {
+			Naming.unbind(agent.getID());
 			moveTo(agent);
 		} catch (Exception ex) {
 			ex.printStackTrace();

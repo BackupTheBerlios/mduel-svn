@@ -1,6 +1,5 @@
 package server.agent;
 
-import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -23,13 +22,19 @@ public class AgentFactoryImpl extends UnicastRemoteObject implements AgentFactor
 			e.printStackTrace();
 		}
 
-		ASLParser parser = new ASLParser();
-		AgentScript script = parser.LoadScript(scriptFile);
+		AgentScript script = null;
+
+		try {
+			ASLParser parser = new ASLParser();
+			script = parser.LoadScript(scriptFile);
+		} catch (Exception ex) {
+			System.out.println("error parsing script");
+			return null;
+		}
 
 		try {
 			a.setHost(host);
 			a.setScript(script);
-			Naming.rebind(a.getID(), a);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

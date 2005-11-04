@@ -100,6 +100,7 @@ public abstract class ClassServer implements Runnable {
 				byte[] bytecodes = getBytes(path);
 				// send bytecodes in response (assumes HTTP/1.0 or later)
 				try {
+					System.out.println("sending stuff!!");
 					out.writeBytes("HTTP/1.0 200 OK\r\n");
 					out.writeBytes("Content-Length: " + bytecodes.length
 							+ "\r\n");
@@ -151,7 +152,7 @@ public abstract class ClassServer implements Runnable {
 		if (line.startsWith("GET /")) {
 			line = line.substring(5, line.length() - 1).trim();
 
-			int index = line.indexOf(".jar ");
+			int index = line.indexOf(".class ");
 			if (index != -1) {
 				path = line.substring(0, index).replace('/', '.');
 			}
