@@ -8,4 +8,20 @@ _not_ include RMI servers, skeletons or stubs. Servers and stubs do not belong a
 clients at all; stubs can be downloaded if the system is set up correctly.
 The client installation should also exclude any classes which you specifically want
 to download to the client.
- 
+
+- criar relatório quando a migração para um host não é conseguida
+- criar uma task de soma de dois numeros num servidor mediante input de utilizador
+- alterar build.xml de forma a separar as classes dos servidores e cliente
+- interface swing
+- ao arrancar um agentserver, contactor o mediator e dar o IP+hostname de forma a fazer
+  a resolução de nomes
+- OUTPUT action envia imediatamente o resultado da execução do agente para o ponto de partida
+- TRACE action apenas reporta o sucesso ou falha de execução num determinado nó
+- CLONE action -- VER MELHOR
+- getHistory(), getRoute() -- no agente
+- comando WHO executa um método nos agentes estacionados num nó e devolve:
+	* o id do agente
+	* lista de nós onde passou
+	* acçõe executadas em cada nó
+	-- resulta num relatório de "encontro de um agente"
+	pode ser implementado a nível do agentserver

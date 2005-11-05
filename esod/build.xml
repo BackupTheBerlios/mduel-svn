@@ -16,10 +16,10 @@
 
   <target name="compile" depends="init" description="compile the source " >
     <javac debug="${debug}" debuglevel="source" srcdir="${src}" destdir="${build}"/>
-  	<rmic classpath="${src}" classname="server.AgentHostImpl" base="${build}/server"/>
-  	<rmic classpath="${src}" classname="server.agent.AgentImpl" base="${build}/server/agent"/>
-  	<rmic classpath="${src}" classname="server.agent.AgentFactoryImpl" base="${build}/server/agent"/>
-   	<rmic classpath="${src}" classname="server.mediator.MediatorImpl" base="${build}/server/mediator"/>
+  	<rmic classpath="${src}" classname="server.AgentHostImpl" base="${build}"/>
+  	<rmic classpath="${src}" classname="server.agent.AgentImpl" base="${build}"/>
+  	<rmic classpath="${src}" classname="server.agent.AgentFactoryImpl" base="${build}"/>
+   	<rmic classpath="${src}" classname="server.mediator.MediatorImpl" base="${build}"/>
   </target>
 
   <target name="dist" depends="compile" description="generate the distribution" >

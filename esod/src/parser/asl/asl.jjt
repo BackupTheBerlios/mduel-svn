@@ -50,6 +50,7 @@ TOKEN :
     <CLONE: "clone"> |
     <RUN: "run"> |
     <FROM: "from"> |
+    <SLEEP: "sleep"> |
     <REPORTNOW: "reportnow"> |
     <REPORTCALLBACK: "reportcallback"> |
     <REPORTMAIL: "reportmail"> |
@@ -64,11 +65,7 @@ TOKEN :
  */
 TOKEN :
 {
-  < INTEGER_LITERAL:
-        <DECIMAL_LITERAL> (["l","L"])?
-  >
-|
-  < #DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >
+  < DECIMAL_LITERAL: <DIGIT> (<DIGIT>)* >
 |
   < CHARACTER_LITERAL:
       "'"
@@ -171,6 +168,7 @@ TOKEN :
     <HOSTNAME: <IDENTIFIER>(<DOT><IDENTIFIER>)+> |
     <EMAIL: <IDENTIFIER><AT>(<IDENTIFIER>|<DOT>)+ > |
     <URLDIR: (<IDENTIFIER>|<DOT>)+> |
+    <MSECONDS: (<DIGIT>)+"ms"> |
     <IP_ADDRESS: (<DIGIT>)+<DOT>(<DIGIT>)+<DOT>(<DIGIT>)+<DOT>(<DIGIT>)+>
 }
 
@@ -229,19 +227,23 @@ void Migrate() #MigrateNode:
 void Action() #ActionNode:
 {
 	Token clone = null;
+	Token time = null;
 	Token classname = null;
 	Token urldir = null;
 }
 {
-    (clone = <CLONE>) <LBRACE> (Exec()) <RBRACE> |
-    ("run" classname = <CLASSNAME> <LPAREN> (Params())? <RPAREN>) ("from" urldir = <HOSTNAME>)?
+    ( (clone = <CLONE>) <LBRACE> (Exec()) <RBRACE> |
+    (<RUN> classname = <CLASSNAME> <LPAREN> (Params())? <RPAREN>) ("from" urldir = <HOSTNAME>)? |
+    <SLEEP> time = <MSECONDS> )
     {
-    	if (clone != null)
-    		jjtn000.clone = clone.image;
-    	if (classname != null)
-    		jjtn000.classname = classname.image;
-    	if (urldir != null)
-    		jjtn000.urldir = urldir.image;
+	    	if (clone != null)
+    			jjtn000.clone = clone.image;
+    		if (classname != null)
+    			jjtn000.classname = classname.image;
+    		if (urldir != null)
+    			jjtn000.urldir = urldir.image;
+    		if (time != null)
+    			jjtn000.time = time.image;
     }
  }
 
@@ -258,14 +260,14 @@ void Report() #ReportNode:
     report = <REPORTMAIL> email = <EMAIL> "smtp" smtp = <HOSTNAME> |
     report = <REPORTFINAL> (host = <HOSTNAME>)?
     {
-    	jjtn000.report = report.image;
-    	if (email != null) {
-    		jjtn000.email = email.image;
-    		jjtn000.smtp = smtp.image;
-    	}
-    	if (host != null) {
-    		jjtn000.host = host.image;
-    	}
+    		jjtn000.report = report.image;
+    		if (email != null) {
+    			jjtn000.email = email.image;
+    			jjtn000.smtp = smtp.image;
+    		}
+    		if (host != null) {
+    			jjtn000.host = host.image;
+    		}
     }
 }
 
@@ -295,4 +297,3 @@ ASLStartNode Input() #InputNode:
     start = Start() <EOF>
     { return start; }
 }
-

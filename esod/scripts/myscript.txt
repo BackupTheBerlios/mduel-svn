@@ -8,8 +8,17 @@ definition {
 
 execute {
 	migrate to 127.0.0.1 {
-		run $server.tasks.OSDetailsTask() from steel.local
-		run $server.tasks.UserInfoTask() from steel.local
+		clone {
+			migrate to 127.0.0.1 {
+				run $server.tasks.OSDetailsTask() from steel.local
+				run $server.tasks.UserInfoTask() from steel.local
+			}
+		}
+	}
+	migrate to 127.0.0.1 {
+		run $server.tasks.UnameJNITask() from steel.local
+		sleep 1000ms
+		run $server.tasks.UnameJNITask() from steel.local
 	}
 	migrate to 127.0.0.1 {
 		run $server.agent.AgentImpl.sayHello()

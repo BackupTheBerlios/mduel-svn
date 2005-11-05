@@ -17,14 +17,14 @@ public interface ASLConstants {
   int CLONE = 16;
   int RUN = 17;
   int FROM = 18;
-  int REPORTNOW = 19;
-  int REPORTCALLBACK = 20;
-  int REPORTMAIL = 21;
-  int SMTP = 22;
-  int REPORTFINAL = 23;
-  int OUTPUTCALLBACK = 24;
-  int OUTPUT = 25;
-  int INTEGER_LITERAL = 26;
+  int SLEEP = 19;
+  int REPORTNOW = 20;
+  int REPORTCALLBACK = 21;
+  int REPORTMAIL = 22;
+  int SMTP = 23;
+  int REPORTFINAL = 24;
+  int OUTPUTCALLBACK = 25;
+  int OUTPUT = 26;
   int DECIMAL_LITERAL = 27;
   int CHARACTER_LITERAL = 28;
   int DATE_LITERAL = 29;
@@ -46,7 +46,8 @@ public interface ASLConstants {
   int HOSTNAME = 45;
   int EMAIL = 46;
   int URLDIR = 47;
-  int IP_ADDRESS = 48;
+  int MSECONDS = 48;
+  int IP_ADDRESS = 49;
 
   int DEFAULT = 0;
 
@@ -70,6 +71,7 @@ public interface ASLConstants {
     "\"clone\"",
     "\"run\"",
     "\"from\"",
+    "\"sleep\"",
     "\"reportnow\"",
     "\"reportcallback\"",
     "\"reportmail\"",
@@ -77,7 +79,6 @@ public interface ASLConstants {
     "\"reportfinal\"",
     "\"outputcallback\"",
     "\"output\"",
-    "<INTEGER_LITERAL>",
     "<DECIMAL_LITERAL>",
     "<CHARACTER_LITERAL>",
     "<DATE_LITERAL>",
@@ -99,6 +100,7 @@ public interface ASLConstants {
     "<HOSTNAME>",
     "<EMAIL>",
     "<URLDIR>",
+    "<MSECONDS>",
     "<IP_ADDRESS>",
     "\":\"",
   };

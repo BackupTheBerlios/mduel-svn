@@ -6,6 +6,7 @@ public class ASLActionNode extends SimpleNode {
 	public String clone;
 	public String classname;
 	public String urldir;
+	public String time;
 	
   public ASLActionNode(int id) {
     super(id);

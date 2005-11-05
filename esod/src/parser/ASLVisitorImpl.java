@@ -70,15 +70,13 @@ public class ASLVisitorImpl implements ASLVisitor {
 	}
 
 	public Object visit(ASLActionNode node, Object data) {
-		if (node.clone != null)
-		{
+		if (node.clone != null) {
 			System.out.println("cloning!");
 		}
-		else if (node.classname != null)
-		{
+		else if (node.classname != null) {
 			node.classname = node.classname.substring(1);
+			System.out.println("running " + node.classname);
 			if (node.urldir == null) {
-				System.out.println("running " + node.classname);
 				tasklist.addTask(new MobileCodeAction(node.classname));
 			}
 			else if (node.urldir != null)
@@ -87,6 +85,10 @@ public class ASLVisitorImpl implements ASLVisitor {
 				tasklist.addTask(new RemoteCodeAction(node.urldir, node.classname));
 				//actions.addLast(a);
 			}
+		}
+		else if (node.time != null) {
+			System.out.println("sleeping for " + node.time);
+			tasklist.addTask(new SleepAction(Integer.parseInt(node.time.replaceAll("ms", ""))));
 		}
 		node.childrenAccept(this, null);
 		return null;

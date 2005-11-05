@@ -65,19 +65,19 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
         Token obs = null;
     try {
       jj_consume_token(SCRIPTID);
-      jj_consume_token(49);
+      jj_consume_token(50);
       scriptID = jj_consume_token(STRING_LITERAL);
       jj_consume_token(AUTHOR);
-      jj_consume_token(49);
+      jj_consume_token(50);
       author = jj_consume_token(STRING_LITERAL);
       jj_consume_token(DATE);
-      jj_consume_token(49);
+      jj_consume_token(50);
       date = jj_consume_token(DATE_LITERAL);
       jj_consume_token(COMMENT);
-      jj_consume_token(49);
+      jj_consume_token(50);
       comment = jj_consume_token(STRING_LITERAL);
       jj_consume_token(OBSERVATIONS);
-      jj_consume_token(49);
+      jj_consume_token(50);
       obs = jj_consume_token(STRING_LITERAL);
       jjtree.closeNodeScope(jjtn000, true);
       jjtc000 = false;
@@ -156,6 +156,7 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case CLONE:
         case RUN:
+        case SLEEP:
           ;
           break;
         default:
@@ -224,6 +225,7 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
         ASLActionNode jjtn000 = new ASLActionNode(this, JJTACTIONNODE);
         boolean jjtc000 = true;
         jjtree.openNodeScope(jjtn000);Token clone = null;
+        Token time = null;
         Token classname = null;
         Token urldir = null;
     try {
@@ -256,20 +258,26 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
           jj_la1[7] = jj_gen;
           ;
         }
-      jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-        if (clone != null)
-                jjtn000.clone = clone.image;
-        if (classname != null)
-                jjtn000.classname = classname.image;
-        if (urldir != null)
-                jjtn000.urldir = urldir.image;
+        break;
+      case SLEEP:
+        jj_consume_token(SLEEP);
+        time = jj_consume_token(MSECONDS);
         break;
       default:
         jj_la1[8] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
+      jjtree.closeNodeScope(jjtn000, true);
+      jjtc000 = false;
+                if (clone != null)
+                        jjtn000.clone = clone.image;
+                if (classname != null)
+                        jjtn000.classname = classname.image;
+                if (urldir != null)
+                        jjtn000.urldir = urldir.image;
+                if (time != null)
+                        jjtn000.time = time.image;
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -325,14 +333,14 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
         }
       jjtree.closeNodeScope(jjtn000, true);
       jjtc000 = false;
-        jjtn000.report = report.image;
-        if (email != null) {
-                jjtn000.email = email.image;
-                jjtn000.smtp = smtp.image;
-        }
-        if (host != null) {
-                jjtn000.host = host.image;
-        }
+                jjtn000.report = report.image;
+                if (email != null) {
+                        jjtn000.email = email.image;
+                        jjtn000.smtp = smtp.image;
+                }
+                if (host != null) {
+                        jjtn000.host = host.image;
+                }
         break;
       default:
         jj_la1[10] = jj_gen;
@@ -447,7 +455,7 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
       jj_la1_1();
    }
    private static void jj_la1_0() {
-      jj_la1_0 = new int[] {0xb80000,0x2000,0x8000,0x30000,0x3b80000,0x3b80000,0x80000000,0x40000,0x30000,0x0,0xb80000,0x3000000,0x0,};
+      jj_la1_0 = new int[] {0x1700000,0x2000,0x8000,0xb0000,0x7700000,0x7700000,0x80000000,0x40000,0xb0000,0x0,0x1700000,0x6000000,0x0,};
    }
    private static void jj_la1_1() {
       jj_la1_1 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x2000,0x0,0x0,0x200,};
@@ -552,8 +560,8 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
 
   public ParseException generateParseException() {
     jj_expentries.removeAllElements();
-    boolean[] la1tokens = new boolean[50];
-    for (int i = 0; i < 50; i++) {
+    boolean[] la1tokens = new boolean[51];
+    for (int i = 0; i < 51; i++) {
       la1tokens[i] = false;
     }
     if (jj_kind >= 0) {
@@ -572,7 +580,7 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
         }
       }
     }
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 51; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;
