@@ -9,7 +9,6 @@ clients at all; stubs can be downloaded if the system is set up correctly.
 The client installation should also exclude any classes which you specifically want
 to download to the client.
 
-- criar relatório quando a migração para um host não é conseguida
 - criar uma task de soma de dois numeros num servidor mediante input de utilizador
 - alterar build.xml de forma a separar as classes dos servidores e cliente
 - interface swing

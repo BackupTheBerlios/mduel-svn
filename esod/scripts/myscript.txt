@@ -15,10 +15,10 @@ execute {
 			}
 		}
 	}
-	migrate to 127.0.0.1 {
-		run $server.tasks.UnameJNITask() from steel.local
-		sleep 1000ms
-		run $server.tasks.UnameJNITask() from steel.local
+	migrate to 127.0.0.2 {
+		run $server.tasks.JNIGetEnvPathTask() from steel.local
+		sleep 2000ms
+		run $server.tasks.JNIGetEnvPathTask() from steel.local
 	}
 	migrate to 127.0.0.1 {
 		run $server.agent.AgentImpl.sayHello()

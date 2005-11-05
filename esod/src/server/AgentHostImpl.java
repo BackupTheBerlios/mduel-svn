@@ -54,7 +54,10 @@ public class AgentHostImpl extends UnicastRemoteObject implements AgentHost  {
 			host = (AgentHost) Naming.lookup("//" + newHost + "/" + AgentHost.class.getName());
 			host.accept(agent);
 		} catch (Exception e) {
-			e.printStackTrace();
+			// TODO: report our failure
+			System.out.println("unable to move to host " + newHost);
+			agent.getMediator().skipActionList(agent);
+			moveTo(agent); // try next host
 		}
  	}
 	

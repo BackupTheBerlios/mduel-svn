@@ -92,6 +92,14 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 		return ai.getActionList();
 	}
 
+	public void skipActionList(Agent agent) throws RemoteException {
+		AgentInfo ai = (AgentInfo) this.agentTable.get(agent.getID());
+		LinkedList list = ai.getActionList();
+		list.removeFirst();
+		ai.setActionList(list);
+		this.agentTable.put(agent.getID(), ai);
+	}
+
 	public AgentFactory getAgentFactory() throws RemoteException {
 		AgentFactory agentFactory = null;
 

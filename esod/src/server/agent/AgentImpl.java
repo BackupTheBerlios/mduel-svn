@@ -52,13 +52,9 @@ public class AgentImpl extends UnicastRemoteObject implements Agent {
 	private String generateID() throws RemoteException {
 		String id = null;
 
-		try {
-			id = agentScript.getScriptID() + "-" + agentScript.getMD5Hash()
+		id = agentScript.getScriptID() + "-" + agentScript.getMD5Hash()
 					+ "-" + String.valueOf(System.currentTimeMillis()) + "-"
 					+ agentHost.getHostname();
-		} catch (RemoteException ex) {
-			ex.printStackTrace();
-		}
 
 		return id;
 	}
