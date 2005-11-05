@@ -1,6 +1,7 @@
 <project name="esod" default="dist" basedir=".">
 
   <property name="src" location="src"/>
+  <property name="javacc.home" location="${user.home}/java/javacc"/>
   <property name="build" location="bin"/>
   <property name="dist" location="dist"/>
   <property name="debug" value="false"/>
@@ -15,11 +16,32 @@
   </target>
 
   <target name="compile" depends="init" description="compile the source " >
+  	<!-- generate parser -->
+  	<jjtree javacchome="${javacc.home}" target="${src}/parser/asl/asl.jjt" outputdirectory="${src}/parser/asl"/>
+  	<javacc javacchome="${javacc.home}" target="${src}/parser/asl/asl.jj" outputdirectory="${src}/parser/asl"/>
+  	
+  	<!-- compile source code -->
     <javac debug="${debug}" debuglevel="source" srcdir="${src}" destdir="${build}"/>
+  	
+  	<!-- generate stubs -->
   	<rmic classpath="${src}" classname="server.AgentHostImpl" base="${build}"/>
   	<rmic classpath="${src}" classname="server.agent.AgentImpl" base="${build}"/>
   	<rmic classpath="${src}" classname="server.agent.AgentFactoryImpl" base="${build}"/>
    	<rmic classpath="${src}" classname="server.mediator.MediatorImpl" base="${build}"/>
+  	
+  	<!-- JNI code -->
+  	<javah classpath="${build}" destdir="${src}/server/tasks">
+  		<class name="server.tasks.JNIGetEnvPathTask"/>
+  	</javah>
+  	<!-- if MacOSX -->
+  	<exec executable="cc" dir="${build}/server/tasks" os="Mac OS X">
+  		<arg line="-bundle -o libjnitasks.jnilib -framework JavaVM -I${java.home}/include ${src}/server/tasks/JNIGetEnvPathTask.c"/>
+  	</exec>
+  	<!-- if Linux -->
+  	<exec executable="cc" dir="${build}/server/tasks" os="Linux">
+  		<arg line="-shared -o libjnitasks.so -I${java.home}/include -I${java.home}/include/linux ${src}/server/tasks/JNIGetEnvPathTask.c"/>
+  	</exec>
+
   </target>
 
   <target name="dist" depends="compile" description="generate the distribution" >
