@@ -8,19 +8,11 @@ definition {
 
 execute {
 	migrate to 127.0.0.1 {
-		clone {
-			migrate to 127.0.0.1 {
-				run $server.tasks.OSDetailsTask() from steel.local
-				run $server.tasks.UserInfoTask() from steel.local
-			}
-		}
-	}
-	migrate to 127.0.0.2 {
-		run $server.tasks.JNIGetEnvPathTask() from steel.local
-		sleep 2000ms
-		run $server.tasks.JNIGetEnvPathTask() from steel.local
+		run $server.action.OSDetailsAction()
+		run $server.action.UserInfoAction()
 	}
 	migrate to 127.0.0.1 {
-		run $server.agent.AgentImpl.sayHello()
-	}
-}
+		run $server.action.UserInfoAction()
+		run $server.action.OSDetailsAction()
+	}	
+} reportfinal

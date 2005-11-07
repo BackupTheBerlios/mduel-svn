@@ -1,11 +1,12 @@
 package server.repository;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import server.AgentHost;
 
-public class AgentReport {
+public class AgentReport implements Serializable {
 
 	private Object agentID;
 	private LinkedList tasks;
@@ -36,6 +37,17 @@ public class AgentReport {
 			pos++;
 		}
 		return -1;
+	}
+	
+	public void printReport() {
+		
+		Iterator i = tasks.listIterator();
+				
+		System.out.println("AGENT-ID: " + agentID.toString());
+		while (i.hasNext()) {
+			HostReport tmp = (HostReport)i.next();
+			tmp.printReport();
+		}
 	}
 	
 }

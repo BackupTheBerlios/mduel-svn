@@ -10,12 +10,13 @@ public class SleepAction implements Action {
 		this.milliseconds = ms;
 	}
 
-	public void run(Agent agent) {
+	public Object run(Agent agent) {
 		System.out.println("sleeping for a while...");
 		try {
 			Thread.sleep(this.milliseconds);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		return "sleeping for " + String.valueOf(milliseconds) + "ms...";
 	}
 }

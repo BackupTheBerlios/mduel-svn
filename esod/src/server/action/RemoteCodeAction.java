@@ -17,14 +17,15 @@ public class RemoteCodeAction implements Action {
 		this.task = task;
 	}
 
-	public void run(Agent agent) {
+	public Object run(Agent agent) {
 		try {
 			URL url = new URL("http://" + this.uri + ":2005/");
 			URLClassLoader ucl = new URLClassLoader(new URL[] {url});
 			Task t = (Task) ucl.loadClass(task).newInstance();
-			t.run(agent);
+			return t.run(agent);
 		} catch (Exception e) {
 			System.out.println("unable to run: " + this.task + " from " + this.uri);
 		}
+		return null;
 	}
 }

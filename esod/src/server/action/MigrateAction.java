@@ -11,12 +11,13 @@ public class MigrateAction implements Action  {
 		this.hostname = newHostname;
 	}
 	
-	public void run(Agent agent) {
+	public Object run(Agent agent) {
 		/*try {
 			agent.getHome().moveTo(agent, hostname);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}*/
+		return null;
 	}
 
 }

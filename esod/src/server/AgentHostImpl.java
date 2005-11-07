@@ -19,7 +19,6 @@ public class AgentHostImpl extends UnicastRemoteObject implements AgentHost  {
 
 	public void accept(Agent agent) throws RemoteException {
 		System.out.println("> accepting agent '" + agent.getID() + "'");
-
 		agent.init(this);
 		try {
 			Naming.rebind(agent.getID(), this);

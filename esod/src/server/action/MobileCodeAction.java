@@ -11,15 +11,17 @@ public class MobileCodeAction implements Action {
 		this.method = m;
 	}
 
-	public void run(Agent agent) {
+	public Object run(Agent agent) {
 		int idx = this.method.lastIndexOf(".");
 		this.method = this.method.substring(idx+1);
 		try {
 			Class c = Class.forName(agent.getClass().getName());
 			Method m = c.getMethod(this.method, null);
-			m.invoke(agent, null);
+			return m.invoke(agent, null);
 		} catch (Exception e) {
 			System.out.println("unable to run: " + this.method);
 		}
+		
+		return null;
 	}
 }

@@ -3,11 +3,14 @@ package server.agent;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.LinkedList;
+import java.util.Stack;
 
 import server.*;
 import server.action.Action;
 import server.mediator.Mediator;
+import server.repository.HostReport;
 import server.repository.Repository;
+import server.repository.*;
 
 public class AgentImpl extends UnicastRemoteObject implements Agent {
 	private static final long serialVersionUID = 3258125839102259509L;
@@ -15,19 +18,14 @@ public class AgentImpl extends UnicastRemoteObject implements Agent {
 	private Mediator mediator;
 	private Repository repository;
 	private AgentHost agentHost;
+	private AgentHost home;
 	private AgentScript agentScript;
 
-	/*
-	 * contem objectos do tipo 
-	 * TaskeReport(Action task, Object output, Object timeStamp)
-	 * sempre que acaba o "serviço" num host
-	 * envia a lista para o repositório
-	 * e reinicia a estrutura
-	 */
-	private LinkedList reportList;
+	private HostReport hostReport;
 	
-	//private Stack reportStack;
-
+	//contem objectos do tipo HostReport
+	private Stack reportStack;
+	
 	/*
 	 * o agentID é resultado da concatenaçã dos seguintes campos: - o scriptID -
 	 * MD5 hash do script - timestamp - hostname (ip address) do n— inicial
@@ -38,6 +36,7 @@ public class AgentImpl extends UnicastRemoteObject implements Agent {
 	
 	public AgentImpl() throws RemoteException {
 		super();
+		reportStack = new Stack();
 	}
 
 	public void setScript(AgentScript script) throws RemoteException {
@@ -71,8 +70,10 @@ public class AgentImpl extends UnicastRemoteObject implements Agent {
 	    }
 	}
 
-	public void init(AgentHost host) throws RemoteException{
+	public void init(AgentHost host) throws RemoteException {
 		setHost(host);
+
+		hostReport = new HostReport(((TaskList) mediator.getActionList(this).getFirst()).getHost());
 
 		try {
 			mediator.registerAgent(this);
@@ -83,13 +84,33 @@ public class AgentImpl extends UnicastRemoteObject implements Agent {
 
 	public void start() throws RemoteException, NullPointerException {
 		AgentHost host = null;
+		Object actionOutput;
 
 		Action action = mediator.getNextAction(this);
 		while (action != null) {
-			action.run(this);
+			
+			try {
+				Thread.sleep(5000);
+			} catch (Exception e) {
+				e.getMessage();
+			}
+			
+			Action previousAction = action;
+			actionOutput = action.run(this);
+			
 			action = mediator.getNextAction(this);
+			TaskReport task = new TaskReport(previousAction, actionOutput, String.valueOf(System.currentTimeMillis()));
+			
+			hostReport.setTask(task);
 		}
 
+		try {
+			repository.setHostReport(this.getID(), hostReport);
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		reportStack.push(hostReport);
+		
 		host = this.agentHost;
 		this.agentHost = null;
 		host.remove(this);
@@ -103,8 +124,8 @@ public class AgentImpl extends UnicastRemoteObject implements Agent {
 		}
 	}
 	
-	public Object getReport() throws RemoteException {
-		return null;
+	public HostReport getReport() throws RemoteException {
+		return hostReport;
 	}
 
 	public Mediator getMediator() throws RemoteException {
@@ -117,6 +138,10 @@ public class AgentImpl extends UnicastRemoteObject implements Agent {
 
 	public AgentHost getHost() throws RemoteException {
 		return agentHost;
+	}
+	
+	public String getHostName() throws RemoteException {
+		return agentHost.getHostname();
 	}
 
 	public void setHost(AgentHost host) throws RemoteException {
@@ -131,6 +156,21 @@ public class AgentImpl extends UnicastRemoteObject implements Agent {
 		this.repository = r;
 	}
 	
+	public void setHome(AgentHost home) {
+		this.home = home;
+	}
+	
+	public AgentHost getHome() {
+		return this.home;
+	}
+
+	public LinkedList getLastTasks() throws RemoteException {
+		HostReport report = (HostReport)reportStack.pop();
+		HostReport tmp = report;
+		reportStack.push(tmp);
+		return report.getTasks();
+	}
+
 	public void sayHello() throws RemoteException {
 		System.out.println("hello from agent " + getID());
 	}

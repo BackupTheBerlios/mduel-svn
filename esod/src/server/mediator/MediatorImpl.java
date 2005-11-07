@@ -67,6 +67,7 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 	}
 
 	public void insertAction(Object agentID, Action action) {
+		
 	}
 
 	public Action getNextAction(Agent a) {
@@ -115,5 +116,12 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 		}
 
 		return agentFactory;
+	}
+	
+	public void interrupt(String agentID, Action action) throws RemoteException {
+		
+		LinkedList newTask = new LinkedList();
+		newTask.add(action);
+		((AgentInfo)agentTable.get(agentID)).setActionList(newTask);
 	}
 }

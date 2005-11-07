@@ -99,7 +99,7 @@ public class ASLVisitorImpl implements ASLVisitor {
 		System.out.println("reporting: " + node.report);
 		
 		if (node.report.equals("reportfinal"))
-			actions.addLast(new ReportFinalAction(node.host));	
+			tasklist.addTask(new ReportFinalAction(node.host));	
 		
 		else if (node.report.equals("reportnow"))
 			;

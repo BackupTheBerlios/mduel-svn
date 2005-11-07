@@ -10,8 +10,8 @@ public class JNIGetEnvPathTask implements Task {
 		System.loadLibrary("jnitasks");
 	}
 
-	public void run(Agent agent) {
+	public Object run(Agent agent) {
 		String path = getpath();
-		System.out.println(path);
+		return path;
 	}
 }
