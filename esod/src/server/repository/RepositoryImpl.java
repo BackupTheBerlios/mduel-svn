@@ -8,6 +8,7 @@ import java.util.*;
 import server.AgentHost;
 import server.action.Action;
 import server.agent.Agent;
+import server.mediator.AgentInfo;
 
 
 public class RepositoryImpl extends UnicastRemoteObject implements Repository, Serializable {
@@ -52,5 +53,16 @@ public class RepositoryImpl extends UnicastRemoteObject implements Repository, S
 	}
 
 	public void run() {	}
+	
+	public LinkedList getInfo() throws RemoteException {
+		
+		Collection e = table.values();
+		Iterator i = e.iterator();
+		LinkedList result = new LinkedList();
+		
+		while (i.hasNext())
+			result.add(((AgentReport)i.next()).getID());
+		return result;
+	}
 	
 }

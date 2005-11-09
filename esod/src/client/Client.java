@@ -29,7 +29,7 @@ public class Client extends AgentHostImpl {
 
 	private Mediator mediator;
 	private Repository repository;
-	//private LinkedList fullList;
+	
 	private LinkedList list;
 	
 	
@@ -88,7 +88,7 @@ public class Client extends AgentHostImpl {
 		return 0;
 	}
 	
-	public void listAgents() {
+	public void listMediatorAgents() {
 		int n=0;
 		
 		try {
@@ -104,10 +104,27 @@ public class Client extends AgentHostImpl {
 		}
 	}
 	
+	public void listRepositoryAgents() {
+		int n=0;
+		
+		try {
+			list = repository.getInfo();
+			System.out.println("LIST-SIZE: " + list.size());
+			Iterator i = list.iterator();
+			System.out.println("NUM		AGENT-ID");
+			while (i.hasNext()) {
+				System.out.println(n + "	" + i.next());
+				n++;
+			}
+		} catch (Exception e) {
+			e.getMessage();
+		}
+	}
+	
 	public Client() throws RemoteException {
 		
 		System.out.println("> starting Client...");
-		System.out.print("> rebinding... ");
+		System.out.println("> rebinding... ");
 		
 		try {
 
@@ -140,11 +157,12 @@ public class Client extends AgentHostImpl {
 		Client client = new Client();
 		char c = '.';
 		String script = null;
+		int i;
 		
 		menuInit();
 		while (true) {
 			
-			c = SavitchIn.readChar();
+			c = SavitchIn.readNonwhiteChar();
 			switch (c) {
 			case '1':
 				
@@ -161,18 +179,18 @@ public class Client extends AgentHostImpl {
 				
 			case '2':
 				
-				client.listAgents();
+				client.listMediatorAgents();
 				menuInit();
 				break;
 				
 			case '3':
 				System.out.println("Indique o número do agente que quer terminar:");
-				client.listAgents();
-				c = SavitchIn.readChar();
+				client.listMediatorAgents();
+				i = SavitchIn.readInt();
 
 				try {
 					Action migrateHome = new MigrateAction(client.getHostname(), true);
-					client.getMediator().interrupt((String)client.getList().get((int)c), migrateHome);
+					client.getMediator().interrupt((String)client.getList().get(i), migrateHome);
 					System.out.println("Agente terminado com sucesso.");
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -184,10 +202,10 @@ public class Client extends AgentHostImpl {
 			case '4':
 				
 				System.out.println("Indique o número do agente a reportar:");
-				client.listAgents();
-				c = SavitchIn.readChar();
+				client.listRepositoryAgents();
+				i = SavitchIn.readInt();
 				
-				AgentReport fullReport = client.getRepository().getFinalReport((String)client.getList().get((int)c));
+				AgentReport fullReport = client.getRepository().getFinalReport((String)client.getList().get(i));
 				fullReport.printReport();
 				
 				menuInit();
@@ -196,10 +214,10 @@ public class Client extends AgentHostImpl {
 			case '5':
 				
 				System.out.println("Indique o número do agente a reportar:");
-				client.listAgents();
-				c = SavitchIn.readChar();
+				client.listRepositoryAgents();
+				i = SavitchIn.readInt();		
 				
-				HostReport hostReport = client.getRepository().getLastReport((String)client.getList().get((int)c));
+				HostReport hostReport = client.getRepository().getLastReport((String)client.getList().get(i));
 				hostReport.printReport();
 				
 				menuInit();

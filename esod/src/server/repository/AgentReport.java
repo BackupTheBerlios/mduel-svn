@@ -28,6 +28,10 @@ public class AgentReport implements Serializable {
 		return (HostReport)tasks.getLast();
 	}
 	
+	public String getID() {
+		return (String)agentID;
+	}
+	
 	public int findHostReport(AgentHost host) {
 	
 		Iterator i = tasks.listIterator();

@@ -129,7 +129,7 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 		
 		Collection e = agentTable.values();
 		Iterator i = e.iterator();
-		LinkedList result = null;
+		LinkedList result = new LinkedList();
 		
 		while (i.hasNext())
 			result.add(((AgentInfo)i.next()).getID());
