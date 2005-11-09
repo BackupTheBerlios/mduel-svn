@@ -21,8 +21,8 @@
   	<javacc javacchome="${javacc.home}" target="${src}/parser/asl/asl.jj" outputdirectory="${src}/parser/asl"/>
   	
   	<!-- compile source code -->
-    <javac debug="${debug}" debuglevel="source" srcdir="${src}" destdir="${build}"/>
-  	
+    <javac debug="${debug}" classpath="./mail.jar" debuglevel="source" srcdir="${src}" destdir="${build}"/>
+
   	<!-- generate stubs -->
   	<rmic classpath="${src}" classname="server.AgentHostImpl" base="${build}"/>
   	<rmic classpath="${src}" classname="server.agent.AgentImpl" base="${build}"/>
@@ -53,6 +53,7 @@
         		<include name="server/http/**"/>
         		<include name="server/repository/HostReport.class"/>
         		<include name="server/repository/Repository.class"/>
+        		<include name="server/repository/AgentReport.class"/>
     			<include name="server/mediator/Mediator.class"/>
     			<include name="server/tasks/Task.class"/>
     		</fileset>
@@ -80,9 +81,11 @@
    	</jar>
     <jar jarfile="${dist}/client.jar" manifest="META-INF/Client.MF">
     		<fileset dir="${build}">
-        		<include name="client/Client.class"/>
+        		<include name="client/**"/>
+    			<include name="../mail.jar"/>
         		<include name="server/repository/**"/>
         		<include name="server/action/**"/>
+    			<include name="server/AgentRunner.class"/>
     			<include name="server/AgentHost.class"/>
     			<include name="server/AgentHostImpl.class"/>
 	    		<include name="server/AgentHostImpl_Stub.class"/>

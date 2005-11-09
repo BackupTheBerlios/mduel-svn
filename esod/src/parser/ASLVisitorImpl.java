@@ -109,8 +109,6 @@ public class ASLVisitorImpl implements ASLVisitor {
 	}
 
 	public Object visit(ASLReportNode node, Object data) {
-		
-		/*
 		System.out.println("reporting: " + node.report);
 		
 		if (node.report.equals("reportfinal"))
@@ -125,8 +123,9 @@ public class ASLVisitorImpl implements ASLVisitor {
 		else if (node.report.equals("reportmail")) {
 			if (node.email != null) {
 				System.out.println("--> email to " + node.email + " (via " + node.smtp + ")");
+				tasklist.addTask(new ReportMailAction(node.email, node.smtp, doTrace));
 			}
-		}*/
+		}
 		
 		node.childrenAccept(this, null);
 		return null;

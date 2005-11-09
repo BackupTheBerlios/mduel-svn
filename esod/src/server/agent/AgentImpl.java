@@ -87,7 +87,6 @@ public class AgentImpl extends UnicastRemoteObject implements Agent, Cloneable {
 				reportStack.push(hostReport);
 				packed = true;
 			}
-			
 		}
 
 		/*

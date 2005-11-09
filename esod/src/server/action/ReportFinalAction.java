@@ -17,8 +17,6 @@ public class ReportFinalAction extends BaseAction {
 	
 	public Object run(Agent agent) {
 		try {
-			
-
 			//agent.packReport();
 
 			//agent.getRepository().setHostReport(agent.getID(), agent.getReport());
@@ -27,12 +25,12 @@ public class ReportFinalAction extends BaseAction {
 			 * a ultima parece-me melhor
 			 * 
 			 */
-			
 		}
 		catch (Exception e) {
 			e.getMessage();
 		}
-		return null;
+
+		return "dummy action";
 	}
 
 }
