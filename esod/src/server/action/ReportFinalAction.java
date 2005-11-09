@@ -6,11 +6,12 @@ import java.util.LinkedList;
 import server.agent.Agent;
 import server.repository.HostReport;
 
-public class ReportFinalAction implements Action {
+public class ReportFinalAction extends BaseAction {
 	private static final long serialVersionUID = 925984428282319399L;
 	private String reportHost;
 	
-	public ReportFinalAction(String host) {
+	public ReportFinalAction(String host, boolean trace) {
+		super(trace);
 		reportHost = host;
 	}
 	

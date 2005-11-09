@@ -7,10 +7,9 @@ import java.util.LinkedList;
 import server.AgentHost;
 
 public class AgentReport implements Serializable {
-
+	private static final long serialVersionUID = 3065071319622682342L;
 	private Object agentID;
 	private LinkedList tasks;
-	
 	
 	public AgentReport(Object agentID) {
 		this.agentID = agentID;

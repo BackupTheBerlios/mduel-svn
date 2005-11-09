@@ -10,7 +10,7 @@ import server.action.Action;
 import server.mediator.Mediator;
 import server.repository.HostReport;
 import server.repository.Repository;
-import server.repository.*;
+import server.repository.TaskReport;
 
 public class AgentImpl extends UnicastRemoteObject implements Agent {
 	private static final long serialVersionUID = 3258125839102259509L;
@@ -88,17 +88,13 @@ public class AgentImpl extends UnicastRemoteObject implements Agent {
 
 		Action action = mediator.getNextAction(this);
 		while (action != null) {
-			
-			try {
-				Thread.sleep(5000);
-			} catch (Exception e) {
-				e.getMessage();
-			}
-			
 			Action previousAction = action;
 			actionOutput = action.run(this);
-			
+			if (action.trace())
+				System.out.println("> executed " + action);
+
 			action = mediator.getNextAction(this);
+
 			TaskReport task = new TaskReport(previousAction, actionOutput, String.valueOf(System.currentTimeMillis()));
 			
 			hostReport.setTask(task);
@@ -171,7 +167,7 @@ public class AgentImpl extends UnicastRemoteObject implements Agent {
 		return report.getTasks();
 	}
 
-	public void sayHello() throws RemoteException {
-		System.out.println("hello from agent " + getID());
+	public Object sayHello() throws RemoteException {
+		return "hello from agent " + getID();
 	}
 }

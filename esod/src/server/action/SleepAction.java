@@ -2,16 +2,16 @@ package server.action;
 
 import server.agent.Agent;
 
-public class SleepAction implements Action {
+public class SleepAction extends BaseAction {
 	private static final long serialVersionUID = 3547962867277455423L;
 	private long milliseconds;
 	
-	public SleepAction(long ms) {
+	public SleepAction(long ms, boolean trace) {
+		super(trace);
 		this.milliseconds = ms;
 	}
 
 	public Object run(Agent agent) {
-		System.out.println("sleeping for a while...");
 		try {
 			Thread.sleep(this.milliseconds);
 		} catch (InterruptedException e) {

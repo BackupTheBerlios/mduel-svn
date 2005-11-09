@@ -100,7 +100,6 @@ public abstract class ClassServer implements Runnable {
 				byte[] bytecodes = getBytes(path);
 				// send bytecodes in response (assumes HTTP/1.0 or later)
 				try {
-					System.out.println("sending stuff!!");
 					out.writeBytes("HTTP/1.0 200 OK\r\n");
 					out.writeBytes("Content-Length: " + bytecodes.length
 							+ "\r\n");

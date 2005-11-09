@@ -1,13 +1,13 @@
 package server.action;
 
-import java.rmi.RemoteException;
 import server.agent.Agent;
 
-public class MigrateAction implements Action  {
+public class MigrateAction extends BaseAction  {
 	private static final long serialVersionUID = -5809777582121076251L;
 	private String hostname;
 
-	public MigrateAction(String newHostname) {
+	public MigrateAction(String newHostname, boolean trace) {
+		super(trace);
 		this.hostname = newHostname;
 	}
 	
@@ -19,5 +19,4 @@ public class MigrateAction implements Action  {
 		}*/
 		return null;
 	}
-
 }

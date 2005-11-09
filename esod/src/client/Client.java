@@ -50,9 +50,10 @@ public class Client extends AgentHostImpl {
 			System.out.print("> rebinding... ");
 			
 			AgentHost host = (AgentHost) Naming.lookup("//localhost/" + AgentHost.class.getName());
-			Mediator mediator = (Mediator) Naming.lookup("//localhost/" + Mediator.class.getName());
-			Repository repository = (Repository) Naming.lookup("//localhost/" + Repository.class.getName());
-			Agent agent = mediator.getAgentFactory().create(host, args[0]);
+			mediator = (Mediator) Naming.lookup("//localhost/" + Mediator.class.getName());
+			repository = (Repository) Naming.lookup("//localhost/" + Repository.class.getName());
+			System.out.println("loading script " + args[0]);
+			agent = mediator.getAgentFactory().create(host, args[0]);
 			
 			if (agent == null) {
 				System.out.println("erro ao criar agente");
@@ -101,7 +102,7 @@ public class Client extends AgentHostImpl {
 			case '1':
 				/* TESTING FASE */
 				try {
-					Action migrateHome = new MigrateAction(client.getAgent().getHome().getHostname());
+					Action migrateHome = new MigrateAction(client.getAgent().getHome().getHostname(), true);
 					client.getMediator().interrupt(client.getAgent().getID(), migrateHome);
 				} catch (Exception e) {
 					e.printStackTrace();

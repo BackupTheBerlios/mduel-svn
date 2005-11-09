@@ -1,11 +1,10 @@
 package server.repository;
 
 import java.io.Serializable;
-
 import server.action.Action;
 
 public class TaskReport implements Serializable {
-
+	private static final long serialVersionUID = 2905688692294421035L;
 	private Action task;
 	private Object output;
 	private Object timeStamp;

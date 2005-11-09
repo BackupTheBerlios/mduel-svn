@@ -4,10 +4,9 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import server.AgentHost;
-
 public class HostReport implements Serializable {
-	
+	private static final long serialVersionUID = 9159528855848695637L;
+
 	private String host;
 	private LinkedList tasks;
 

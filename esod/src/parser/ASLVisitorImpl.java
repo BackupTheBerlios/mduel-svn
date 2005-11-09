@@ -11,6 +11,7 @@ public class ASLVisitorImpl implements ASLVisitor {
 	private AgentScript script;
 	private LinkedList actions;
 	private TaskList tasklist;
+	private boolean doTrace = false;
 
 	public ASLVisitorImpl() {
 		actions = new LinkedList();
@@ -62,8 +63,12 @@ public class ASLVisitorImpl implements ASLVisitor {
 		tasklist = new TaskList(node.ipAddress);
 		//actions.addLast(new MigrateAction(node.ipAddress));
 		System.out.println("migrate to " + node.ipAddress);
-		if (node.trace != null)
+		if (node.trace != null) {
 			System.out.println("--> with trace");
+			doTrace = true;
+		} else {
+			doTrace = false;
+		}
 
 		node.childrenAccept(this, null);
 		return null;
@@ -77,18 +82,18 @@ public class ASLVisitorImpl implements ASLVisitor {
 			node.classname = node.classname.substring(1);
 			System.out.println("running " + node.classname);
 			if (node.urldir == null) {
-				tasklist.addTask(new MobileCodeAction(node.classname));
+				tasklist.addTask(new MobileCodeAction(node.classname, doTrace));
 			}
 			else if (node.urldir != null)
 			{
 				System.out.println("--> from " + node.urldir);
-				tasklist.addTask(new RemoteCodeAction(node.urldir, node.classname));
+				tasklist.addTask(new RemoteCodeAction(node.urldir, node.classname, doTrace));
 				//actions.addLast(a);
 			}
 		}
 		else if (node.time != null) {
 			System.out.println("sleeping for " + node.time);
-			tasklist.addTask(new SleepAction(Integer.parseInt(node.time.replaceAll("ms", ""))));
+			tasklist.addTask(new SleepAction(Integer.parseInt(node.time.replaceAll("ms", "")), doTrace));
 		}
 		node.childrenAccept(this, null);
 		return null;
@@ -99,7 +104,7 @@ public class ASLVisitorImpl implements ASLVisitor {
 		System.out.println("reporting: " + node.report);
 		
 		if (node.report.equals("reportfinal"))
-			tasklist.addTask(new ReportFinalAction(node.host));	
+			tasklist.addTask(new ReportFinalAction(node.host, doTrace));	
 		
 		else if (node.report.equals("reportnow"))
 			;

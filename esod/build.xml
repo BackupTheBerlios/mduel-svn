@@ -28,7 +28,7 @@
   	<rmic classpath="${src}" classname="server.agent.AgentImpl" base="${build}"/>
   	<rmic classpath="${src}" classname="server.agent.AgentFactoryImpl" base="${build}"/>
    	<rmic classpath="${src}" classname="server.mediator.MediatorImpl" base="${build}"/>
-  	
+
   	<!-- JNI code -->
   	<javah classpath="${build}" destdir="${src}/server/tasks">
   		<class name="server.tasks.JNIGetEnvPathTask"/>
@@ -46,7 +46,55 @@
 
   <target name="dist" depends="compile" description="generate the distribution" >
     <mkdir dir="${dist}"/>
-    <jar jarfile="${dist}/esod.jar" basedir="${build}" manifest="META-INF/MANIFEST.MF"/>
+    <jar jarfile="${dist}/agentserver.jar" manifest="META-INF/AgentServer.MF">
+    		<fileset dir="${build}">
+    			<include name="server/*.*"/>
+        		<include name="server/agent/**"/>
+        		<include name="server/http/**"/>
+        		<include name="server/repository/HostReport.class"/>
+        		<include name="server/repository/Repository.class"/>
+    			<include name="server/mediator/Mediator.class"/>
+    			<include name="server/tasks/Task.class"/>
+    		</fileset>
+  	</jar>
+    <jar jarfile="${dist}/mediatorserver.jar" manifest="META-INF/MediatorServer.MF">
+    		<fileset dir="${build}">
+    			<include name="server/mediator/**"/>
+    			<include name="server/agent/**"/>
+    			<include name="parser/**"/>
+        		<include name="server/action/**"/>
+        		<include name="server/repository/**"/>
+    			<include name="server/AgentHost.class"/>
+    			<include name="server/tasks/Task.class"/>
+        	</fileset>
+   	</jar>
+    <jar jarfile="${dist}/repositoryserver.jar" manifest="META-INF/RepositoryServer.MF">
+    		<fileset dir="${build}">
+        		<include name="server/repository/**"/>
+        		<include name="server/action/Action.class"/>
+    			<include name="server/agent/Agent.class"/>
+    			<include name="server/AgentHost.class"/>
+    			<include name="server/tasks/Task.class"/>
+    			<include name="server/mediator/Mediator.class"/>
+        	</fileset>
+   	</jar>
+    <jar jarfile="${dist}/client.jar" manifest="META-INF/Client.MF">
+    		<fileset dir="${build}">
+        		<include name="client/Client.class"/>
+        		<include name="server/repository/**"/>
+        		<include name="server/action/**"/>
+    			<include name="server/AgentHost.class"/>
+    			<include name="server/AgentHostImpl.class"/>
+	    		<include name="server/AgentHostImpl_Stub.class"/>
+    			<include name="server/agent/Agent.class"/>
+    			<include name="server/agent/AgentScript.class"/>
+	    		<include name="server/agent/AgentImpl_Stub.class"/>
+    			<include name="server/agent/AgentFactory.class"/>
+	    		<include name="server/agent/AgentFactoryImpl_Stub.class"/>
+    			<include name="server/mediator/Mediator.class"/>
+	    		<include name="server/mediator/MediatorImpl_Stub.class"/>
+        	</fileset>
+   	</jar>
   </target>
 
   <target name="clean" description="clean up" >

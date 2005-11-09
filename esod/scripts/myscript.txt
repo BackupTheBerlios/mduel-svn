@@ -7,12 +7,13 @@ definition {
 }
 
 execute {
-	migrate to 127.0.0.1 {
-		run $server.action.OSDetailsAction()
-		run $server.action.UserInfoAction()
+	migrate to 127.0.0.1 trace {
+		run $server.action.AgentImpl.sayHello()
+		sleep 1000ms
+		run $server.tasks.OSDetailsTask() from steel.local
+		run $server.tasks.UserInfoTask() from steel.local
 	}
-	migrate to 127.0.0.1 {
-		run $server.action.UserInfoAction()
-		run $server.action.OSDetailsAction()
-	}	
+	migrate to 127.0.0.1 trace {
+		run $server.tasks.JNIGetEnvPathTask() from steel.local
+	}
 } reportfinal
