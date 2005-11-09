@@ -5,10 +5,18 @@ NOTAS
 - criar uma task de soma de dois numeros num servidor mediante input de utilizador
 - interface swing (mvc)
 - ao arrancar um agentserver, contactor o mediator e dar o IP+hostname de forma a fazer
-  a resolução de nomes
-- comando WHO executa um mŽtodo nos agentes estacionados num n— e devolve:
+
+** OUTPUT action envia imediatamente o resultado da execu?‹o do agente para o ponto de partida
+** TRACE action apenas reporta o sucesso ou falha de execu?‹o num determinado n—
+** CLONE action -- VER MELHOR
+** getHistory(), getRoute() -- no agente
+** comando WHO executa um mŽtodo nos agentes estacionados num n— e devolve:
 	* o id do agente
+	* lista de n—s onde passou
+	* ac?›e executadas em cada n—
+	-- resulta num relat—rio de "encontro de um agente"
+	pode ser implementado a n’vel do agentserver=======
 	* lista de nós onde passou
 	* acção executadas em cada nó
 	-- resulta num relatório de "encontro de um agente"
-	pode ser implementado a nível do agentserver
+	pode ser implementado a nível do agentserver>>>>>>> .r30

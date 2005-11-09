@@ -7,16 +7,12 @@ definition {
 }
 
 execute {
-	migrate to 127.0.0.1 trace {
-		run $server.action.AgentImpl.sayHello()
-		sleep 1000ms
-		run $server.tasks.OSDetailsTask() from steel.local
-		run $server.tasks.UserInfoTask() from steel.local
-	} reportcallback
-	migrate to 127.0.0.1 trace {
-		run $server.tasks.JNIGetEnvPathTask() from steel.local
-	} reportnow
-	migrate to 127.0.0.1 trace {
-		sleep 1000ms
-	} reportmail miltonmoura@gmail.com smtp pop.gmail.com
-} reportfinal
+	migrate to 127.0.0.1 {
+		run $server.tasks.OSDetailsTask() from x.y.z
+		run $server.tasks.UserInfoTask() from x.y.z
+	}	output
+	migrate to 127.0.0.1 {
+		run $server.tasks.UserInfoTask() from x.y.z
+		run $server.tasks.OSDetailsTask() from x.y.z
+	}
+}

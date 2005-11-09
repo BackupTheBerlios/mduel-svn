@@ -82,6 +82,7 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 			return null;
 		}
 	}
+	
 
 	public void run() throws RemoteException {
 		// main loop
@@ -122,6 +123,17 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 		LinkedList newTask = new LinkedList();
 		newTask.add(action);
 		((AgentInfo)agentTable.get(agentID)).setActionList(newTask);
+	}
+
+	public LinkedList getInfo() throws RemoteException {
+		
+		Collection e = agentTable.values();
+		Iterator i = e.iterator();
+		LinkedList result = null;
+		
+		while (i.hasNext())
+			result.add(((AgentInfo)i.next()).getID());
+		return result;
 	}
 
 	public void transferActions(Agent dest, Agent orig) throws RemoteException {

@@ -18,4 +18,5 @@ public interface Mediator extends Remote {
 	public LinkedList getActionList(Agent agent) throws RemoteException;
 	public void interrupt(String agentID, Action action) throws RemoteException;
 	public void skipActionList(Agent agent) throws RemoteException;
+	public LinkedList getInfo() throws RemoteException;
 }

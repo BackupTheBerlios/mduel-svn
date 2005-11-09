@@ -110,6 +110,7 @@ public class ASLVisitorImpl implements ASLVisitor {
 
 	public Object visit(ASLReportNode node, Object data) {
 		
+		/*
 		System.out.println("reporting: " + node.report);
 		
 		if (node.report.equals("reportfinal"))
@@ -125,7 +126,7 @@ public class ASLVisitorImpl implements ASLVisitor {
 			if (node.email != null) {
 				System.out.println("--> email to " + node.email + " (via " + node.smtp + ")");
 			}
-		}
+		}*/
 		
 		node.childrenAccept(this, null);
 		return null;
@@ -133,6 +134,8 @@ public class ASLVisitorImpl implements ASLVisitor {
 
 	public Object visit(ASLOutputNode node, Object data) {
 		System.out.println("output: " + node.output);
+		
+		tasklist.addTask(new OutputAction(doTrace));
 		node.childrenAccept(this, null);
 		return null;
 	}

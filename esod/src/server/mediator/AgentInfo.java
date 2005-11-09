@@ -51,5 +51,7 @@ public class AgentInfo implements Serializable {
 	public void setRunComplete(boolean b) {
 		runComplete = b;
 	}
+	
+
 }
 

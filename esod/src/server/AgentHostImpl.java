@@ -6,6 +6,7 @@ import java.rmi.*;
 import java.rmi.server.*;
 import java.util.LinkedList;
 import server.agent.Agent;
+import server.repository.AgentReport;
 
 public class AgentHostImpl extends UnicastRemoteObject implements AgentHost  {
 	private static final long serialVersionUID = 3257001064375988534L;
@@ -85,5 +86,9 @@ public class AgentHostImpl extends UnicastRemoteObject implements AgentHost  {
 		}
 		
 		return hostname;
+	}
+	
+	public void reportBack(AgentReport report) throws RemoteException {
+		report.printReport();
 	}
 }

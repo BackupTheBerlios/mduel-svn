@@ -24,6 +24,10 @@ public class AgentReport implements Serializable {
 		return tasks;
 	}
 	
+	public HostReport getLastReport() {
+		return (HostReport)tasks.getLast();
+	}
+	
 	public int findHostReport(AgentHost host) {
 	
 		Iterator i = tasks.listIterator();
