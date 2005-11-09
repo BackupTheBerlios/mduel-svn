@@ -4,6 +4,7 @@ package parser.asl;
 
 public class ASLActionNode extends SimpleNode {
 	public String clone;
+	public String wait;
 	public String classname;
 	public String urldir;
 	public String time;

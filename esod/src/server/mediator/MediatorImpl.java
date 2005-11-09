@@ -1,6 +1,7 @@
 package server.mediator;
 
 import server.action.Action;
+import server.action.CloneAction;
 import server.agent.*;
 
 import java.net.MalformedURLException;
@@ -24,13 +25,11 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 		}
 	}
 
-	public void registerAgent(Agent agent) {
+	public void registerAgent(Agent agent, AgentInfo info) {
 		try {
 				if (!agentTable.containsKey(agent.getID())) {
-					AgentInfo ai = new AgentInfo(agent.getID(), agent
-							.getScript().getActions());
 					agent.setMediator(this);
-					agentTable.put(ai.getID(), ai);
+					agentTable.put(agent.getID(), info);
 					System.out.println("> registered agent " + agent.getID());
 				} else {
 					// something in the way she moves
@@ -54,8 +53,8 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 	}
 
 	public Agent findAgent(Object agentID) throws RemoteException {
-
 		Agent a = null;
+
 		try {
 			a = (Agent) Naming.lookup((String) agentID);
 		} catch (Exception e) {
@@ -67,7 +66,7 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 	}
 
 	public void insertAction(Object agentID, Action action) {
-		
+		// TODO: is this needed? schedule for removal
 	}
 
 	public Action getNextAction(Agent a) {
@@ -78,7 +77,7 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 			actions = ai.getActionList();
 			return ((TaskList) actions.getFirst()).getNextAction();
 		} catch (Exception ex) {
-			if (actions != null)
+			if (actions != null && actions.size() != 0)
 				actions.removeFirst();
 			return null;
 		}
@@ -117,11 +116,27 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 
 		return agentFactory;
 	}
-	
+
+	// TODO: rename this method to something like bypassActions or injectAction
 	public void interrupt(String agentID, Action action) throws RemoteException {
-		
 		LinkedList newTask = new LinkedList();
 		newTask.add(action);
 		((AgentInfo)agentTable.get(agentID)).setActionList(newTask);
+	}
+
+	public void transferActions(Agent dest, Agent orig) throws RemoteException {
+		AgentInfo ai = (AgentInfo) this.agentTable.get(orig.getID());
+		LinkedList ll = ai.getActionList();
+		LinkedList newList = new LinkedList();
+
+		TaskList list = (TaskList) ll.getFirst();
+		while (list != null) {
+			newList.addFirst(list);
+			list = (TaskList) ll.removeFirst();
+		}
+		ai.setActionList(ll);
+
+		AgentInfo newAI = new AgentInfo(dest.getID(), newList);
+		registerAgent(dest, newAI);
 	}
 }

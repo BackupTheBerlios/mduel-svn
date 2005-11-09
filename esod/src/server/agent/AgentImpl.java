@@ -7,12 +7,13 @@ import java.util.Stack;
 
 import server.*;
 import server.action.Action;
+import server.mediator.AgentInfo;
 import server.mediator.Mediator;
 import server.repository.HostReport;
 import server.repository.Repository;
 import server.repository.TaskReport;
 
-public class AgentImpl extends UnicastRemoteObject implements Agent {
+public class AgentImpl extends UnicastRemoteObject implements Agent, Cloneable {
 	private static final long serialVersionUID = 3258125839102259509L;
 
 	private Mediator mediator;
@@ -27,7 +28,7 @@ public class AgentImpl extends UnicastRemoteObject implements Agent {
 	private Stack reportStack;
 	
 	/*
-	 * o agentID é resultado da concatenaçã dos seguintes campos: - o scriptID -
+	 * o agentID é resultado da concatenação dos seguintes campos: - o scriptID -
 	 * MD5 hash do script - timestamp - hostname (ip address) do n— inicial
 	 * 
 	 * exemplo: myScript123-0f3ea423d23423a3-22342342-192.168.0.1
@@ -39,44 +40,13 @@ public class AgentImpl extends UnicastRemoteObject implements Agent {
 		reportStack = new Stack();
 	}
 
-	public void setScript(AgentScript script) throws RemoteException {
-		this.agentScript = script;
-		agentID = generateID();
-	}
-
-	public AgentScript getScript() throws RemoteException {
-		return this.agentScript;
-	}
-
-	private String generateID() throws RemoteException {
-		String id = null;
-
-		id = agentScript.getScriptID() + "-" + agentScript.getMD5Hash()
-					+ "-" + String.valueOf(System.currentTimeMillis()) + "-"
-					+ agentHost.getHostname();
-
-		return id;
-	}
-
-	public String getID() throws RemoteException {
-		return agentID;
-	}
-
-	public String getNewHost() throws RemoteException {
-		try {
-			return ((TaskList) mediator.getActionList(this).getFirst()).getHost();
-		} catch (Exception e) {
-	        	return null;
-	    }
-	}
-
 	public void init(AgentHost host) throws RemoteException {
 		setHost(host);
 
 		hostReport = new HostReport(((TaskList) mediator.getActionList(this).getFirst()).getHost());
 
 		try {
-			mediator.registerAgent(this);
+			mediator.registerAgent(this, new AgentInfo(this.getID(), mediator.getActionList(this)));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -91,7 +61,7 @@ public class AgentImpl extends UnicastRemoteObject implements Agent {
 			Action previousAction = action;
 			actionOutput = action.run(this);
 			if (action.trace())
-				System.out.println("> executed " + action);
+				System.out.println("> executed " + action + " at " + this.agentHost.getHostname());
 
 			action = mediator.getNextAction(this);
 
@@ -118,6 +88,37 @@ public class AgentImpl extends UnicastRemoteObject implements Agent {
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void setScript(AgentScript script) throws RemoteException {
+		this.agentScript = script;
+		this.generateID();
+	}
+
+	public AgentScript getScript() throws RemoteException {
+		return this.agentScript;
+	}
+
+	public void generateID() throws RemoteException {
+		String id = null;
+
+		id = agentScript.getScriptID() + "-" + agentScript.getMD5Hash()
+					+ "-" + String.valueOf(System.currentTimeMillis()) + "-"
+					+ agentHost.getHostname();
+
+		agentID = id;
+	}
+
+	public String getID() throws RemoteException {
+		return agentID;
+	}
+
+	public String getNewHost() throws RemoteException {
+		try {
+			return ((TaskList) mediator.getActionList(this).getFirst()).getHost();
+		} catch (Exception e) {
+	        	return null;
+	    }
 	}
 	
 	public HostReport getReport() throws RemoteException {

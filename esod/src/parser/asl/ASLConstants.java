@@ -15,39 +15,40 @@ public interface ASLConstants {
   int TO = 14;
   int TRACE = 15;
   int CLONE = 16;
-  int RUN = 17;
-  int FROM = 18;
-  int SLEEP = 19;
-  int REPORTNOW = 20;
-  int REPORTCALLBACK = 21;
-  int REPORTMAIL = 22;
-  int SMTP = 23;
-  int REPORTFINAL = 24;
-  int OUTPUTCALLBACK = 25;
-  int OUTPUT = 26;
-  int DECIMAL_LITERAL = 27;
-  int CHARACTER_LITERAL = 28;
-  int DATE_LITERAL = 29;
-  int STRING_LITERAL = 30;
-  int IDENTIFIER = 31;
-  int LETTER = 32;
-  int DIGIT = 33;
-  int LPAREN = 34;
-  int RPAREN = 35;
-  int LBRACE = 36;
-  int RBRACE = 37;
-  int LBRACKET = 38;
-  int RBRACKET = 39;
-  int SEMICOLON = 40;
-  int COMMA = 41;
-  int DOT = 42;
-  int AT = 43;
-  int CLASSNAME = 44;
-  int HOSTNAME = 45;
-  int EMAIL = 46;
-  int URLDIR = 47;
-  int MSECONDS = 48;
-  int IP_ADDRESS = 49;
+  int WAIT = 17;
+  int RUN = 18;
+  int FROM = 19;
+  int SLEEP = 20;
+  int REPORTNOW = 21;
+  int REPORTCALLBACK = 22;
+  int REPORTMAIL = 23;
+  int SMTP = 24;
+  int REPORTFINAL = 25;
+  int OUTPUTCALLBACK = 26;
+  int OUTPUT = 27;
+  int DECIMAL_LITERAL = 28;
+  int CHARACTER_LITERAL = 29;
+  int DATE_LITERAL = 30;
+  int STRING_LITERAL = 31;
+  int IDENTIFIER = 32;
+  int LETTER = 33;
+  int DIGIT = 34;
+  int LPAREN = 35;
+  int RPAREN = 36;
+  int LBRACE = 37;
+  int RBRACE = 38;
+  int LBRACKET = 39;
+  int RBRACKET = 40;
+  int SEMICOLON = 41;
+  int COMMA = 42;
+  int DOT = 43;
+  int AT = 44;
+  int CLASSNAME = 45;
+  int HOSTNAME = 46;
+  int EMAIL = 47;
+  int URLDIR = 48;
+  int MSECONDS = 49;
+  int IP_ADDRESS = 50;
 
   int DEFAULT = 0;
 
@@ -69,6 +70,7 @@ public interface ASLConstants {
     "\"to\"",
     "\"trace\"",
     "\"clone\"",
+    "\"wait\"",
     "\"run\"",
     "\"from\"",
     "\"sleep\"",

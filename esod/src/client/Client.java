@@ -4,12 +4,15 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.LinkedList;
 
 import server.AgentHost;
 import server.AgentHostImpl;
+import server.agent.TaskList;
 import server.action.Action;
 import server.action.MigrateAction;
 import server.agent.Agent;
+import server.mediator.AgentInfo;
 import server.mediator.Mediator;
 import server.repository.AgentReport;
 import server.repository.HostReport;
@@ -30,19 +33,7 @@ public class Client extends AgentHostImpl {
 	private Repository repository;
 	private Agent agent;
 	
-	public Repository getRepository() {
-		return repository;
-	}
-	
-	public Mediator getMediator() {
-		return mediator;
-	}
-	
-	public Agent getAgent() {
-		return agent;
-	}
-	
-	public Client(String[] args) throws RemoteException {
+	public Client(String[] args) throws Exception {
 		
 		try {
 			
@@ -62,17 +53,18 @@ public class Client extends AgentHostImpl {
 
 			agent.setMediator(mediator);
 			agent.setRepository(repository);
-			mediator.registerAgent(agent);
+			mediator.registerAgent(agent, new AgentInfo(agent.getID(), agent.getScript().getActions()));
 			agent.setHome(this);
 			host.accept(agent);
-			
-		
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
+			throw e;
 		} catch (RemoteException e) {
 			e.printStackTrace();
+			throw e;
 		} catch (NotBoundException e) {
 			e.printStackTrace();
+			throw e;
 		}	
 	}
 
@@ -85,10 +77,16 @@ public class Client extends AgentHostImpl {
 	}
 	
 	public static void main(String[] args) throws RemoteException {
-		Client client = new Client(args);
+		Client client = null;
+
+		try {
+			client = new Client(args);
+		} catch (Exception e) {
+			System.out.println("agent startup failed!");
+			return;
+		}
 		char c = '.';
 
-		
 		menuInit();
 		while (true) {
 			
@@ -129,5 +127,15 @@ public class Client extends AgentHostImpl {
 		
 	}
 	
+	public Repository getRepository() {
+		return repository;
+	}
 	
+	public Mediator getMediator() {
+		return mediator;
+	}
+	
+	public Agent getAgent() {
+		return agent;
+	}
 }

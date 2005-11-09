@@ -12,8 +12,11 @@ execute {
 		sleep 1000ms
 		run $server.tasks.OSDetailsTask() from steel.local
 		run $server.tasks.UserInfoTask() from steel.local
-	}
+	} reportcallback
 	migrate to 127.0.0.1 trace {
 		run $server.tasks.JNIGetEnvPathTask() from steel.local
-	}
+	} reportnow
+	migrate to 127.0.0.1 trace {
+		sleep 1000ms
+	} reportmail miltonmoura@gmail.com smtp pop.gmail.com
 } reportfinal

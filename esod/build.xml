@@ -91,7 +91,9 @@
 	    		<include name="server/agent/AgentImpl_Stub.class"/>
     			<include name="server/agent/AgentFactory.class"/>
 	    		<include name="server/agent/AgentFactoryImpl_Stub.class"/>
+    			<include name="server/agent/TaskList.class"/>
     			<include name="server/mediator/Mediator.class"/>
+    			<include name="server/mediator/AgentInfo.class"/>
 	    		<include name="server/mediator/MediatorImpl_Stub.class"/>
         	</fileset>
    	</jar>

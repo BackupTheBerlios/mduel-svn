@@ -10,7 +10,9 @@ import server.agent.TaskList;
 public class ASLVisitorImpl implements ASLVisitor {
 	private AgentScript script;
 	private LinkedList actions;
+	private LinkedList cloneActions;
 	private TaskList tasklist;
+	private boolean isClone = false;
 	private boolean doTrace = false;
 
 	public ASLVisitorImpl() {
@@ -76,7 +78,14 @@ public class ASLVisitorImpl implements ASLVisitor {
 
 	public Object visit(ASLActionNode node, Object data) {
 		if (node.clone != null) {
+			isClone = true;
+			boolean doWait = false;
 			System.out.println("cloning!");
+			if (node.wait != null) {
+				System.out.println("with wait!");
+				doWait = true;
+			}
+			tasklist.addTask(new CloneAction(doWait, doTrace));
 		}
 		else if (node.classname != null) {
 			node.classname = node.classname.substring(1);

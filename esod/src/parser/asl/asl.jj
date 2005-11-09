@@ -47,6 +47,7 @@ TOKEN :
     <TO: "to"> |
     <TRACE: "trace"> |
     <CLONE: "clone"> |
+    <WAIT: "wait"> |
     <RUN: "run"> |
     <FROM: "from"> |
     <SLEEP: "sleep"> |
@@ -335,6 +336,7 @@ void Action()            :
         jjtree.openNodeScope(jjtn000);
 /*@egen*/
 	Token clone = null;
+	Token wait = null;
 	Token time = null;
 	Token classname = null;
 	Token urldir = null;
@@ -342,7 +344,7 @@ void Action()            :
 {/*@bgen(jjtree) ActionNode */
     try {
 /*@egen*/
-    ( (clone = <CLONE>) <LBRACE> (Exec()) <RBRACE> |
+    ( (clone = <CLONE>) (wait = <WAIT>)? <LBRACE> (Exec()) <RBRACE> |
     (<RUN> classname = <CLASSNAME> <LPAREN> (Params())? <RPAREN>) ("from" urldir = <HOSTNAME>)? |
     <SLEEP> time = <MSECONDS> )/*@bgen(jjtree)*/
     {
@@ -353,6 +355,8 @@ void Action()            :
     {
 	    	if (clone != null)
     			jjtn000.clone = clone.image;
+    		if (wait != null)
+    			jjtn000.wait = wait.image;
     		if (classname != null)
     			jjtn000.classname = classname.image;
     		if (urldir != null)
@@ -396,10 +400,10 @@ void Report()            :
 {/*@bgen(jjtree) ReportNode */
     try {
 /*@egen*/
-    report = <REPORTCALLBACK> |
+    (report = <REPORTCALLBACK> |
     report = <REPORTNOW> |
     report = <REPORTMAIL> email = <EMAIL> "smtp" smtp = <HOSTNAME> |
-    report = <REPORTFINAL> (host = <HOSTNAME>)?/*@bgen(jjtree)*/
+    report = <REPORTFINAL> (host = <HOSTNAME>)? )/*@bgen(jjtree)*/
     {
       jjtree.closeNodeScope(jjtn000, true);
       jjtc000 = false;
@@ -434,8 +438,8 @@ void Output()            :
 {/*@bgen(jjtree) OutputNode */
         try {
 /*@egen*/
-	output = <OUTPUTCALLBACK> |
-	output = <OUTPUT>/*@bgen(jjtree)*/
+	( output = <OUTPUTCALLBACK> |
+	output = <OUTPUT> )/*@bgen(jjtree)*/
         {
           jjtree.closeNodeScope(jjtn000, true);
           jjtc000 = false;

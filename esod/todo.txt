@@ -5,11 +5,10 @@ NOTAS
 - criar uma task de soma de dois numeros num servidor mediante input de utilizador
 - interface swing (mvc)
 - ao arrancar um agentserver, contactor o mediator e dar o IP+hostname de forma a fazer
-  a resolu‹o de nomes
-- CLONE action -- VER MELHOR
+  a resolução de nomes
 - comando WHO executa um mtodo nos agentes estacionados num n— e devolve:
 	* o id do agente
-	* lista de n—s onde passou
-	* ac›e executadas em cada n—
-	-- resulta num relat—rio de "encontro de um agente"
-	pode ser implementado a n’vel do agentserver
+	* lista de nós onde passou
+	* acção executadas em cada nó
+	-- resulta num relatório de "encontro de um agente"
+	pode ser implementado a nível do agentserver

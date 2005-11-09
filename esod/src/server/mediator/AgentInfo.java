@@ -1,9 +1,10 @@
 package server.mediator;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class AgentInfo {
-	
+public class AgentInfo implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private Object agentID;
 	private LinkedList pathCompleted;
 	private LinkedList taskList;

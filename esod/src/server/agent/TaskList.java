@@ -26,4 +26,8 @@ public class TaskList implements Serializable {
 	public String getHost() {
 		return nextHost;
 	}
+	
+	public LinkedList getActions() {
+		return tasks;
+	}
 }
