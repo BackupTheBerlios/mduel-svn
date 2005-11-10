@@ -13,6 +13,11 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 
 	private Hashtable agentTable;
 
+	/**
+	 * class constructor
+	 * 
+	 * @throws RemoteException
+	 */
 	public MediatorImpl() throws RemoteException {
 		agentTable = new Hashtable();
 		AgentFactory agentFactory = new AgentFactoryImpl();
@@ -24,6 +29,13 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 		}
 	}
 
+	/**
+	 * Regists a particular agent into the mediator.
+	 * 
+	 * @param agent		the agent to register
+	 * @param info		an object containing several
+	 * 					information about the agent
+	 */
 	public void registerAgent(Agent agent, AgentInfo info) {
 		try {
 				if (!agentTable.containsKey(agent.getID())) {
@@ -38,6 +50,11 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 		}
 	}
 
+	/**
+	 * Unregists the agent from the mediator
+	 * 
+	 * @param agent			the agent to unregister
+	 */
 	public void unregisterAgent(Agent agent) {
 		try {
 			if (agentTable.containsKey(agent.getID())) {
@@ -50,7 +67,13 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 			ex.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 * Finds and returns an agent by is agentID
+	 * 
+	 * @param agentID		agent identifier
+	 * @return				the agent found. Null if not found.
+	 */
 	public Agent findAgent(Object agentID) throws RemoteException {
 		Agent a = null;
 
@@ -64,7 +87,13 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 		return a;
 	}
 
-
+	/**
+	 * Returns the next actions to be executed by the agent
+	 * 
+	 * @param a			agent to retreive the action
+	 * @return			the next action of the agent (a).
+	 * 					Null if none found
+	 */
 	public Action getNextAction(Agent a) {
 		LinkedList actions = null;
 
@@ -79,16 +108,29 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 		}
 	}
 	
-
+	/**
+	 * 
+	 */
 	public void run() throws RemoteException {
 		// main loop
 	}
 
+	/**
+	 * Returns the list of actions to be executed by the agent
+	 * 
+	 * @param agent			agent from witch to retrive the list
+	 * @return				a LinkedList containing the actions of the
+	 * 						agent (a)
+	 */
 	public LinkedList getActionList(Agent agent) throws RemoteException {
 		AgentInfo ai = (AgentInfo) this.agentTable.get(agent.getID());
 		return ai.getActionList();
 	}
-
+	
+	
+	/**
+	 * 
+	 */
 	public void skipActionList(Agent agent) throws RemoteException {
 		AgentInfo ai = (AgentInfo) this.agentTable.get(agent.getID());
 		LinkedList list = ai.getActionList();

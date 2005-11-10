@@ -38,29 +38,38 @@ public class HostReport implements Serializable {
 	}
 	
 	/**
-	 * adds a 
-	 * @param task
+	 * adds a task report to the task list
+	 * 
+	 * @param task		the task to add
 	 */
 	public void setTask(TaskReport task) {
 		tasks.add(task);
 	}
 	
 	/**
+	 * returns the name of the host
 	 * 
-	 * @return
+	 * @return			string containing the
+	 * 					name of the host
 	 */
 	public String getHost() {
 		return host;
 	}
 	
 	/**
+	 * returns the list of tasks preformed
 	 * 
-	 * @return
+	 * 
+	 * @return			linkedList containing tasks
 	 */
 	public LinkedList getTasks() {
 		return tasks;
 	}
 	
+	/**
+	 * sends a readable copy of the object to
+	 * the standard output
+	 */
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		Iterator i = tasks.listIterator();

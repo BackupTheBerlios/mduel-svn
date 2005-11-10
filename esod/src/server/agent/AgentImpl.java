@@ -182,7 +182,6 @@ public class AgentImpl implements Agent, Cloneable {
 		return route;
 	}
 
-
 	public Object sayHello() {
 		return "hello from agent " + getID();
 	}
