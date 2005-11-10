@@ -10,11 +10,11 @@ execute {
 	migrate to 127.0.0.1 trace {
 		run $server.action.AgentImpl.sayHello()
 		sleep 1000ms
-		run $server.tasks.OSDetailsTask() from steel.local
-		run $server.tasks.UserInfoTask() from steel.local
+		run $server.tasks.OSDetailsTask() from 127.0.0.1
+		run $server.tasks.UserInfoTask() from 127.0.0.1
 	} reportcallback
 	migrate to 127.0.0.1 trace {
-		run $server.tasks.JNIGetEnvPathTask() from steel.local
+		run $server.tasks.JNIGetEnvPathTask() from 127.0.0.1
 	} reportnow
 	migrate to 127.0.0.1 trace {
 		sleep 1000ms
