@@ -18,7 +18,6 @@ public interface Agent extends Serializable, Remote {
 	void setScript(AgentScript script) throws RemoteException;
 	AgentScript getScript() throws RemoteException;
 	String getID() throws RemoteException;
-	//HostReport getReport() throws RemoteException;
 
 	Mediator getMediator() throws RemoteException;
 	void setMediator(Mediator m) throws RemoteException;
@@ -33,12 +32,6 @@ public interface Agent extends Serializable, Remote {
 	void setHome(AgentHost home) throws RemoteException;
 	AgentHost getHome() throws RemoteException;
 
-	Object getInfo() throws RemoteException;
 	LinkedList getHistory() throws RemoteException;
 	LinkedList getRoute() throws RemoteException;
-	
-	
-	
-	
-	//LinkedList getLastTasks() throws RemoteException;
 }

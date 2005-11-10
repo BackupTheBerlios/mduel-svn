@@ -12,7 +12,6 @@ public interface Mediator extends Remote {
 	public void unregisterAgent(Agent agent) throws RemoteException;
 	public AgentFactory getAgentFactory() throws RemoteException;
 	public Agent findAgent(Object agentID) throws RemoteException;
-	public void insertAction(Object agentID, Action action) throws RemoteException;
 	public Action getNextAction(Agent agent) throws RemoteException;
 	public void transferActions(Agent dest, Agent orig) throws RemoteException;
 	public LinkedList getActionList(Agent agent) throws RemoteException;

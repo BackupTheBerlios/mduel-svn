@@ -19,12 +19,12 @@ public class RepositoryImpl extends UnicastRemoteObject implements Repository, S
 		table = new Hashtable(50);
 	}
 
-	/*
-	public void setActionReport(Object agentID, Action task) throws RemoteException {
-		// TODO Auto-generated method stub
-	}
-	*/
-
+	
+	/**
+	 * class constructor 
+	 * @param agentID	the string that identifies the agent
+	 * @param report	the report of the agent in the last host
+	 */
 	public void setHostReport(String agentID, HostReport report) throws RemoteException {
 		
 		if (table.containsKey(agentID))
@@ -39,21 +39,48 @@ public class RepositoryImpl extends UnicastRemoteObject implements Repository, S
 		System.out.println("> new report added.");
 	}
 	
+	
+	/**
+	 * returns the last report sent by the agent
+	 * 
+	 * @param agentID	the string that identifies the agent
+	 * @return			the last report of the specified agent
+	 */
 	public HostReport getLastReport(String agentID) throws RemoteException {
 		return ((AgentReport)table.get(agentID)).getLastReport();
 	}
 	
+	/**
+	 * returns the full report of an agent
+	 * 
+	 * @param agentID	the string that identifies the agent
+	 * @return			the full report of the specified agent
+	 */
 	public AgentReport getFinalReport(Object agentID) throws RemoteException {
 		
 		return (AgentReport)table.get(agentID);
 	}
 	
-	public void reportHome(Agent agent, AgentHost home) throws RemoteException {
-		home.reportBack( (AgentReport)table.get(agent.getID()));
+	
+	/** 
+	 * preforms a callback to the agent home to send is report
+	 * 
+	 * @param agentID	the string that identifies the agent
+	 * @param home		agent home to preform a callback
+	 */
+	public void reportHome(String agentID, AgentHost home) throws RemoteException {
+		home.reportBack( (AgentReport)table.get(agentID));
 	}
 
 	public void run() {	}
 	
+	/**
+	 * preforms a search in the table, returning a list
+	 * with the agentID's found
+	 * 
+	 * @return			a list with agentID's stored
+	 * 					in the hashtable (table)
+	 */
 	public LinkedList getInfo() throws RemoteException {
 		
 		Collection e = table.values();

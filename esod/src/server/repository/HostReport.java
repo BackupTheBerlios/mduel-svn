@@ -10,31 +10,61 @@ public class HostReport implements Serializable {
 	private String host;
 	private LinkedList tasks;
 
+	/**
+	 * class constructor 
+	 *
+	 */
 	public HostReport() {
 		this.tasks = new LinkedList();
 	}
 	
+	/**
+	 * class constructor
+	 * @param host		string containing the host
+	 * 					to report
+	 */
 	public HostReport(String host) {
 		this.host = host;
 		this.tasks = new LinkedList();
 	}
 	
+	/**
+	 * sets a new list of reported tasks
+	 * 
+	 * @param tasks		list containing the tasks
+	 */
 	public void setTasks(LinkedList tasks) {
 		this.tasks = tasks;
 	}
 	
+	/**
+	 * adds a 
+	 * @param task
+	 */
 	public void setTask(TaskReport task) {
 		tasks.add(task);
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public String getHost() {
 		return host;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public LinkedList getTasks() {
 		return tasks;
 	}
 	
+	/**
+	 * 
+	 *
+	 */
 	public void printReport() {
 		
 		Iterator i = tasks.listIterator();

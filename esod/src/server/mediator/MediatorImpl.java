@@ -65,9 +65,6 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 		return a;
 	}
 
-	public void insertAction(Object agentID, Action action) {
-		// TODO: is this needed? schedule for removal
-	}
 
 	public Action getNextAction(Agent a) {
 		LinkedList actions = null;

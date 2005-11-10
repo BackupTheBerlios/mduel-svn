@@ -9,11 +9,14 @@ public class TaskReport implements Serializable {
 	private Object output;
 	private Object timeStamp;
 	
+	
+	
 	public TaskReport(Action task, Object output, Object timeStamp) {
 		this.task = task;
 		this.output = output;
 		this.timeStamp = timeStamp;
 	}
+	
 	
 	public void PrintTask() {
 		System.out.println("TASK: " + task);

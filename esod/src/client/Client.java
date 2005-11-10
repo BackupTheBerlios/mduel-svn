@@ -1,18 +1,12 @@
 package client;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import server.AgentHost;
 import server.AgentHostImpl;
 import server.action.Action;
 import server.action.MigrateAction;
@@ -29,9 +23,7 @@ public class Client extends AgentHostImpl {
 
 	private Mediator mediator;
 	private Repository repository;
-	
 	private LinkedList list;
-	
 	
 	public Repository getRepository() {
 		return repository;
@@ -45,34 +37,6 @@ public class Client extends AgentHostImpl {
 	public LinkedList getList() {
 		return list;
 	}
-	
-	
-	/*
-	public Agent getAgent(String agentID) {
-		Iterator i = list.iterator();
-		Agent a = null;
-		while (i.hasNext()) {
-			a = (Agent)i.next();
-			try {
-				if (a.getID().equals(agentID))
-					return a;
-			} catch (Exception e) {
-				e.getMessage();
-			}
-		}
-		return null;
-	}
-	
-	public Agent getAgent(int i) {
-		return (Agent)list.get(i);
-	}
-	*/
-	
-	/*
-	public void setAgent(Agent agent) {
-		list.add(agent);
-	}
-	*/
 	
 	public int startAgent(String script) {
 		try {
@@ -150,8 +114,7 @@ public class Client extends AgentHostImpl {
 		System.out.println("--------CONSOLA DE CONTROLO DO AGENTE--------");
 	}
 	
-	
-	
+
 	public static void main(String[] args) throws RemoteException {
 		
 		Client client = new Client();
