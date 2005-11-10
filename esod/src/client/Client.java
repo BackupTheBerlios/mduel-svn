@@ -7,6 +7,7 @@ import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import server.AgentHost;
 import server.AgentHostImpl;
 import server.action.Action;
 import server.action.MigrateAction;
@@ -44,8 +45,9 @@ public class Client extends AgentHostImpl {
 			agent.setMediator(mediator);
 			agent.setRepository(repository);
 			mediator.registerAgent(agent, new AgentInfo(agent.getID(), agent.getScript().getActions()));
+			AgentHost startHost = (AgentHost)Naming.lookup("//" + agent.getNewHost() + "/" + AgentHost.class.getName());
 			agent.setHome(this);
-			this.accept(agent);
+			startHost.accept(agent);
 		} catch (Exception e) {
 			e.getMessage();
 		}

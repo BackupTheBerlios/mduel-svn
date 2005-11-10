@@ -1,5 +1,7 @@
 package server.action;
 
+import java.rmi.RemoteException;
+
 import server.agent.Agent;
 
 public class MigrateAction extends BaseAction  {
@@ -13,7 +15,7 @@ public class MigrateAction extends BaseAction  {
 	
 	public Object run(Agent agent) {
 		/*try {
-			agent.getHome().moveTo(agent, hostname);
+			agent.getHost().moveTo(agent);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}*/

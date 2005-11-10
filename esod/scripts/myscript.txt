@@ -7,16 +7,14 @@ definition {
 }
 
 execute {
-	migrate to 127.0.0.1 trace {
+	migrate to 10.200.5.246 trace {
 		run $server.action.AgentImpl.sayHello()
-		sleep 1000ms
-		run $server.tasks.OSDetailsTask() from 127.0.0.1
-		run $server.tasks.UserInfoTask() from 127.0.0.1
-	} reportcallback
-	migrate to 127.0.0.1 trace {
-		run $server.tasks.JNIGetEnvPathTask() from 127.0.0.1
-	} reportnow
-	migrate to 127.0.0.1 trace {
-		sleep 1000ms
+		run $server.tasks.OSDetailsTask() from 10.200.5.246
+		run $server.tasks.UserInfoTask() from 10.200.5.246
+	} output
+	migrate to 10.200.5.246 trace {
+		run $server.action.AgentImpl.sayHello()
+		run $server.tasks.OSDetailsTask() from 10.200.5.246
+		run $server.tasks.UserInfoTask() from 10.200.5.246
 	} reportmail miltonmoura@gmail.com smtp smtp.fct.unl.pt
 } reportfinal

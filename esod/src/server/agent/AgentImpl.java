@@ -1,8 +1,8 @@
 package server.agent;
 
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.LinkedList;
+import java.util.Properties;
 import java.util.Stack;
 
 import server.*;
@@ -14,7 +14,7 @@ import server.repository.HostReport;
 import server.repository.Repository;
 import server.repository.TaskReport;
 
-public class AgentImpl extends UnicastRemoteObject implements Agent, Cloneable {
+public class AgentImpl implements Agent, Cloneable {
 	private static final long serialVersionUID = 3258125839102259509L;
 
 	private Mediator mediator;
@@ -32,12 +32,12 @@ public class AgentImpl extends UnicastRemoteObject implements Agent, Cloneable {
 	 */
 	private String agentID;
 	
-	public AgentImpl() throws RemoteException {
+	public AgentImpl() {
 		super();
 		reportStack = new Stack();
 	}
 
-	public void init(AgentHost host) throws RemoteException {
+	public void init(AgentHost host) {
 		setHost(host);
 
 		try {
@@ -47,15 +47,14 @@ public class AgentImpl extends UnicastRemoteObject implements Agent, Cloneable {
 		}
 	}
 
-	public void start() throws RemoteException, NullPointerException {
+	public void start() throws NullPointerException, RemoteException {
 		boolean packed = false;
 		AgentHost host = null;
 		Object actionOutput;
 
 		HostReport hostReport = new HostReport(((TaskList) mediator.getActionList(this).getFirst()).getHost());
-		
 		Action action = mediator.getNextAction(this);
-		
+	
 		while (action != null) {
 
 			Action previousAction = action;
@@ -83,7 +82,7 @@ public class AgentImpl extends UnicastRemoteObject implements Agent, Cloneable {
 		host.remove(this);
 	}
 
-	public void finish() throws RemoteException {
+	public void finish() {
 		try {
 			mediator.unregisterAgent(this);
 		} catch (RemoteException e) {
@@ -96,7 +95,7 @@ public class AgentImpl extends UnicastRemoteObject implements Agent, Cloneable {
 		this.generateID();
 	}
 
-	public AgentScript getScript() throws RemoteException {
+	public AgentScript getScript() {
 		return this.agentScript;
 	}
 
@@ -110,11 +109,11 @@ public class AgentImpl extends UnicastRemoteObject implements Agent, Cloneable {
 		agentID = id;
 	}
 
-	public String getID() throws RemoteException {
+	public String getID() {
 		return agentID;
 	}
 
-	public String getNewHost() throws RemoteException {
+	public String getNewHost() {
 		try {
 			return ((TaskList) mediator.getActionList(this).getFirst()).getHost();
 		} catch (Exception e) {
@@ -122,15 +121,15 @@ public class AgentImpl extends UnicastRemoteObject implements Agent, Cloneable {
 	    }
 	}
 	
-	public Mediator getMediator() throws RemoteException {
+	public Mediator getMediator() {
 		return mediator;
 	}
 
-	public void setMediator(Mediator m) throws RemoteException {
+	public void setMediator(Mediator m) {
 		this.mediator = m;
 	}
 
-	public AgentHost getHost() throws RemoteException {
+	public AgentHost getHost() {
 		return agentHost;
 	}
 	
@@ -138,7 +137,7 @@ public class AgentImpl extends UnicastRemoteObject implements Agent, Cloneable {
 		return agentHost.getHostname();
 	}
 
-	public void setHost(AgentHost host) throws RemoteException {
+	public void setHost(AgentHost host) {
 		agentHost = host;
 	}
 	
@@ -158,7 +157,7 @@ public class AgentImpl extends UnicastRemoteObject implements Agent, Cloneable {
 		return this.home;
 	}
 
-	public LinkedList getHistory() throws RemoteException {
+	public LinkedList getHistory() {
 		
 		LinkedList history = new LinkedList();
 		HostReport tmp = null;
@@ -171,7 +170,7 @@ public class AgentImpl extends UnicastRemoteObject implements Agent, Cloneable {
 	}
 
 
-	public LinkedList getRoute() throws RemoteException {
+	public LinkedList getRoute() {
 		
 		LinkedList route = new LinkedList();
 		String tmp = null;
@@ -184,8 +183,13 @@ public class AgentImpl extends UnicastRemoteObject implements Agent, Cloneable {
 	}
 
 
-	public Object sayHello() throws RemoteException {
-		return "hello from agent " + getID();
+	public Object sayHello() {
+		//return "hello from agent " + getID();
+		Properties properties = new Properties();
+		 properties.setProperty("OS Name", System.getProperties().getProperty("os.name"));
+		 properties.setProperty("OS Architecture", System.getProperties().getProperty("os.arch"));
+		properties.setProperty("OS Version", System.getProperties().getProperty("os.version"));
+		return properties;
 	}
 
 	public HostReport getLastHostReport() {

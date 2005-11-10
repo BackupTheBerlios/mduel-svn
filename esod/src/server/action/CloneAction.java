@@ -14,12 +14,13 @@ public class CloneAction extends BaseAction {
 
 	public Object run(Agent agent) {
 		try {
-			AgentImpl parent = (AgentImpl)agent;
+			/*AgentImpl parent = (AgentImpl)agent;
 			Agent clone = (Agent)parent.clone();
 			clone.generateID();
 			clone.getMediator().transferActions(clone, parent);
 			agent.getHost().accept(clone);
-			return "cloned agent " + agent.getID();
+			return "cloned agent " + agent.getID();*/
+			return null;
 		} catch (Exception ex) {
 			return "error cloning agent: " + ex.getMessage();
 		}

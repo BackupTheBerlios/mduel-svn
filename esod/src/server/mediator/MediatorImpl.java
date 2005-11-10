@@ -1,7 +1,6 @@
 package server.mediator;
 
 import server.action.Action;
-import server.action.CloneAction;
 import server.agent.*;
 
 import java.net.MalformedURLException;

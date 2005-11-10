@@ -1,7 +1,7 @@
 package server.agent;
 
 import java.io.Serializable;
-import java.rmi.*;
+import java.rmi.RemoteException;
 import java.util.LinkedList;
 
 import server.AgentHost;
@@ -9,30 +9,30 @@ import server.mediator.Mediator;
 import server.repository.HostReport;
 import server.repository.Repository;
 
-public interface Agent extends Serializable, Remote {
-	void init(AgentHost host) throws RemoteException;
-	void start() throws RemoteException, NullPointerException;
-	void finish() throws RemoteException;
+public interface Agent extends Serializable, Cloneable {
+	void init(AgentHost host);
+	void start() throws NullPointerException, RemoteException;
+	void finish();
 
 	void generateID() throws RemoteException;
 	void setScript(AgentScript script) throws RemoteException;
-	AgentScript getScript() throws RemoteException;
-	String getID() throws RemoteException;
+	AgentScript getScript();
+	String getID();
 
-	Mediator getMediator() throws RemoteException;
-	void setMediator(Mediator m) throws RemoteException;
-	Repository getRepository() throws RemoteException;
-	void setRepository(Repository r) throws RemoteException;
-	
-	AgentHost getHost() throws RemoteException;
+	Mediator getMediator();
+	void setMediator(Mediator m);
+	Repository getRepository();
+	void setRepository(Repository r);
+
+	AgentHost getHost();
 	String getHostName() throws RemoteException;
-	void setHost(AgentHost host) throws RemoteException;
-	String getNewHost() throws RemoteException;
+	void setHost(AgentHost host);
+	String getNewHost();
 	
-	void setHome(AgentHost home) throws RemoteException;
-	AgentHost getHome() throws RemoteException;
+	void setHome(AgentHost home);
+	AgentHost getHome();
 
-	LinkedList getHistory() throws RemoteException;
-	LinkedList getRoute() throws RemoteException;
-	HostReport getLastHostReport() throws RemoteException;
+	LinkedList getHistory();
+	LinkedList getRoute();
+	HostReport getLastHostReport();
 }

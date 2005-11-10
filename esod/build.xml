@@ -27,7 +27,6 @@
 
   	<!-- generate stubs -->
   	<rmic classpath="${src}" classname="server.AgentHostImpl" base="${build}"/>
-  	<rmic classpath="${src}" classname="server.agent.AgentImpl" base="${build}"/>
   	<rmic classpath="${src}" classname="server.agent.AgentFactoryImpl" base="${build}"/>
    	<rmic classpath="${src}" classname="server.mediator.MediatorImpl" base="${build}"/>
 
@@ -93,7 +92,6 @@
 	    		<include name="server/AgentHostImpl_Stub.class"/>
     			<include name="server/agent/Agent.class"/>
     			<include name="server/agent/AgentScript.class"/>
-	    		<include name="server/agent/AgentImpl_Stub.class"/>
     			<include name="server/agent/AgentFactory.class"/>
 	    		<include name="server/agent/AgentFactoryImpl_Stub.class"/>
     			<include name="server/agent/TaskList.class"/>

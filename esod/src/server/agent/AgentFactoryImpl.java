@@ -14,14 +14,7 @@ public class AgentFactoryImpl extends UnicastRemoteObject implements AgentFactor
 	}
 
 	public Agent create(AgentHost host, String scriptFile) throws RemoteException {
-		Agent a = null;
-
-		try {
-			a = new AgentImpl();
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
-
+		Agent a = new AgentImpl();
 		AgentScript script = null;
 
 		try {
