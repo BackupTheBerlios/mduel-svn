@@ -9,10 +9,23 @@ import server.AgentHost;
 public class AgentFactoryImpl extends UnicastRemoteObject implements AgentFactory {
 	private static final long serialVersionUID = 949261756085028206L;
 
+	
+	/**
+	 * class constructor
+	 * 
+	 * @throws RemoteException
+	 */
 	public AgentFactoryImpl() throws RemoteException {
 		super();
 	}
 
+	/**
+	 * creates a new agent from a specified script
+	 * 
+	 * @throws RemoteException
+	 * @param host				first host of the agent
+	 * @param scriptFile		file from where to read the script
+	 */
 	public Agent create(AgentHost host, String scriptFile) throws RemoteException {
 		Agent a = new AgentImpl();
 		AgentScript script = null;

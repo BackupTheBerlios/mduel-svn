@@ -9,6 +9,9 @@ public class MediatorServer {
 		new MediatorServer();
 	}
 
+	/**
+	 * class constructor
+	 */
 	public MediatorServer () {
 		System.setSecurityManager(new RMISecurityManager());
 		try {

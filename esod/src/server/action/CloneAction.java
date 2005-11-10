@@ -7,11 +7,21 @@ public class CloneAction extends BaseAction {
 	private static final long serialVersionUID = 2231909621629728021L;
 	private boolean wait = false;
 
+	/**
+	 * class constructor
+	 * 
+	 * @param wait
+	 * @param trace
+	 */
 	public CloneAction(boolean wait, boolean trace) {
 		super(trace);
 		this.wait = true;
 	}
 
+	/**
+	 * this action isn't fully implemented
+	 * in this version of the project
+	 */
 	public Object run(Agent agent) {
 		try {
 			/*AgentImpl parent = (AgentImpl)agent;

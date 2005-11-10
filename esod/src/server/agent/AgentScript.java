@@ -16,6 +16,16 @@ public class AgentScript implements Serializable {
 	private String script;
 	private LinkedList actions;
 
+	/**
+	 * class constructor
+	 * 
+	 * @param id
+	 * @param author
+	 * @param date
+	 * @param comment
+	 * @param obs
+	 * @param text
+	 */
 	public AgentScript( 
 		String id,
 		String author,
@@ -32,42 +42,92 @@ public class AgentScript implements Serializable {
 		this.script  = text;
 	}
 
+	/**
+	 * returns a string with the scriptID
+	 * 
+	 * @return				script identifier
+	 */
 	public String getScriptID() {
 		return scriptID.replaceAll("\"", "");
 	}
 
+	/**
+	 * gets the author of the script
+	 * 
+	 * @return				script author
+	 */
 	public String getAuthor() {
 		return author;
 	}
 	
+	/**
+	 * gets the creation date of the script
+	 * 
+	 * @return				script creation date
+	 */
 	public String getDate() {
 		return date;
 	}
 	
+	/**
+	 * gets the script comments
+	 * 
+	 * @return				script comments
+	 */
 	public String getComment() {
 		return comment;
 	}
 	
+	/**
+	 * gets the script observations
+	 * 
+	 * @return				script observations
+	 */
 	public String getObservations() {
 		return observations;
 	}
 	
+	/**
+	 * gets the script
+	 * 
+	 * @return				String containing the agent script
+	 */
 	public String getScript() {
 		return script;
 	}
 	
+	/**
+	 * sets a new script to the agent
+	 * 
+	 * @param text			script to be set
+	 */
 	public void setScript(String text) {
 		this.script = text;
 	}
 	
+	/**
+	 * gets a list of the agent actions
+	 * 
+	 * @return				LinkedList with the agent actions
+	 */
 	public LinkedList getActions() {
 		return actions;
 	}
 	
+	/**
+	 * sets the actions to be executed
+	 * 
+	 * @param actions		list of actions to be set
+	 */
 	public void setActions(LinkedList actions) {
 		this.actions = actions;
 	}
 
+	/**
+	 * generates a MD5 hash from the agent script
+	 * 
+	 * @return				the hash generated
+	 */
 	public String getMD5Hash() {
 		String hash = null;
 

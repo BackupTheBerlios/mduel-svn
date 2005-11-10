@@ -17,6 +17,9 @@ public class AgentServer {
 		new AgentServer();
 	}
 
+	/**
+	 * class constructor
+	 */
 	public AgentServer() {
 		System.setSecurityManager(new RMISecurityManager());
 		try {

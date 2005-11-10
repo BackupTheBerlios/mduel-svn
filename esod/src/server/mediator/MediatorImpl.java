@@ -17,6 +17,7 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 	 * class constructor
 	 * 
 	 * @throws RemoteException
+	 * 
 	 */
 	public MediatorImpl() throws RemoteException {
 		agentTable = new Hashtable();
@@ -71,6 +72,7 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 	/**
 	 * Finds and returns an agent by is agentID
 	 * 
+	 * @throws RemoteException
 	 * @param agentID		agent identifier
 	 * @return				the agent found. Null if not found.
 	 */
@@ -110,6 +112,7 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 	
 	/**
 	 * 
+	 * @throws RemoteException
 	 */
 	public void run() throws RemoteException {
 		// main loop
@@ -118,6 +121,7 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 	/**
 	 * Returns the list of actions to be executed by the agent
 	 * 
+	 * @throws RemoteException
 	 * @param agent			agent from witch to retrive the list
 	 * @return				a LinkedList containing the actions of the
 	 * 						agent (a)
@@ -129,7 +133,11 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 	
 	
 	/**
+	 * fetches the AgentInfo of a specific agent and removes the
+	 * first action of the taskList
 	 * 
+	 * @throws RemoteException
+	 * @param agent			object to get the AgentInfo
 	 */
 	public void skipActionList(Agent agent) throws RemoteException {
 		AgentInfo ai = (AgentInfo) this.agentTable.get(agent.getID());
@@ -139,6 +147,12 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 		this.agentTable.put(agent.getID(), ai);
 	}
 
+	/**
+	 * returns a factory to create agents
+	 * 
+	 * @throws RemoteException
+	 * @return				factory to create agents
+	 */
 	public AgentFactory getAgentFactory() throws RemoteException {
 		AgentFactory agentFactory = null;
 
@@ -156,13 +170,29 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 		return agentFactory;
 	}
 
-	// TODO: rename this method to something like bypassActions or injectAction
+	/**
+	 * overwrites the agent task list with a specific 
+	 * action
+	 * 
+	 * @throws RemoteException
+	 * @param agentID			agent identifier
+	 * @param action			new action to set in the agent
+	 * 							specified in agentID 
+	 */
 	public void interrupt(String agentID, Action action) throws RemoteException {
 		LinkedList newTask = new LinkedList();
 		newTask.add(action);
 		((AgentInfo)agentTable.get(agentID)).setActionList(newTask);
 	}
 
+	/**
+	 * search the agentTable for active agents,
+	 * and creates a LinkedList with the identifiers
+	 * of the agents found
+	 * 
+	 * @throws RemoteException
+	 * @return				LinkedList of agentID's
+	 */
 	public LinkedList getInfo() throws RemoteException {
 		
 		Collection e = agentTable.values();
@@ -174,6 +204,12 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 		return result;
 	}
 
+	/**
+	 * this method suports the agent clone operation
+	 * that isn't fully implemented in this version.
+	 * 
+	 * @throws RemoteException
+	 */
 	public void transferActions(Agent dest, Agent orig) throws RemoteException {
 		AgentInfo ai = (AgentInfo) this.agentTable.get(orig.getID());
 		LinkedList ll = ai.getActionList();

@@ -15,13 +15,18 @@ public class RepositoryImpl extends UnicastRemoteObject implements Repository, S
 	private static final long serialVersionUID = 6893905241391990022L;
 	private Hashtable table;
 	
+	/**
+	 * class constructor 
+	 * 
+	 * @throws RemoteException
+	 */
 	public RepositoryImpl() throws RemoteException {
 		table = new Hashtable(50);
 	}
 
 	
 	/**
-	 * class constructor 
+	 * 
 	 * @param agentID	the string that identifies the agent
 	 * @param report	the report of the agent in the last host
 	 */
@@ -72,6 +77,10 @@ public class RepositoryImpl extends UnicastRemoteObject implements Repository, S
 		home.reportBack( (AgentReport)table.get(agentID));
 	}
 
+	/**
+	 * 
+	 *
+	 */
 	public void run() {	}
 	
 	/**
