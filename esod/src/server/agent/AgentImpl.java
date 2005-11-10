@@ -184,12 +184,7 @@ public class AgentImpl implements Agent, Cloneable {
 
 
 	public Object sayHello() {
-		//return "hello from agent " + getID();
-		Properties properties = new Properties();
-		 properties.setProperty("OS Name", System.getProperties().getProperty("os.name"));
-		 properties.setProperty("OS Architecture", System.getProperties().getProperty("os.arch"));
-		properties.setProperty("OS Version", System.getProperties().getProperty("os.version"));
-		return properties;
+		return "hello from agent " + getID();
 	}
 
 	public HostReport getLastHostReport() {

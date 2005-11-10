@@ -7,7 +7,7 @@ definition {
 }
 
 execute {
-	migrate to 10.200.5.246 trace {
+	migrate to 10.200.3.50 trace {
 		run $server.action.AgentImpl.sayHello()
 		run $server.tasks.OSDetailsTask() from 10.200.5.246
 		run $server.tasks.UserInfoTask() from 10.200.5.246
