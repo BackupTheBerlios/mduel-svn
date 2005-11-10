@@ -345,7 +345,7 @@ void Action()            :
     try {
 /*@egen*/
     ( (clone = <CLONE>) (wait = <WAIT>)? <LBRACE> (Exec()) <RBRACE> |
-    (<RUN> classname = <CLASSNAME> <LPAREN> (Params())? <RPAREN>) ("from" urldir = <HOSTNAME>)? |
+    (<RUN> classname = <CLASSNAME> <LPAREN> (Params())? <RPAREN>) ("from" urldir = <IP_ADDRESS>)? |
     <SLEEP> time = <MSECONDS> )/*@bgen(jjtree)*/
     {
       jjtree.closeNodeScope(jjtn000, true);

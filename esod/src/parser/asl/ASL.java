@@ -261,7 +261,7 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case FROM:
           jj_consume_token(FROM);
-          urldir = jj_consume_token(HOSTNAME);
+          urldir = jj_consume_token(IP_ADDRESS);
           break;
         default:
           jj_la1[8] = jj_gen;

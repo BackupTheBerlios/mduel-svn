@@ -235,7 +235,7 @@ void Action() #ActionNode:
 }
 {
     ( (clone = <CLONE>) (wait = <WAIT>)? <LBRACE> (Exec()) <RBRACE> |
-    (<RUN> classname = <CLASSNAME> <LPAREN> (Params())? <RPAREN>) ("from" urldir = <HOSTNAME>)? |
+    (<RUN> classname = <CLASSNAME> <LPAREN> (Params())? <RPAREN>) ("from" urldir = <IP_ADDRESS>)? |
     <SLEEP> time = <MSECONDS> )
     {
 	    	if (clone != null)
