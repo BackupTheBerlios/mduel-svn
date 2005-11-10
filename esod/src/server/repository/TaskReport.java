@@ -17,10 +17,11 @@ public class TaskReport implements Serializable {
 		this.timeStamp = timeStamp;
 	}
 	
-	
-	public void PrintTask() {
-		System.out.println("TASK: " + task);
-		System.out.println("OUTPUT: " + output);
-		System.out.println("TIMESTAMP: " + timeStamp);
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("TASK: " + task + "\n");
+		sb.append("OUTPUT: " + output + "\n");
+		sb.append("TIMESTAMP: " + timeStamp + "\n");
+		return sb.toString();
 	}
 }

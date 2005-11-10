@@ -2,6 +2,12 @@
 <classpath>
 	<classpathentry excluding="tests/" kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="mail.jar"/>
+	<classpathentry kind="src" path="3rdparty"/>
+	<classpathentry kind="lib" path="3rdparty/smtp.jar"/>
+	<classpathentry kind="lib" path="3rdparty/pop3.jar"/>
+	<classpathentry kind="lib" path="3rdparty/mailapi.jar"/>
+	<classpathentry kind="lib" path="3rdparty/mail.jar"/>
+	<classpathentry kind="lib" path="3rdparty/imap.jar"/>
+	<classpathentry kind="lib" path="3rdparty/activation.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

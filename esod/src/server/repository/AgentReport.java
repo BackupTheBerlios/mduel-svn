@@ -91,7 +91,7 @@ public class AgentReport implements Serializable {
 		System.out.println("AGENT-ID: " + agentID.toString());
 		while (i.hasNext()) {
 			HostReport tmp = (HostReport)i.next();
-			tmp.printReport();
+			System.out.println(tmp);
 		}
 	}
 	

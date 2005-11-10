@@ -4,7 +4,10 @@ import javax.mail.*;
 import javax.mail.internet.*;
 
 import java.util.*;
+
 import server.agent.Agent;
+import server.repository.HostReport;
+import server.repository.TaskReport;
 
 public class ReportMailAction extends BaseAction {
 	private static final long serialVersionUID = -5367675031036689008L;
@@ -20,18 +23,33 @@ public class ReportMailAction extends BaseAction {
 	public Object run(Agent agent) {
 		Properties p = new Properties();
 		p.put("mail.smtp.host", smtp);
-		Session s = Session.getDefaultInstance(p, null);
-		Message msg = new MimeMessage(s);
+		p.put("mail.smtp.auth", "true");
 		try {
+			Authenticator auth = new SMTPAuthenticator();
+			Session s = Session.getDefaultInstance(p, auth);
+			Message msg = new MimeMessage(s);
+
 			msg.setFrom(new InternetAddress("agents@fct.unl"));
 			msg.setRecipient(Message.RecipientType.TO, new InternetAddress(email));
 			msg.setSubject("agent " + agent.getID() + " report");
-			msg.setContent("hello from here", "text/plain");
+			
+			HostReport rpt = agent.getLastHostReport();
+			msg.setContent(rpt.toString(), "text/plain");
 			Transport.send(msg);
 			return "sent a report to " + email + " via " + smtp;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "error sending email!";
 		}
+	}
+	
+	private class SMTPAuthenticator extends javax.mail.Authenticator
+	{
+	    public PasswordAuthentication getPasswordAuthentication()
+	    {
+	        String username = "a12693";
+	        String password = "Caiser.Man";
+	        return new PasswordAuthentication(username, password);
+	    }
 	}
 }

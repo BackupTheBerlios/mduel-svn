@@ -18,5 +18,5 @@ execute {
 	} reportnow
 	migrate to 127.0.0.1 trace {
 		sleep 1000ms
-	} reportmail miltonmoura@gmail.com smtp pop.gmail.com
+	} reportmail miltonmoura@gmail.com smtp smtp.fct.unl.pt
 } reportfinal

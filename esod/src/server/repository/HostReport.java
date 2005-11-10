@@ -61,18 +61,16 @@ public class HostReport implements Serializable {
 		return tasks;
 	}
 	
-	/**
-	 * 
-	 *
-	 */
-	public void printReport() {
-		
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
 		Iterator i = tasks.listIterator();
+
 		TaskReport tmpTask;
-		System.out.println("HOST: " + host);
+		sb.append("HOST: " + host + "\n");
 		while(i.hasNext()) {
 			tmpTask = (TaskReport)i.next();
-			tmpTask.PrintTask();
+			sb.append(tmpTask);
 		}
+		return sb.toString();
 	}
 }

@@ -181,7 +181,7 @@ public class Client extends AgentHostImpl {
 				i = SavitchIn.readInt();		
 				
 				HostReport hostReport = client.getRepository().getLastReport((String)client.getList().get(i));
-				hostReport.printReport();
+				System.out.println(hostReport);
 				
 				menuInit();
 				break;

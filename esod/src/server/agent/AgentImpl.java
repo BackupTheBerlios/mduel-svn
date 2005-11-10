@@ -187,4 +187,8 @@ public class AgentImpl extends UnicastRemoteObject implements Agent, Cloneable {
 	public Object sayHello() throws RemoteException {
 		return "hello from agent " + getID();
 	}
+
+	public HostReport getLastHostReport() {
+		return (HostReport) reportStack.peek();
+	}
 }

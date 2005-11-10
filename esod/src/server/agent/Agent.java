@@ -34,4 +34,5 @@ public interface Agent extends Serializable, Remote {
 
 	LinkedList getHistory() throws RemoteException;
 	LinkedList getRoute() throws RemoteException;
+	HostReport getLastHostReport() throws RemoteException;
 }

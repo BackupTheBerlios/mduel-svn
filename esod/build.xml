@@ -21,7 +21,9 @@
   	<javacc javacchome="${javacc.home}" target="${src}/parser/asl/asl.jj" outputdirectory="${src}/parser/asl"/>
   	
   	<!-- compile source code -->
-    <javac debug="${debug}" classpath="./mail.jar" debuglevel="source" srcdir="${src}" destdir="${build}"/>
+    <javac
+    		debug="${debug}"
+    		classpath="${build}/../3rdparty/activation.jar:${build}/../3rdparty/mail.jar" debuglevel="source" srcdir="${src}" destdir="${build}"/>
 
   	<!-- generate stubs -->
   	<rmic classpath="${src}" classname="server.AgentHostImpl" base="${build}"/>
