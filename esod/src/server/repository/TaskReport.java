@@ -5,11 +5,13 @@ import server.action.Action;
 
 public class TaskReport implements Serializable {
 	private static final long serialVersionUID = 2905688692294421035L;
+
 	private Action task;
+
 	private Object output;
+
 	private Object timeStamp;
-	
-	
+
 	/**
 	 * class constructor
 	 * 
@@ -23,8 +25,7 @@ public class TaskReport implements Serializable {
 		this.output = output;
 		this.timeStamp = timeStamp;
 	}
-	
-	
+
 	/**
 	 * sends a readable copy of the object to
 	 * the standard output

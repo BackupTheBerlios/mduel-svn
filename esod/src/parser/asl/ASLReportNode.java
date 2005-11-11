@@ -4,21 +4,23 @@ package parser.asl;
 
 public class ASLReportNode extends SimpleNode {
 	public String report;
+
 	public String email;
+
 	public String smtp;
+
 	public String host;
 
-  public ASLReportNode(int id) {
-    super(id);
-  }
+	public ASLReportNode(int id) {
+		super(id);
+	}
 
-  public ASLReportNode(ASL p, int id) {
-    super(p, id);
-  }
+	public ASLReportNode(ASL p, int id) {
+		super(p, id);
+	}
 
-
-  /** Accept the visitor. **/
-  public Object jjtAccept(ASLVisitor visitor, Object data) {
-    return visitor.visit(this, data);
-  }
+	/** Accept the visitor. **/
+	public Object jjtAccept(ASLVisitor visitor, Object data) {
+		return visitor.visit(this, data);
+	}
 }

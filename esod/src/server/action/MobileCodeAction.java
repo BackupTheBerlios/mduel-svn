@@ -5,13 +5,16 @@ import java.lang.reflect.*;
 
 public class MobileCodeAction extends BaseAction {
 	private static final long serialVersionUID = 1698541644546154950L;
+
 	private String method;
 
 	/**
 	 * class constructor
 	 * 
-	 * @param m				name of the method to be executed		
-	 * @param trace			regists if the action was sucessful
+	 * @param m
+	 *            name of the method to be executed
+	 * @param trace
+	 *            regists if the action was sucessful
 	 */
 	public MobileCodeAction(String m, boolean trace) {
 		super(trace);
@@ -19,14 +22,14 @@ public class MobileCodeAction extends BaseAction {
 	}
 
 	/**
-	 * executes the method specified by the
-	 * private member m
+	 * executes the method specified by the private member m
 	 * 
-	 * @param				agent to execute que action
+	 * @param agent
+	 *            to execute que action
 	 */
 	public Object run(Agent agent) {
 		int idx = this.method.lastIndexOf(".");
-		this.method = this.method.substring(idx+1);
+		this.method = this.method.substring(idx + 1);
 
 		try {
 			Class c = Class.forName(agent.getClass().getName());
@@ -35,7 +38,7 @@ public class MobileCodeAction extends BaseAction {
 		} catch (Exception e) {
 			System.out.println("unable to run: " + this.method);
 		}
-		
+
 		return "unable to run mobile code!";
 	}
 }

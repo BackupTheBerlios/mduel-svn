@@ -27,7 +27,8 @@ public class AgentHostImpl extends UnicastRemoteObject implements AgentHost {
 	 * accepts an agent in the host
 	 * 
 	 * @throws RemoteException
-	 * @param agent				agent to be accepted
+	 * @param agent
+	 *            agent to be accepted
 	 */
 	public void accept(Agent agent) throws RemoteException {
 		System.out.println("> accepting agent '" + agent.getID() + "'");
@@ -55,7 +56,8 @@ public class AgentHostImpl extends UnicastRemoteObject implements AgentHost {
 	 * moves an agent to the next host
 	 * 
 	 * @throws RemoteException
-	 * @param agent					agent to be moved
+	 * @param agent
+	 *            agent to be moved
 	 */
 	public void moveTo(Agent agent) throws RemoteException {
 		AgentHost host = null;
@@ -79,10 +81,10 @@ public class AgentHostImpl extends UnicastRemoteObject implements AgentHost {
 	}
 
 	/**
-	 * removes the agent from the host
-	 * and sends it to the next node
+	 * removes the agent from the host and sends it to the next node
 	 * 
-	 * @param agent				agent to be removed
+	 * @param agent
+	 *            agent to be removed
 	 * 
 	 */
 	public void remove(Agent agent) {
@@ -102,7 +104,7 @@ public class AgentHostImpl extends UnicastRemoteObject implements AgentHost {
 	 * gets the name of the current host
 	 * 
 	 * @throws RemoteException
-	 * @return					current hostName
+	 * @return current hostName
 	 */
 	public String getHostname() throws RemoteException {
 		String hostname = null;
@@ -120,7 +122,8 @@ public class AgentHostImpl extends UnicastRemoteObject implements AgentHost {
 	/**
 	 * sends a readable AgentReport object to the standard output
 	 * 
-	 * @param					host report to print
+	 * @param host
+	 *            report to print
 	 */
 	public void reportBack(AgentReport report) throws RemoteException {
 		report.printReport();

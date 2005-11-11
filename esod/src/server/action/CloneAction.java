@@ -5,6 +5,7 @@ import server.agent.AgentImpl;
 
 public class CloneAction extends BaseAction {
 	private static final long serialVersionUID = 2231909621629728021L;
+
 	private boolean wait = false;
 
 	/**
@@ -19,17 +20,17 @@ public class CloneAction extends BaseAction {
 	}
 
 	/**
-	 * this action isn't fully implemented
-	 * in this version of the project
+	 * this action isn't fully implemented in this version of the project
 	 */
 	public Object run(Agent agent) {
 		try {
-			/*AgentImpl parent = (AgentImpl)agent;
-			Agent clone = (Agent)parent.clone();
-			clone.generateID();
-			clone.getMediator().transferActions(clone, parent);
-			agent.getHost().accept(clone);
-			return "cloned agent " + agent.getID();*/
+			/*
+			 * AgentImpl parent = (AgentImpl)agent; Agent clone =
+			 * (Agent)parent.clone(); clone.generateID();
+			 * clone.getMediator().transferActions(clone, parent);
+			 * agent.getHost().accept(clone); return "cloned agent " +
+			 * agent.getID();
+			 */
 			return null;
 		} catch (Exception ex) {
 			return "error cloning agent: " + ex.getMessage();

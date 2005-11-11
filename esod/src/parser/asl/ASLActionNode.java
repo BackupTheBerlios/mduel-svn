@@ -4,22 +4,25 @@ package parser.asl;
 
 public class ASLActionNode extends SimpleNode {
 	public String clone;
+
 	public String wait;
+
 	public String classname;
+
 	public String urldir;
+
 	public String time;
-	
-  public ASLActionNode(int id) {
-    super(id);
-  }
 
-  public ASLActionNode(ASL p, int id) {
-    super(p, id);
-  }
+	public ASLActionNode(int id) {
+		super(id);
+	}
 
+	public ASLActionNode(ASL p, int id) {
+		super(p, id);
+	}
 
-  /** Accept the visitor. **/
-  public Object jjtAccept(ASLVisitor visitor, Object data) {
-    return visitor.visit(this, data);
-  }
+	/** Accept the visitor. **/
+	public Object jjtAccept(ASLVisitor visitor, Object data) {
+		return visitor.visit(this, data);
+	}
 }

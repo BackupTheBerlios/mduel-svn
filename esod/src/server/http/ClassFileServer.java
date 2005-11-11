@@ -13,10 +13,8 @@ package server.http;
 import java.io.*;
 
 /**
- * The ClassFileServer implements a ClassServer that
- * reads class files from the file system. See the
- * doc for the "Main" method for how to run this
- * server.
+ * The ClassFileServer implements a ClassServer that reads class files from the
+ * file system. See the doc for the "Main" method for how to run this server.
  */
 public class ClassFileServer extends ClassServer {
 
@@ -26,8 +24,9 @@ public class ClassFileServer extends ClassServer {
 
 	/**
 	 * Constructs a ClassFileServer.
-	 *
-	 * @param classpath the classpath where the server locates classes
+	 * 
+	 * @param classpath
+	 *            the classpath where the server locates classes
 	 */
 	public ClassFileServer(int port, String classpath) throws IOException {
 		super(port);
@@ -35,14 +34,14 @@ public class ClassFileServer extends ClassServer {
 	}
 
 	/**
-	 * Returns an array of bytes containing the bytecodes for
-	 * the class represented by the argument <b>path</b>.
-	 * The <b>path</b> is a dot separated class name with
-	 * the ".class" extension removed.
-	 *
+	 * Returns an array of bytes containing the bytecodes for the class
+	 * represented by the argument <b>path</b>. The <b>path</b> is a dot
+	 * separated class name with the ".class" extension removed.
+	 * 
 	 * @return the bytecodes for the class
-	 * @exception ClassNotFoundException if the class corresponding
-	 * to <b>path</b> could not be loaded.
+	 * @exception ClassNotFoundException
+	 *                if the class corresponding to <b>path</b> could not be
+	 *                loaded.
 	 */
 	public byte[] getBytes(String path) throws IOException,
 			ClassNotFoundException {
@@ -63,26 +62,30 @@ public class ClassFileServer extends ClassServer {
 	}
 
 	/**
-	 * Main method to create the class server that reads
-	 * class files. This takes two command line arguments, the
-	 * port on which the server accepts requests and the
-	 * root of the classpath. To start up the server: <br><br>
-	 *
+	 * Main method to create the class server that reads class files. This takes
+	 * two command line arguments, the port on which the server accepts requests
+	 * and the root of the classpath. To start up the server: <br>
+	 * <br>
+	 * 
 	 * <code>   java ClassFileServer <port> <classpath>
-	 * </code><br><br>
-	 *
-	 * The codebase of an RMI server using this webserver would
-	 * simply contain a URL with the host and port of the web
-	 * server (if the webserver's classpath is the same as
-	 * the RMI server's classpath): <br><br>
-	 *
+	 * </code><br>
+	 * <br>
+	 * 
+	 * The codebase of an RMI server using this webserver would simply contain a
+	 * URL with the host and port of the web server (if the webserver's
+	 * classpath is the same as the RMI server's classpath): <br>
+	 * <br>
+	 * 
 	 * <code>   java -Djava.rmi.server.codebase=http://zaphod:2001/ RMIServer
-	 * </code> <br><br>
-	 *
-	 * You can create your own class server inside your RMI server
-	 * application instead of running one separately. In your server
-	 * main simply create a ClassFileServer: <br><br>
-	 *
+	 * </code>
+	 * <br>
+	 * <br>
+	 * 
+	 * You can create your own class server inside your RMI server application
+	 * instead of running one separately. In your server main simply create a
+	 * ClassFileServer: <br>
+	 * <br>
+	 * 
 	 * <code>   new ClassFileServer(port, classpath);
 	 * </code>
 	 */

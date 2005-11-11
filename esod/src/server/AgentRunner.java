@@ -6,7 +6,7 @@ import server.agent.Agent;
 public class AgentRunner extends Thread {
 
 	protected Agent agent;
-	
+
 	/**
 	 * class constructor
 	 * 
@@ -15,7 +15,7 @@ public class AgentRunner extends Thread {
 	public AgentRunner(Agent agent) {
 		this.agent = agent;
 	}
-	
+
 	/**
 	 * starts the execution of an agent
 	 */

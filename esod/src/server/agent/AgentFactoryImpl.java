@@ -6,10 +6,10 @@ import java.rmi.server.UnicastRemoteObject;
 import parser.ASLParser;
 import server.AgentHost;
 
-public class AgentFactoryImpl extends UnicastRemoteObject implements AgentFactory {
+public class AgentFactoryImpl extends UnicastRemoteObject implements
+		AgentFactory {
 	private static final long serialVersionUID = 949261756085028206L;
 
-	
 	/**
 	 * class constructor
 	 * 
@@ -23,10 +23,13 @@ public class AgentFactoryImpl extends UnicastRemoteObject implements AgentFactor
 	 * creates a new agent from a specified script
 	 * 
 	 * @throws RemoteException
-	 * @param host				first host of the agent
-	 * @param scriptFile		file from where to read the script
+	 * @param host
+	 *            first host of the agent
+	 * @param scriptFile
+	 *            file from where to read the script
 	 */
-	public Agent create(AgentHost host, String scriptFile) throws RemoteException {
+	public Agent create(AgentHost host, String scriptFile)
+			throws RemoteException {
 		Agent a = new AgentImpl();
 		AgentScript script = null;
 

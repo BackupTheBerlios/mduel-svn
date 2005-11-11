@@ -3,24 +3,27 @@
 package parser.asl;
 
 public class ASLAgentDefinitionNode extends SimpleNode {
-	
+
 	public String scriptID;
+
 	public String author;
+
 	public String date;
+
 	public String comment;
+
 	public String obs;
 
-  public ASLAgentDefinitionNode(int id) {
-    super(id);
-  }
+	public ASLAgentDefinitionNode(int id) {
+		super(id);
+	}
 
-  public ASLAgentDefinitionNode(ASL p, int id) {
-    super(p, id);
-  }
+	public ASLAgentDefinitionNode(ASL p, int id) {
+		super(p, id);
+	}
 
-
-  /** Accept the visitor. **/
-  public Object jjtAccept(ASLVisitor visitor, Object data) {
-    return visitor.visit(this, data);
-  }
+	/** Accept the visitor. **/
+	public Object jjtAccept(ASLVisitor visitor, Object data) {
+		return visitor.visit(this, data);
+	}
 }

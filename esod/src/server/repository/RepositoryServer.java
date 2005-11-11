@@ -12,8 +12,9 @@ public class RepositoryServer {
 	public RepositoryServer() {
 		System.setSecurityManager(new RMISecurityManager());
 		try {
-			RepositoryImpl repository = new RepositoryImpl(); 
-			System.out.println("starting Repository on '" + InetAddress.getLocalHost().getHostName() + "'...");
+			RepositoryImpl repository = new RepositoryImpl();
+			System.out.println("starting Repository on '"
+					+ InetAddress.getLocalHost().getHostName() + "'...");
 			System.out.print("> rebinding... ");
 			Naming.rebind(Repository.class.getName(), repository);
 			System.out.println("ok!");
@@ -24,7 +25,7 @@ public class RepositoryServer {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}		
-		
+		}
+
 	}
 }

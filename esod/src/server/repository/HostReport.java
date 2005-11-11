@@ -8,6 +8,7 @@ public class HostReport implements Serializable {
 	private static final long serialVersionUID = 9159528855848695637L;
 
 	private String host;
+
 	private LinkedList tasks;
 
 	/**
@@ -17,7 +18,7 @@ public class HostReport implements Serializable {
 	public HostReport() {
 		this.tasks = new LinkedList();
 	}
-	
+
 	/**
 	 * class constructor
 	 * @param host		string containing the host
@@ -27,7 +28,7 @@ public class HostReport implements Serializable {
 		this.host = host;
 		this.tasks = new LinkedList();
 	}
-	
+
 	/**
 	 * sets a new list of reported tasks
 	 * 
@@ -36,7 +37,7 @@ public class HostReport implements Serializable {
 	public void setTasks(LinkedList tasks) {
 		this.tasks = tasks;
 	}
-	
+
 	/**
 	 * adds a task report to the task list
 	 * 
@@ -45,7 +46,7 @@ public class HostReport implements Serializable {
 	public void setTask(TaskReport task) {
 		tasks.add(task);
 	}
-	
+
 	/**
 	 * returns the name of the host
 	 * 
@@ -55,7 +56,7 @@ public class HostReport implements Serializable {
 	public String getHost() {
 		return host;
 	}
-	
+
 	/**
 	 * returns the list of tasks preformed
 	 * 
@@ -65,7 +66,7 @@ public class HostReport implements Serializable {
 	public LinkedList getTasks() {
 		return tasks;
 	}
-	
+
 	/**
 	 * sends a readable copy of the object to
 	 * the standard output
@@ -76,8 +77,8 @@ public class HostReport implements Serializable {
 
 		TaskReport tmpTask;
 		sb.append("HOST: " + host + "\n");
-		while(i.hasNext()) {
-			tmpTask = (TaskReport)i.next();
+		while (i.hasNext()) {
+			tmpTask = (TaskReport) i.next();
 			sb.append(tmpTask);
 		}
 		return sb.toString();

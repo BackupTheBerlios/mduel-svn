@@ -4,19 +4,19 @@ package parser.asl;
 
 public class ASLMigrateNode extends SimpleNode {
 	public String ipAddress;
+
 	public String trace;
 
-  public ASLMigrateNode(int id) {
-    super(id);
-  }
+	public ASLMigrateNode(int id) {
+		super(id);
+	}
 
-  public ASLMigrateNode(ASL p, int id) {
-    super(p, id);
-  }
+	public ASLMigrateNode(ASL p, int id) {
+		super(p, id);
+	}
 
-
-  /** Accept the visitor. **/
-  public Object jjtAccept(ASLVisitor visitor, Object data) {
-    return visitor.visit(this, data);
-  }
+	/** Accept the visitor. **/
+	public Object jjtAccept(ASLVisitor visitor, Object data) {
+		return visitor.visit(this, data);
+	}
 }

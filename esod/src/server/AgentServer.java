@@ -24,7 +24,8 @@ public class AgentServer {
 		System.setSecurityManager(new RMISecurityManager());
 		try {
 			AgentHostImpl ah = new AgentHostImpl();
-			System.out.println("starting AgentServer on '" + ah.getHostname() + "'...");
+			System.out.println("starting AgentServer on '" + ah.getHostname()
+					+ "'...");
 			System.out.print("> rebinding... ");
 			Naming.rebind(AgentHost.class.getName(), ah);
 			System.out.println("ok!");
@@ -35,6 +36,6 @@ public class AgentServer {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 }

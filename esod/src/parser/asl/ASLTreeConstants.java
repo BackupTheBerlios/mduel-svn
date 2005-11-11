@@ -2,28 +2,26 @@
 
 package parser.asl;
 
-public interface ASLTreeConstants
-{
-  public int JJTSTARTNODE = 0;
-  public int JJTAGENTDEFINITIONNODE = 1;
-  public int JJTEXECNODE = 2;
-  public int JJTMIGRATENODE = 3;
-  public int JJTACTIONNODE = 4;
-  public int JJTREPORTNODE = 5;
-  public int JJTOUTPUTNODE = 6;
-  public int JJTPARAMSNODE = 7;
-  public int JJTINPUTNODE = 8;
+public interface ASLTreeConstants {
+	public int JJTSTARTNODE = 0;
 
+	public int JJTAGENTDEFINITIONNODE = 1;
 
-  public String[] jjtNodeName = {
-    "StartNode",
-    "AgentDefinitionNode",
-    "ExecNode",
-    "MigrateNode",
-    "ActionNode",
-    "ReportNode",
-    "OutputNode",
-    "ParamsNode",
-    "InputNode",
-  };
+	public int JJTEXECNODE = 2;
+
+	public int JJTMIGRATENODE = 3;
+
+	public int JJTACTIONNODE = 4;
+
+	public int JJTREPORTNODE = 5;
+
+	public int JJTOUTPUTNODE = 6;
+
+	public int JJTPARAMSNODE = 7;
+
+	public int JJTINPUTNODE = 8;
+
+	public String[] jjtNodeName = { "StartNode", "AgentDefinitionNode",
+			"ExecNode", "MigrateNode", "ActionNode", "ReportNode",
+			"OutputNode", "ParamsNode", "InputNode", };
 }

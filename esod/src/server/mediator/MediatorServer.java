@@ -12,11 +12,12 @@ public class MediatorServer {
 	/**
 	 * class constructor
 	 */
-	public MediatorServer () {
+	public MediatorServer() {
 		System.setSecurityManager(new RMISecurityManager());
 		try {
-			MediatorImpl mediator = new MediatorImpl(); 
-			System.out.println("starting Mediator on '" + InetAddress.getLocalHost().getHostName() + "'...");
+			MediatorImpl mediator = new MediatorImpl();
+			System.out.println("starting Mediator on '"
+					+ InetAddress.getLocalHost().getHostName() + "'...");
 			System.out.print("> rebinding... ");
 			Naming.rebind(Mediator.class.getName(), mediator);
 			System.out.println("ok!");
@@ -27,6 +28,6 @@ public class MediatorServer {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 }

@@ -8,6 +8,7 @@ public class TaskList implements Serializable {
 	private static final long serialVersionUID = 6792247681750179948L;
 
 	private String nextHost;
+
 	private LinkedList tasks;
 
 	/**
@@ -19,7 +20,7 @@ public class TaskList implements Serializable {
 		nextHost = host;
 		tasks = new LinkedList();
 	}
-	
+
 	/**
 	 * sets a new task
 	 * 
@@ -46,7 +47,7 @@ public class TaskList implements Serializable {
 	public String getHost() {
 		return nextHost;
 	}
-	
+
 	/**
 	 * gets the tasks private member
 	 * 

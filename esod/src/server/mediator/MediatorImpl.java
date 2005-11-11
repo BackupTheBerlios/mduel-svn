@@ -39,13 +39,13 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 	 */
 	public void registerAgent(Agent agent, AgentInfo info) {
 		try {
-				if (!agentTable.containsKey(agent.getID())) {
-					agent.setMediator(this);
-					agentTable.put(agent.getID(), info);
-					System.out.println("> registered agent " + agent.getID());
-				} else {
-					// something in the way she moves
-				}
+			if (!agentTable.containsKey(agent.getID())) {
+				agent.setMediator(this);
+				agentTable.put(agent.getID(), info);
+				System.out.println("> registered agent " + agent.getID());
+			} else {
+				// something in the way she moves
+			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -68,7 +68,7 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Finds and returns an agent by is agentID
 	 * 
@@ -109,7 +109,7 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @throws RemoteException
@@ -130,8 +130,7 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 		AgentInfo ai = (AgentInfo) this.agentTable.get(agent.getID());
 		return ai.getActionList();
 	}
-	
-	
+
 	/**
 	 * fetches the AgentInfo of a specific agent and removes the
 	 * first action of the taskList
@@ -182,7 +181,7 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 	public void interrupt(String agentID, Action action) throws RemoteException {
 		LinkedList newTask = new LinkedList();
 		newTask.add(action);
-		((AgentInfo)agentTable.get(agentID)).setActionList(newTask);
+		((AgentInfo) agentTable.get(agentID)).setActionList(newTask);
 	}
 
 	/**
@@ -194,13 +193,13 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 	 * @return				LinkedList of agentID's
 	 */
 	public LinkedList getInfo() throws RemoteException {
-		
+
 		Collection e = agentTable.values();
 		Iterator i = e.iterator();
 		LinkedList result = new LinkedList();
-		
+
 		while (i.hasNext())
-			result.add(((AgentInfo)i.next()).getID());
+			result.add(((AgentInfo) i.next()).getID());
 		return result;
 	}
 

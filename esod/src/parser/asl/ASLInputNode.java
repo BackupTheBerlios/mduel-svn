@@ -3,17 +3,16 @@
 package parser.asl;
 
 public class ASLInputNode extends SimpleNode {
-  public ASLInputNode(int id) {
-    super(id);
-  }
+	public ASLInputNode(int id) {
+		super(id);
+	}
 
-  public ASLInputNode(ASL p, int id) {
-    super(p, id);
-  }
+	public ASLInputNode(ASL p, int id) {
+		super(p, id);
+	}
 
-
-  /** Accept the visitor. **/
-  public Object jjtAccept(ASLVisitor visitor, Object data) {
-    return visitor.visit(this, data);
-  }
+	/** Accept the visitor. **/
+	public Object jjtAccept(ASLVisitor visitor, Object data) {
+		return visitor.visit(this, data);
+	}
 }

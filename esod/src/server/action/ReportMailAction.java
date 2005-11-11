@@ -1,20 +1,25 @@
 package server.action;
 
-import javax.mail.*;
-import javax.mail.internet.*;
+import java.util.Properties;
 
-import java.util.*;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import server.agent.Agent;
 import server.repository.HostReport;
-import server.repository.TaskReport;
 
 public class ReportMailAction extends BaseAction {
 	private static final long serialVersionUID = -5367675031036689008L;
+
 	private String email;
+
 	private String smtp;
 
-	
 	/**
 	 * class constructor
 	 * 
@@ -28,7 +33,6 @@ public class ReportMailAction extends BaseAction {
 		this.smtp = smtp;
 	}
 
-	
 	/**
 	 * sends the last report of the agent to a mail server
 	 * 
@@ -44,9 +48,10 @@ public class ReportMailAction extends BaseAction {
 			Message msg = new MimeMessage(s);
 
 			msg.setFrom(new InternetAddress("agents@fct.unl"));
-			msg.setRecipient(Message.RecipientType.TO, new InternetAddress(email));
+			msg.setRecipient(Message.RecipientType.TO, new InternetAddress(
+					email));
 			msg.setSubject("agent " + agent.getID() + " report");
-			
+
 			HostReport rpt = agent.getLastHostReport();
 			msg.setContent(rpt.toString(), "text/plain");
 			Transport.send(msg);
@@ -56,18 +61,16 @@ public class ReportMailAction extends BaseAction {
 			return "error sending email!";
 		}
 	}
-	
-	private class SMTPAuthenticator extends javax.mail.Authenticator
-	{
-		
+
+	private class SMTPAuthenticator extends javax.mail.Authenticator {
+
 		/**
 		 * class constructor
 		 */
-	    public PasswordAuthentication getPasswordAuthentication()
-	    {
-	        String username = "a12693";
-	        String password = "Caiser.Man";
-	        return new PasswordAuthentication(username, password);
-	    }
+		public PasswordAuthentication getPasswordAuthentication() {
+			String username = "a12693";
+			String password = "Caiser.Man";
+			return new PasswordAuthentication(username, password);
+		}
 	}
 }

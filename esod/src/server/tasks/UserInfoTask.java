@@ -6,6 +6,14 @@ import server.agent.Agent;
 public class UserInfoTask implements Task {
 	private static final long serialVersionUID = 951845533930705167L;
 
+	/**
+	 * sends user properties to the standard output
+	 * user.name
+	 * user.home
+	 * user.dir
+	 * 
+	 * @return				an object with the printed values
+	 */
 	public Object run(Agent agent) {
 		Properties properties = new Properties();
 
@@ -16,7 +24,6 @@ public class UserInfoTask implements Task {
 		properties.setProperty("User's current working directory", System
 				.getProperties().getProperty("user.dir"));
 		return properties;
-		// agent.getReport().addProperties(properties);
 	}
 
 }

@@ -9,10 +9,15 @@ import server.mediator.TaskList;
 
 public class ASLVisitorImpl implements ASLVisitor {
 	private AgentScript script;
+
 	private LinkedList actions;
+
 	private LinkedList cloneActions;
+
 	private TaskList tasklist;
+
 	private boolean isClone = false;
+
 	private boolean doTrace = false;
 
 	/**
@@ -43,7 +48,7 @@ public class ASLVisitorImpl implements ASLVisitor {
 	public LinkedList getActions() {
 		return actions;
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -64,13 +69,8 @@ public class ASLVisitorImpl implements ASLVisitor {
 	 * 
 	 */
 	public Object visit(ASLAgentDefinitionNode node, Object data) {
-		script = new AgentScript(
-					node.scriptID,
-					node.author,
-					node.date,
-					node.comment,
-					node.obs,
-					"");
+		script = new AgentScript(node.scriptID, node.author, node.date,
+				node.comment, node.obs, "");
 
 		node.childrenAccept(this, null);
 		return null;
@@ -119,23 +119,21 @@ public class ASLVisitorImpl implements ASLVisitor {
 				doWait = true;
 			}
 			tasklist.addTask(new CloneAction(doWait, doTrace));
-		}
-		else if (node.classname != null) {
+		} else if (node.classname != null) {
 			node.classname = node.classname.substring(1);
 			System.out.println("running " + node.classname);
 			if (node.urldir == null) {
 				tasklist.addTask(new MobileCodeAction(node.classname, doTrace));
-			}
-			else if (node.urldir != null)
-			{
+			} else if (node.urldir != null) {
 				System.out.println("--> from " + node.urldir);
-				tasklist.addTask(new RemoteCodeAction(node.urldir, node.classname, doTrace));
+				tasklist.addTask(new RemoteCodeAction(node.urldir,
+						node.classname, doTrace));
 				//actions.addLast(a);
 			}
-		}
-		else if (node.time != null) {
+		} else if (node.time != null) {
 			System.out.println("sleeping for " + node.time);
-			tasklist.addTask(new SleepAction(Integer.parseInt(node.time.replaceAll("ms", "")), doTrace));
+			tasklist.addTask(new SleepAction(Integer.parseInt(node.time
+					.replaceAll("ms", "")), doTrace));
 		}
 		node.childrenAccept(this, null);
 		return null;
@@ -146,23 +144,25 @@ public class ASLVisitorImpl implements ASLVisitor {
 	 */
 	public Object visit(ASLReportNode node, Object data) {
 		System.out.println("reporting: " + node.report);
-		
+
 		if (node.report.equals("reportfinal"))
-			tasklist.addTask(new ReportFinalAction(node.host, doTrace));	
-		
+			tasklist.addTask(new ReportFinalAction(node.host, doTrace));
+
 		else if (node.report.equals("reportnow"))
 			;
 
 		else if (node.report.equals("reportcallback"))
 			;
-		
+
 		else if (node.report.equals("reportmail")) {
 			if (node.email != null) {
-				System.out.println("--> email to " + node.email + " (via " + node.smtp + ")");
-				tasklist.addTask(new ReportMailAction(node.email, node.smtp, doTrace));
+				System.out.println("--> email to " + node.email + " (via "
+						+ node.smtp + ")");
+				tasklist.addTask(new ReportMailAction(node.email, node.smtp,
+						doTrace));
 			}
 		}
-		
+
 		node.childrenAccept(this, null);
 		return null;
 	}
@@ -172,7 +172,7 @@ public class ASLVisitorImpl implements ASLVisitor {
 	 */
 	public Object visit(ASLOutputNode node, Object data) {
 		System.out.println("output: " + node.output);
-		
+
 		tasklist.addTask(new OutputAction(doTrace));
 		node.childrenAccept(this, null);
 		return null;

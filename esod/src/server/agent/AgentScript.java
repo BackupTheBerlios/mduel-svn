@@ -9,11 +9,17 @@ public class AgentScript implements Serializable {
 	private static final long serialVersionUID = 3257282552187335222L;
 
 	private String scriptID;
+
 	private String author;
+
 	private String date;
+
 	private String comment;
+
 	private String observations;
+
 	private String script;
+
 	private LinkedList actions;
 
 	/**
@@ -26,20 +32,15 @@ public class AgentScript implements Serializable {
 	 * @param obs
 	 * @param text
 	 */
-	public AgentScript( 
-		String id,
-		String author,
-		String date,
-		String comment,
-		String obs,
-		String text) {
-		
+	public AgentScript(String id, String author, String date, String comment,
+			String obs, String text) {
+
 		this.scriptID = id;
 		this.author = author;
 		this.date = date;
 		this.comment = comment;
 		this.observations = obs;
-		this.script  = text;
+		this.script = text;
 	}
 
 	/**
@@ -59,7 +60,7 @@ public class AgentScript implements Serializable {
 	public String getAuthor() {
 		return author;
 	}
-	
+
 	/**
 	 * gets the creation date of the script
 	 * 
@@ -68,7 +69,7 @@ public class AgentScript implements Serializable {
 	public String getDate() {
 		return date;
 	}
-	
+
 	/**
 	 * gets the script comments
 	 * 
@@ -77,7 +78,7 @@ public class AgentScript implements Serializable {
 	public String getComment() {
 		return comment;
 	}
-	
+
 	/**
 	 * gets the script observations
 	 * 
@@ -86,7 +87,7 @@ public class AgentScript implements Serializable {
 	public String getObservations() {
 		return observations;
 	}
-	
+
 	/**
 	 * gets the script
 	 * 
@@ -95,7 +96,7 @@ public class AgentScript implements Serializable {
 	public String getScript() {
 		return script;
 	}
-	
+
 	/**
 	 * sets a new script to the agent
 	 * 
@@ -104,7 +105,7 @@ public class AgentScript implements Serializable {
 	public void setScript(String text) {
 		this.script = text;
 	}
-	
+
 	/**
 	 * gets a list of the agent actions
 	 * 
@@ -113,7 +114,7 @@ public class AgentScript implements Serializable {
 	public LinkedList getActions() {
 		return actions;
 	}
-	
+
 	/**
 	 * sets the actions to be executed
 	 * 

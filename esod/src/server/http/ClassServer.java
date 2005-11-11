@@ -17,20 +17,21 @@ import java.io.*;
 import java.net.*;
 
 /**
- * ClassServer is an abstract class that provides the
- * basic functionality of a mini-webserver, specialized
- * to load class files only. A ClassServer must be extended
- * and the concrete subclass should define the <b>getBytes</b>
- * method which is responsible for retrieving the bytecodes
- * for a class.<p>
- *
- * The ClassServer creates a thread that listens on a socket
- * and accepts  HTTP GET requests. The HTTP response contains the
- * bytecodes for the class that requested in the GET header. <p>
- *
- * For loading remote classes, an RMI application can use a concrete
- * subclass of this server in place of an HTTP server. <p>
- *
+ * ClassServer is an abstract class that provides the basic functionality of a
+ * mini-webserver, specialized to load class files only. A ClassServer must be
+ * extended and the concrete subclass should define the <b>getBytes</b> method
+ * which is responsible for retrieving the bytecodes for a class.
+ * <p>
+ * 
+ * The ClassServer creates a thread that listens on a socket and accepts HTTP
+ * GET requests. The HTTP response contains the bytecodes for the class that
+ * requested in the GET header.
+ * <p>
+ * 
+ * For loading remote classes, an RMI application can use a concrete subclass of
+ * this server in place of an HTTP server.
+ * <p>
+ * 
  * @see ClassFileServer
  */
 public abstract class ClassServer implements Runnable {
@@ -40,12 +41,13 @@ public abstract class ClassServer implements Runnable {
 	private int port;
 
 	/**
-	 * Constructs a ClassServer that listens on <b>port</b> and
-	 * obtains a class's bytecodes using the method <b>getBytes</b>.
-	 *
-	 * @param port the port number
-	 * @exception IOException if the ClassServer could not listen
-	 *            on <b>port</b>.
+	 * Constructs a ClassServer that listens on <b>port</b> and obtains a
+	 * class's bytecodes using the method <b>getBytes</b>.
+	 * 
+	 * @param port
+	 *            the port number
+	 * @exception IOException
+	 *                if the ClassServer could not listen on <b>port</b>.
 	 */
 	protected ClassServer(int port) throws IOException {
 		this.port = port;
@@ -54,24 +56,24 @@ public abstract class ClassServer implements Runnable {
 	}
 
 	/**
-	 * Returns an array of bytes containing the bytecodes for
-	 * the class represented by the argument <b>path</b>.
-	 * The <b>path</b> is a dot separated class name with
-	 * the ".class" extension removed.
-	 *
+	 * Returns an array of bytes containing the bytecodes for the class
+	 * represented by the argument <b>path</b>. The <b>path</b> is a dot
+	 * separated class name with the ".class" extension removed.
+	 * 
 	 * @return the bytecodes for the class
-	 * @exception ClassNotFoundException if the class corresponding
-	 * to <b>path</b> could not be loaded.
-	 * @exception IOException if error occurs reading the class
+	 * @exception ClassNotFoundException
+	 *                if the class corresponding to <b>path</b> could not be
+	 *                loaded.
+	 * @exception IOException
+	 *                if error occurs reading the class
 	 */
 	public abstract byte[] getBytes(String path) throws IOException,
 			ClassNotFoundException;
 
 	/**
-	 * The "listen" thread that accepts a connection to the
-	 * server, parses the header to obtain the class file name
-	 * and sends back the bytecodes for the class (or error
-	 * if the class is not found or the response was malformed).
+	 * The "listen" thread that accepts a connection to the server, parses the
+	 * header to obtain the class file name and sends back the bytecodes for the
+	 * class (or error if the class is not found or the response was malformed).
 	 */
 	public void run() {
 		Socket socket;
@@ -139,8 +141,7 @@ public abstract class ClassServer implements Runnable {
 	}
 
 	/**
-	 * Returns the path to the class file obtained from
-	 * parsing the HTML header.
+	 * Returns the path to the class file obtained from parsing the HTML header.
 	 */
 	private static String getPath(DataInputStream in) throws IOException {
 		BufferedReader b = new BufferedReader(new InputStreamReader(in));

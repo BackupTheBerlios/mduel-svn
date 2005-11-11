@@ -1,20 +1,20 @@
 package server.repository;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.rmi.*;
-import java.util.*;
-
+import java.util.Collection;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedList;
 import server.AgentHost;
-import server.action.Action;
-import server.agent.Agent;
-import server.mediator.AgentInfo;
 
-
-public class RepositoryImpl extends UnicastRemoteObject implements Repository, Serializable {
+public class RepositoryImpl extends UnicastRemoteObject implements Repository,
+		Serializable {
 	private static final long serialVersionUID = 6893905241391990022L;
+
 	private Hashtable table;
-	
+
 	/**
 	 * class constructor 
 	 * 
@@ -24,27 +24,26 @@ public class RepositoryImpl extends UnicastRemoteObject implements Repository, S
 		table = new Hashtable(50);
 	}
 
-	
 	/**
 	 * 
 	 * @param agentID	the string that identifies the agent
 	 * @param report	the report of the agent in the last host
 	 */
-	public void setHostReport(String agentID, HostReport report) throws RemoteException {
-		
+	public void setHostReport(String agentID, HostReport report)
+			throws RemoteException {
+
 		if (table.containsKey(agentID))
-			((AgentReport)table.get(agentID)).setHostReport(report);
-		
+			((AgentReport) table.get(agentID)).setHostReport(report);
+
 		else {
 			AgentReport agentReport = new AgentReport(agentID);
 			agentReport.setHostReport(report);
 			table.put(agentID, agentReport);
 		}
-		
+
 		System.out.println("> new report added.");
 	}
-	
-	
+
 	/**
 	 * returns the last report sent by the agent
 	 * 
@@ -52,9 +51,9 @@ public class RepositoryImpl extends UnicastRemoteObject implements Repository, S
 	 * @return			the last report of the specified agent
 	 */
 	public HostReport getLastReport(String agentID) throws RemoteException {
-		return ((AgentReport)table.get(agentID)).getLastReport();
+		return ((AgentReport) table.get(agentID)).getLastReport();
 	}
-	
+
 	/**
 	 * returns the full report of an agent
 	 * 
@@ -62,27 +61,28 @@ public class RepositoryImpl extends UnicastRemoteObject implements Repository, S
 	 * @return			the full report of the specified agent
 	 */
 	public AgentReport getFinalReport(Object agentID) throws RemoteException {
-		
-		return (AgentReport)table.get(agentID);
+
+		return (AgentReport) table.get(agentID);
 	}
-	
-	
+
 	/** 
 	 * preforms a callback to the agent home to send is report
 	 * 
 	 * @param agentID	the string that identifies the agent
 	 * @param home		agent home to preform a callback
 	 */
-	public void reportHome(String agentID, AgentHost home) throws RemoteException {
-		home.reportBack( (AgentReport)table.get(agentID));
+	public void reportHome(String agentID, AgentHost home)
+			throws RemoteException {
+		home.reportBack((AgentReport) table.get(agentID));
 	}
 
 	/**
 	 * 
 	 *
 	 */
-	public void run() {	}
-	
+	public void run() {
+	}
+
 	/**
 	 * preforms a search in the table, returning a list
 	 * with the agentID's found
@@ -91,14 +91,14 @@ public class RepositoryImpl extends UnicastRemoteObject implements Repository, S
 	 * 					in the hashtable (table)
 	 */
 	public LinkedList getInfo() throws RemoteException {
-		
+
 		Collection e = table.values();
 		Iterator i = e.iterator();
 		LinkedList result = new LinkedList();
-		
+
 		while (i.hasNext())
-			result.add(((AgentReport)i.next()).getID());
+			result.add(((AgentReport) i.next()).getID());
 		return result;
 	}
-	
+
 }

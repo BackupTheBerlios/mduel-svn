@@ -14,7 +14,7 @@ public class ASLParser {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+
 		new ASLParser().parse(fis);
 	}
 
@@ -27,7 +27,7 @@ public class ASLParser {
 	 */
 	public AgentScript LoadScript(String file) {
 		AgentScript script = null;
-		
+
 		try {
 			script = parse(new FileInputStream(file));
 
@@ -42,10 +42,10 @@ public class ASLParser {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		return script;
 	}
-	
+
 	/**
 	 * visits all the AST nodes and returns
 	 * an AgentScript
@@ -57,16 +57,16 @@ public class ASLParser {
 		ASL parser = new ASL(script);
 		ASLVisitorImpl visitor = new ASLVisitorImpl();
 		ASLStartNode rootNode;
-		
+
 		try {
-			rootNode = (ASLStartNode)parser.Input();
+			rootNode = (ASLStartNode) parser.Input();
 			rootNode.jjtAccept(visitor, null);
 			script.close();
 		} catch (Exception ex) {
 			System.out.println("syntax error: " + ex.getMessage());
 			ex.printStackTrace();
 		}
-		
+
 		return visitor.getParsedScript();
 	}
 }

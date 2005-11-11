@@ -4,8 +4,9 @@ import server.agent.Agent;
 
 public class ReportFinalAction extends BaseAction {
 	private static final long serialVersionUID = 925984428282319399L;
+
 	private String reportHost;
-	
+
 	/**
 	 * class constructor
 	 * 
@@ -16,7 +17,7 @@ public class ReportFinalAction extends BaseAction {
 		super(trace);
 		reportHost = host;
 	}
-	
+
 	/**
 	 * this method was replaced by the funcionality
 	 * of the OutputAction class
@@ -25,8 +26,7 @@ public class ReportFinalAction extends BaseAction {
 	public Object run(Agent agent) {
 		try {
 
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.getMessage();
 		}
 

@@ -3,17 +3,16 @@
 package parser.asl;
 
 public class ASLStartNode extends SimpleNode {
-  public ASLStartNode(int id) {
-    super(id);
-  }
+	public ASLStartNode(int id) {
+		super(id);
+	}
 
-  public ASLStartNode(ASL p, int id) {
-    super(p, id);
-  }
+	public ASLStartNode(ASL p, int id) {
+		super(p, id);
+	}
 
-
-  /** Accept the visitor. **/
-  public Object jjtAccept(ASLVisitor visitor, Object data) {
-    return visitor.visit(this, data);
-  }
+	/** Accept the visitor. **/
+	public Object jjtAccept(ASLVisitor visitor, Object data) {
+		return visitor.visit(this, data);
+	}
 }

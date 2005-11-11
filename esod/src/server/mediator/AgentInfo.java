@@ -5,33 +5,37 @@ import java.util.*;
 
 public class AgentInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
+
 	private Object agentID;
+
 	private LinkedList pathCompleted;
+
 	private LinkedList taskList;
+
 	private boolean runComplete;
+
 	private int actionCounter;
-	
+
 	/**
 	 * class constructor
 	 * 
 	 * @param agentID			agent identifier
 	 * @param tasks				list of tasks to execute
 	 */
-	public AgentInfo(Object agentID, LinkedList tasks)
-	{
+	public AgentInfo(Object agentID, LinkedList tasks) {
 		this.agentID = agentID;
 		this.taskList = tasks;
 		this.pathCompleted = new LinkedList();
 		this.runComplete = false;
 		this.actionCounter = 0;
 	}
-	
+
 	/**
 	 * returns the agent identifier
 	 * 
 	 * @return				object containing the agentID
 	 */
-	public Object getID(){
+	public Object getID() {
 		return agentID;
 	}
 
@@ -44,7 +48,7 @@ public class AgentInfo implements Serializable {
 	public void setAction(int counter) {
 		this.actionCounter = counter;
 	}
-	
+
 	/**
 	 * returns the value of the private member
 	 * actionCounter
@@ -54,7 +58,7 @@ public class AgentInfo implements Serializable {
 	public int getNextAction() {
 		return actionCounter;
 	}
-	
+
 	/**
 	 * returns the LinkedList of tasks
 	 * 
@@ -63,7 +67,7 @@ public class AgentInfo implements Serializable {
 	public LinkedList getActionList() {
 		return taskList;
 	}
-	
+
 	/**
 	 * sets the private member taskList to
 	 * the argument object list
@@ -82,7 +86,7 @@ public class AgentInfo implements Serializable {
 	public void linkCompleted(Object agentHostID) {
 		this.pathCompleted.add(agentHostID);
 	}
-	
+
 	/**
 	 * verifies if the agent as preformed all
 	 * of is tasks
@@ -93,7 +97,7 @@ public class AgentInfo implements Serializable {
 	public boolean isRunComplete() {
 		return runComplete;
 	}
-	
+
 	/**
 	 * affects the member runComplete with
 	 * the boolean variable b. Used to mark the
@@ -104,7 +108,5 @@ public class AgentInfo implements Serializable {
 	public void setRunComplete(boolean b) {
 		runComplete = b;
 	}
-	
 
 }
-

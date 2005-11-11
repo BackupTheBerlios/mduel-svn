@@ -4,7 +4,7 @@ import server.agent.Agent;
 
 public class OutputAction extends BaseAction {
 	private static final long serialVersionUID = 2378192140024718644L;
-	
+
 	/**
 	 * class constructor
 	 * 
@@ -20,7 +20,7 @@ public class OutputAction extends BaseAction {
 	 * @param agent				agent to execute the action
 	 */
 	public Object run(Agent agent) {
-		
+
 		try {
 			agent.getRepository().reportHome(agent.getID(), agent.getHome());
 		} catch (Exception e) {
