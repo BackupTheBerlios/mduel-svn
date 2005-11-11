@@ -10,12 +10,24 @@ public class RemoteCodeAction extends BaseAction {
 	private String uri;
 	private String task;
 
+	/**
+	 * class constructor
+	 * 
+	 * @param uri			from where to load the class
+	 * @param task			what task to load
+	 * @param trace			regists if the action was sucessful
+	 */
 	public RemoteCodeAction(String uri, String task, boolean trace) {
 		super(trace);
 		this.uri = uri;
 		this.task = task;
 	}
 
+	/**
+	 * executes remote code
+	 * 
+	 * @param agent			agent to execute the action
+	 */
 	public Object run(Agent agent) {
 		try {
 			Task t = (Task) RMIClassLoader.loadClass("http://" + this.uri + ":2005/", task).newInstance();

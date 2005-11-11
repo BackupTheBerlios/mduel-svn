@@ -18,6 +18,13 @@ public class ASLParser {
 		new ASLParser().parse(fis);
 	}
 
+	/**
+	 * loads as agent script from a file
+	 * and returns an object with its information
+	 * 
+	 * @param file				where to load the script
+	 * @return					an object with script information
+	 */
 	public AgentScript LoadScript(String file) {
 		AgentScript script = null;
 		
@@ -39,6 +46,13 @@ public class ASLParser {
 		return script;
 	}
 	
+	/**
+	 * visits all the AST nodes and returns
+	 * an AgentScript
+	 * 
+	 * @param script			what to load
+	 * @return					the parsed script
+	 */
 	private AgentScript parse(InputStream script) {
 		ASL parser = new ASL(script);
 		ASLVisitorImpl visitor = new ASLVisitorImpl();

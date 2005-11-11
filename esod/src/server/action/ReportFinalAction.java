@@ -6,20 +6,25 @@ public class ReportFinalAction extends BaseAction {
 	private static final long serialVersionUID = 925984428282319399L;
 	private String reportHost;
 	
+	/**
+	 * class constructor
+	 * 
+	 * @param host			where to report
+	 * @param trace			regists if the action was sucessful
+	 */
 	public ReportFinalAction(String host, boolean trace) {
 		super(trace);
 		reportHost = host;
 	}
 	
+	/**
+	 * this method was replaced by the funcionality
+	 * of the OutputAction class
+	 * 
+	 */
 	public Object run(Agent agent) {
 		try {
-			//agent.packReport();
 
-			//agent.getRepository().setHostReport(agent.getID(), agent.getReport());
-			/*
-			 * A funcionalidade deste método é implementada
-			 * pela acção OutputAction 
-			 */
 		}
 		catch (Exception e) {
 			e.getMessage();

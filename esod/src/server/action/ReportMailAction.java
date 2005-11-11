@@ -14,12 +14,26 @@ public class ReportMailAction extends BaseAction {
 	private String email;
 	private String smtp;
 
+	
+	/**
+	 * class constructor
+	 * 
+	 * @param email				destination eMail
+	 * @param smtp				smtp server
+	 * @param trace				regists if the action was sucessful
+	 */
 	public ReportMailAction(String email, String smtp, boolean trace) {
 		super(trace);
 		this.email = email;
 		this.smtp = smtp;
 	}
 
+	
+	/**
+	 * sends the last report of the agent to a mail server
+	 * 
+	 * @param agent				agent to execute the action
+	 */
 	public Object run(Agent agent) {
 		Properties p = new Properties();
 		p.put("mail.smtp.host", smtp);
@@ -45,6 +59,10 @@ public class ReportMailAction extends BaseAction {
 	
 	private class SMTPAuthenticator extends javax.mail.Authenticator
 	{
+		
+		/**
+		 * class constructor
+		 */
 	    public PasswordAuthentication getPasswordAuthentication()
 	    {
 	        String username = "a12693";

@@ -15,30 +15,54 @@ public class ASLVisitorImpl implements ASLVisitor {
 	private boolean isClone = false;
 	private boolean doTrace = false;
 
+	/**
+	 * class constructor
+	 *
+	 */
 	public ASLVisitorImpl() {
 		actions = new LinkedList();
 	}
 
+	/**
+	 * inserts the parsed action list
+	 * into the agent script object 
+	 * 
+	 * @return				agent script object information
+	 */
 	public AgentScript getParsedScript() {
 		actions.add(tasklist);
 		script.setActions(actions);
 		return script;
 	}
 
+	/**
+	 * gets the clone actions list
+	 * 
+	 * @return			list of the agent clone actions
+	 */
 	public LinkedList getActions() {
 		return actions;
 	}
 	
+	/**
+	 * 
+	 */
 	public Object visit(SimpleNode node, Object data) {
 		node.childrenAccept(this, null);
 		return null;
 	}
 
+	/**
+	 * 
+	 */
 	public Object visit(ASLStartNode node, Object data) {
 		node.childrenAccept(this, null);
 		return null;
 	}
 
+	/**
+	 * 
+	 */
 	public Object visit(ASLAgentDefinitionNode node, Object data) {
 		script = new AgentScript(
 					node.scriptID,
@@ -52,11 +76,17 @@ public class ASLVisitorImpl implements ASLVisitor {
 		return null;
 	}
 
+	/**
+	 * 
+	 */
 	public Object visit(ASLExecNode node, Object data) {
 		node.childrenAccept(this, null);
 		return null;
 	}
 
+	/**
+	 * 
+	 */
 	public Object visit(ASLMigrateNode node, Object data) {
 		if (tasklist != null) {
 			actions.add(tasklist);
@@ -76,6 +106,9 @@ public class ASLVisitorImpl implements ASLVisitor {
 		return null;
 	}
 
+	/**
+	 * 
+	 */
 	public Object visit(ASLActionNode node, Object data) {
 		if (node.clone != null) {
 			isClone = true;
@@ -108,6 +141,9 @@ public class ASLVisitorImpl implements ASLVisitor {
 		return null;
 	}
 
+	/**
+	 * 
+	 */
 	public Object visit(ASLReportNode node, Object data) {
 		System.out.println("reporting: " + node.report);
 		
@@ -131,6 +167,9 @@ public class ASLVisitorImpl implements ASLVisitor {
 		return null;
 	}
 
+	/**
+	 * 
+	 */
 	public Object visit(ASLOutputNode node, Object data) {
 		System.out.println("output: " + node.output);
 		
@@ -139,12 +178,18 @@ public class ASLVisitorImpl implements ASLVisitor {
 		return null;
 	}
 
+	/**
+	 * 
+	 */
 	public Object visit(ASLParamsNode node, Object data) {
 		System.out.println("visiting ParamsNode...");
 		node.childrenAccept(this, null);
 		return null;
 	}
 
+	/**
+	 * 
+	 */
 	public Object visit(ASLInputNode node, Object data) {
 		System.out.println("visiting InputNode...");
 		node.childrenAccept(this, null);
