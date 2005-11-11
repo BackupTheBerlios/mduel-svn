@@ -47,57 +47,52 @@
 
   <target name="dist" depends="compile" description="generate the distribution" >
     <mkdir dir="${dist}"/>
+  	<!-- we could be more verbose about what classes to include in each jar, but we won't... -->
+  	<!-- just don't include the tasks, so they can be remotely loaded -->
     <jar jarfile="${dist}/agentserver.jar" manifest="META-INF/AgentServer.MF">
     		<fileset dir="${build}">
+    			<include name="parser/**"/>
     			<include name="server/*.*"/>
-        		<include name="server/agent/**"/>
-        		<include name="server/http/**"/>
-        		<include name="server/repository/HostReport.class"/>
-        		<include name="server/repository/Repository.class"/>
-        		<include name="server/repository/AgentReport.class"/>
-    			<include name="server/mediator/Mediator.class"/>
+    			<include name="server/agent/**"/>
+    			<include name="server/action/**"/>
+    			<include name="server/mediator/**"/>
+    			<include name="server/repository/**"/>
+    			<include name="server/http/**"/>
     			<include name="server/tasks/Task.class"/>
     		</fileset>
   	</jar>
     <jar jarfile="${dist}/mediatorserver.jar" manifest="META-INF/MediatorServer.MF">
     		<fileset dir="${build}">
-    			<include name="server/mediator/**"/>
-    			<include name="server/agent/**"/>
     			<include name="parser/**"/>
-        		<include name="server/action/**"/>
-        		<include name="server/repository/**"/>
-    			<include name="server/AgentHost.class"/>
+    			<include name="server/*.*"/>
+    			<include name="server/agent/**"/>
+    			<include name="server/action/**"/>
+    			<include name="server/mediator/**"/>
+    			<include name="server/repository/**"/>
     			<include name="server/tasks/Task.class"/>
         	</fileset>
    	</jar>
     <jar jarfile="${dist}/repositoryserver.jar" manifest="META-INF/RepositoryServer.MF">
     		<fileset dir="${build}">
-        		<include name="server/repository/**"/>
-        		<include name="server/action/Action.class"/>
-    			<include name="server/agent/Agent.class"/>
-    			<include name="server/AgentHost.class"/>
+    			<include name="parser/**"/>
+    			<include name="server/*.*"/>
+    			<include name="server/agent/**"/>
+    			<include name="server/action/**"/>
+    			<include name="server/mediator/**"/>
+    			<include name="server/repository/**"/>
     			<include name="server/tasks/Task.class"/>
-    			<include name="server/mediator/Mediator.class"/>
         	</fileset>
    	</jar>
     <jar jarfile="${dist}/client.jar" manifest="META-INF/Client.MF">
     		<fileset dir="${build}">
-        		<include name="client/**"/>
-    			<include name="../mail.jar"/>
-        		<include name="server/repository/**"/>
-        		<include name="server/action/**"/>
-    			<include name="server/AgentRunner.class"/>
-    			<include name="server/AgentHost.class"/>
-    			<include name="server/AgentHostImpl.class"/>
-	    		<include name="server/AgentHostImpl_Stub.class"/>
-    			<include name="server/agent/Agent.class"/>
-    			<include name="server/agent/AgentScript.class"/>
-    			<include name="server/agent/AgentFactory.class"/>
-	    		<include name="server/agent/AgentFactoryImpl_Stub.class"/>
-    			<include name="server/agent/TaskList.class"/>
-    			<include name="server/mediator/Mediator.class"/>
-    			<include name="server/mediator/AgentInfo.class"/>
-	    		<include name="server/mediator/MediatorImpl_Stub.class"/>
+    			<include name="client/**"/>
+    			<include name="parser/**"/>
+    			<include name="server/*.*"/>
+    			<include name="server/agent/**"/>
+    			<include name="server/action/**"/>
+    			<include name="server/mediator/**"/>
+    			<include name="server/repository/**"/>
+    			<include name="server/tasks/Task.class"/>
         	</fileset>
    	</jar>
   </target>
