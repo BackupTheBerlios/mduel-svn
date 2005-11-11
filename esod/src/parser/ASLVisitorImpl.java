@@ -22,17 +22,16 @@ public class ASLVisitorImpl implements ASLVisitor {
 
 	/**
 	 * class constructor
-	 *
+	 * 
 	 */
 	public ASLVisitorImpl() {
 		actions = new LinkedList();
 	}
 
 	/**
-	 * inserts the parsed action list
-	 * into the agent script object 
+	 * inserts the parsed action list into the agent script object
 	 * 
-	 * @return				agent script object information
+	 * @return agent script object information
 	 */
 	public AgentScript getParsedScript() {
 		actions.add(tasklist);
@@ -43,14 +42,14 @@ public class ASLVisitorImpl implements ASLVisitor {
 	/**
 	 * gets the clone actions list
 	 * 
-	 * @return			list of the agent clone actions
+	 * @return list of the agent clone actions
 	 */
 	public LinkedList getActions() {
 		return actions;
 	}
 
 	/**
-	 * 
+	 * not used
 	 */
 	public Object visit(SimpleNode node, Object data) {
 		node.childrenAccept(this, null);
@@ -58,7 +57,7 @@ public class ASLVisitorImpl implements ASLVisitor {
 	}
 
 	/**
-	 * 
+	 * not used
 	 */
 	public Object visit(ASLStartNode node, Object data) {
 		node.childrenAccept(this, null);
@@ -66,7 +65,7 @@ public class ASLVisitorImpl implements ASLVisitor {
 	}
 
 	/**
-	 * 
+	 * instanciates a new AgentScript
 	 */
 	public Object visit(ASLAgentDefinitionNode node, Object data) {
 		script = new AgentScript(node.scriptID, node.author, node.date,
@@ -77,7 +76,7 @@ public class ASLVisitorImpl implements ASLVisitor {
 	}
 
 	/**
-	 * 
+	 * not used
 	 */
 	public Object visit(ASLExecNode node, Object data) {
 		node.childrenAccept(this, null);
@@ -85,7 +84,7 @@ public class ASLVisitorImpl implements ASLVisitor {
 	}
 
 	/**
-	 * 
+	 * migrates the agent to a specific node
 	 */
 	public Object visit(ASLMigrateNode node, Object data) {
 		if (tasklist != null) {
@@ -93,7 +92,6 @@ public class ASLVisitorImpl implements ASLVisitor {
 		}
 
 		tasklist = new TaskList(node.ipAddress);
-		//actions.addLast(new MigrateAction(node.ipAddress));
 		System.out.println("migrate to " + node.ipAddress);
 		if (node.trace != null) {
 			System.out.println("--> with trace");
@@ -107,7 +105,7 @@ public class ASLVisitorImpl implements ASLVisitor {
 	}
 
 	/**
-	 * 
+	 * preforms a specific action
 	 */
 	public Object visit(ASLActionNode node, Object data) {
 		if (node.clone != null) {
@@ -128,7 +126,6 @@ public class ASLVisitorImpl implements ASLVisitor {
 				System.out.println("--> from " + node.urldir);
 				tasklist.addTask(new RemoteCodeAction(node.urldir,
 						node.classname, doTrace));
-				//actions.addLast(a);
 			}
 		} else if (node.time != null) {
 			System.out.println("sleeping for " + node.time);
@@ -140,7 +137,7 @@ public class ASLVisitorImpl implements ASLVisitor {
 	}
 
 	/**
-	 * 
+	 * performs a specific kind if report
 	 */
 	public Object visit(ASLReportNode node, Object data) {
 		System.out.println("reporting: " + node.report);
@@ -168,7 +165,7 @@ public class ASLVisitorImpl implements ASLVisitor {
 	}
 
 	/**
-	 * 
+	 * preforms a callback to the agent home and sends it's current report
 	 */
 	public Object visit(ASLOutputNode node, Object data) {
 		System.out.println("output: " + node.output);
@@ -179,7 +176,7 @@ public class ASLVisitorImpl implements ASLVisitor {
 	}
 
 	/**
-	 * 
+	 * not used
 	 */
 	public Object visit(ASLParamsNode node, Object data) {
 		System.out.println("visiting ParamsNode...");
@@ -188,7 +185,7 @@ public class ASLVisitorImpl implements ASLVisitor {
 	}
 
 	/**
-	 * 
+	 * not used
 	 */
 	public Object visit(ASLInputNode node, Object data) {
 		System.out.println("visiting InputNode...");

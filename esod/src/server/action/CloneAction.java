@@ -1,7 +1,6 @@
 package server.action;
 
 import server.agent.Agent;
-import server.agent.AgentImpl;
 
 public class CloneAction extends BaseAction {
 	private static final long serialVersionUID = 2231909621629728021L;
