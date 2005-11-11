@@ -137,9 +137,10 @@ public class AgentImpl implements Agent, Cloneable {
 	}
 
 	/**
-	 * generates the agent identifier. the agentID is the result of the
-	 * concatenation of the following fiels: scriptID + MD5.hash(script) +
-	 * timestamp + hostname (IP) from initial node
+	 * generates the agent identifier
+	 * 
+	 * the agentID is the result of the concatenation of the following fiels:
+	 * scriptID + MD5.hash(script) + timestamp + hostname (IP) from initial node
 	 * 
 	 * @throws RemoteException
 	 */
@@ -188,8 +189,8 @@ public class AgentImpl implements Agent, Cloneable {
 	/**
 	 * sets the private member mediator of the agent to the variable m
 	 * 
-	 * @param reference
-	 *            to a mediator object
+	 * @param m
+	 *            reference to a mediator object
 	 */
 	public void setMediator(Mediator m) {
 		this.mediator = m;

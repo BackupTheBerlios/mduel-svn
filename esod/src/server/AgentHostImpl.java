@@ -122,7 +122,7 @@ public class AgentHostImpl extends UnicastRemoteObject implements AgentHost {
 	/**
 	 * sends a readable AgentReport object to the standard output
 	 * 
-	 * @param host
+	 * @param report
 	 *            report to print
 	 */
 	public void reportBack(AgentReport report) throws RemoteException {
