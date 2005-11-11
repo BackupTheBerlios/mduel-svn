@@ -1,4 +1,4 @@
-package server.agent;
+package server.mediator;
 
 import server.action.Action;
 import java.io.Serializable;

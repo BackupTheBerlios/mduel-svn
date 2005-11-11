@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import parser.asl.*;
 import server.action.*;
 import server.agent.AgentScript;
-import server.agent.TaskList;
+import server.mediator.TaskList;
 
 public class ASLVisitorImpl implements ASLVisitor {
 	private AgentScript script;

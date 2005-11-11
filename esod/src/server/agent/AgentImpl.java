@@ -10,6 +10,7 @@ import server.action.Action;
 import server.action.OutputAction;
 import server.mediator.AgentInfo;
 import server.mediator.Mediator;
+import server.mediator.TaskList;
 import server.repository.HostReport;
 import server.repository.Repository;
 import server.repository.TaskReport;
