@@ -11,7 +11,7 @@ public class ReportFinalAction extends BaseAction {
 	 * class constructor
 	 * 
 	 * @param host			where to report
-	 * @param trace			regists if the action was sucessful
+	 * @param trace			indicates if the action is meant to be traced
 	 */
 	public ReportFinalAction(String host, boolean trace) {
 		super(trace);

@@ -25,7 +25,7 @@ public class ReportMailAction extends BaseAction {
 	 * 
 	 * @param email				destination eMail
 	 * @param smtp				smtp server
-	 * @param trace				regists if the action was sucessful
+	 * @param trace				indicates if the action is meant to be traced
 	 */
 	public ReportMailAction(String email, String smtp, boolean trace) {
 		super(trace);
@@ -63,7 +63,6 @@ public class ReportMailAction extends BaseAction {
 	}
 
 	private class SMTPAuthenticator extends javax.mail.Authenticator {
-
 		/**
 		 * class constructor
 		 */

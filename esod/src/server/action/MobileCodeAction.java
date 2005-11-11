@@ -14,7 +14,7 @@ public class MobileCodeAction extends BaseAction {
 	 * @param m
 	 *            name of the method to be executed
 	 * @param trace
-	 *            regists if the action was sucessful
+	 *            indicates if the action is meant to be traced
 	 */
 	public MobileCodeAction(String m, boolean trace) {
 		super(trace);

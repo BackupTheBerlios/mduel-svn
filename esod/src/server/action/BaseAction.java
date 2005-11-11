@@ -9,16 +9,16 @@ public abstract class BaseAction implements Action {
 	 * class constructor
 	 * 
 	 * @param trace
-	 *            sets an action as being sucessful
+	 *            indicates if the action is meant to be traced
 	 */
 	public BaseAction(boolean trace) {
 		this.trace = trace;
 	}
 
 	/**
-	 * gets the private member trace
+	 * checks if the action is meant to be traced
 	 * 
-	 * @return if the action succeeded
+	 * @return is the action traceable?
 	 */
 	public boolean trace() {
 		return trace;

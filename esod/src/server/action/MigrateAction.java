@@ -11,8 +11,9 @@ public class MigrateAction extends BaseAction {
 	 * class constructor
 	 * 
 	 * @param newHostname
+	 *            the hostname to migrate
 	 * @param trace
-	 *            regists if the action was sucessful
+	 *            indicates if the action is meant to be traced
 	 */
 	public MigrateAction(String newHostname, boolean trace) {
 		super(trace);
@@ -20,7 +21,7 @@ public class MigrateAction extends BaseAction {
 	}
 
 	/**
-	 * 
+	 * deprecated for the time beeing
 	 */
 	public Object run(Agent agent) {
 		/*

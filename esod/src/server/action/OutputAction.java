@@ -8,7 +8,7 @@ public class OutputAction extends BaseAction {
 	/**
 	 * class constructor
 	 * 
-	 * @param trace				regists if the action was sucessful
+	 * @param trace				indicates if the action is meant to be traced
 	 */
 	public OutputAction(boolean trace) {
 		super(trace);

@@ -12,7 +12,7 @@ public class JNIGetEnvPathTask implements Task {
 	}
 
 	/**
-	 * returns the environmental path
+	 * returns the environment path
 	 */
 	public Object run(Agent agent) {
 		String path = getpath();

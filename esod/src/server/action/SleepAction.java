@@ -13,7 +13,7 @@ public class SleepAction extends BaseAction {
 	 * @param ms
 	 *            time in miliseconds
 	 * @param trace
-	 *            regists if the action was sucessful
+	 *            indicates if the action is meant to be traced
 	 */
 	public SleepAction(long ms, boolean trace) {
 		super(trace);

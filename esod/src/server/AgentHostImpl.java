@@ -49,7 +49,7 @@ public class AgentHostImpl extends UnicastRemoteObject implements AgentHost {
 	 * @throws RemoteException
 	 */
 	public void exec() throws RemoteException {
-		// void
+		// idle loop
 	}
 
 	/**

@@ -20,7 +20,7 @@ public class RemoteCodeAction extends BaseAction {
 	 * @param task
 	 *            what task to load
 	 * @param trace
-	 *            regists if the action was sucessful
+	 *            indicates if the action is meant to be traced
 	 */
 	public RemoteCodeAction(String uri, String task, boolean trace) {
 		super(trace);
