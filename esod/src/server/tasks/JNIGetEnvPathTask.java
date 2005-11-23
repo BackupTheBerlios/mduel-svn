@@ -14,7 +14,7 @@ public class JNIGetEnvPathTask implements Task {
 	/**
 	 * returns the environment path
 	 */
-	public Object run(Agent agent) {
+	public Object run(Agent agent, Object[] params) {
 		String path = getpath();
 		return path;
 	}

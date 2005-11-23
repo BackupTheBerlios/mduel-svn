@@ -11,7 +11,7 @@ public class OSDetailsTask implements Task {
 	 * 
 	 * @return an object with the printed values
 	 */
-	public Object run(Agent agent) {
+	public Object run(Agent agent, Object[] params) {
 		Properties properties = new Properties();
 
 		properties.setProperty("OS Name", System.getProperties().getProperty(

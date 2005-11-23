@@ -14,7 +14,7 @@ public class UserInfoTask implements Task {
 	 * 
 	 * @return				an object with the printed values
 	 */
-	public Object run(Agent agent) {
+	public Object run(Agent agent, Object[] params) {
 		Properties properties = new Properties();
 
 		properties.setProperty("User's account name", System.getProperties()

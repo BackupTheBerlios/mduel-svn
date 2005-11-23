@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 #undef server_tasks_JNIGetEnvPathTask_serialVersionUID
-#define server_tasks_JNIGetEnvPathTask_serialVersionUID -9031466777376797219LL
+#define server_tasks_JNIGetEnvPathTask_serialVersionUID -9031466777376797219i64
 /*
  * Class:     server_tasks_JNIGetEnvPathTask
  * Method:    getpath
