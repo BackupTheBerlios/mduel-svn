@@ -17,5 +17,7 @@ public interface Repository extends Remote {
 	public void reportHome(String agentID, AgentHost home)
 			throws RemoteException;
 
+	public void reportLastHome(String agentID, AgentHost home) throws RemoteException;
+	
 	public LinkedList getInfo() throws RemoteException;
 }

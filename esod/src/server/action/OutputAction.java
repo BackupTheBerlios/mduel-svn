@@ -22,7 +22,7 @@ public class OutputAction extends BaseAction {
 	public Object run(Agent agent) {
 
 		try {
-			agent.getRepository().reportHome(agent.getID(), agent.getHome());
+			agent.getRepository().reportLastHome(agent.getID(), agent.getHome());
 		} catch (Exception e) {
 			e.getMessage();
 		}

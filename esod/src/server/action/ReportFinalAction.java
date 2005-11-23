@@ -16,6 +16,7 @@ public class ReportFinalAction extends BaseAction {
 	public ReportFinalAction(String host, boolean trace) {
 		super(trace);
 		reportHost = host;
+		
 	}
 
 	/**
@@ -24,12 +25,12 @@ public class ReportFinalAction extends BaseAction {
 	 * 
 	 */
 	public Object run(Agent agent) {
-		try {
 
+		try {
+			agent.getRepository().reportHome(agent.getID(), agent.getHome());
 		} catch (Exception e) {
 			e.getMessage();
 		}
-
 		return "dummy action";
 	}
 

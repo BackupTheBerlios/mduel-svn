@@ -76,6 +76,11 @@ public class RepositoryImpl extends UnicastRemoteObject implements Repository,
 		home.reportBack((AgentReport) table.get(agentID));
 	}
 
+	public void reportLastHome(String agentID, AgentHost home)
+			throws RemoteException {
+		home.reportBackLast( (HostReport) ((AgentReport)table.get(agentID)).getLastReport());
+	}
+	
 	/**
 	 * 
 	 *

@@ -7,6 +7,7 @@ import java.util.Stack;
 import server.AgentHost;
 import server.action.Action;
 import server.action.OutputAction;
+import server.action.ReportFinalAction;
 import server.mediator.AgentInfo;
 import server.mediator.Mediator;
 import server.mediator.TaskList;
@@ -87,7 +88,7 @@ public class AgentImpl implements Agent, Cloneable {
 					String.valueOf(System.currentTimeMillis()));
 			hostReport.setTask(task);
 
-			if ((action instanceof OutputAction) || (action == null && !packed)) {
+			if ((action instanceof OutputAction) || action instanceof ReportFinalAction || (action == null && !packed)) {
 				try {
 					repository.setHostReport(this.getID(), hostReport);
 				} catch (Exception e) {
