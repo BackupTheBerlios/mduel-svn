@@ -27,7 +27,7 @@ public class TaskList implements Serializable {
 	 * @param action			action to be set
 	 */
 	public void addTask(Action action) {
-		tasks.add(action);
+		tasks.addLast(action);
 	}
 
 	/**
@@ -37,6 +37,15 @@ public class TaskList implements Serializable {
 	 */
 	public Action getNextAction() {
 		return (Action) tasks.removeFirst();
+	}
+	
+	/**
+	 * gets the last action inserted
+	 * 
+	 * @return last action
+	 */
+	public Action getLastAction() {
+		return (Action) tasks.removeLast();
 	}
 
 	/**

@@ -19,6 +19,8 @@ public class ASLVisitorImpl implements ASLVisitor {
 	private boolean isClone = false;
 
 	private boolean doTrace = false;
+	
+	private Object[] currentParams;
 
 	/**
 	 * class constructor
@@ -121,11 +123,12 @@ public class ASLVisitorImpl implements ASLVisitor {
 			node.classname = node.classname.substring(1);
 			System.out.println("running " + node.classname);
 			if (node.urldir == null) {
-				tasklist.addTask(new MobileCodeAction(node.classname, doTrace));
+				MobileCodeAction action = new MobileCodeAction(node.classname, doTrace);
+				tasklist.addTask(action);
 			} else if (node.urldir != null) {
+				RemoteCodeAction action = new RemoteCodeAction(node.urldir, node.classname, doTrace);
 				System.out.println("--> from " + node.urldir);
-				tasklist.addTask(new RemoteCodeAction(node.urldir,
-						node.classname, doTrace));
+				tasklist.addTask(action);
 			}
 		} else if (node.time != null) {
 			System.out.println("sleeping for " + node.time);
@@ -179,7 +182,16 @@ public class ASLVisitorImpl implements ASLVisitor {
 	 * not used
 	 */
 	public Object visit(ASLParamsNode node, Object data) {
-		System.out.println("visiting ParamsNode...");
+		currentParams = node.params.toArray();
+		Action a = tasklist.getLastAction();
+		if (a instanceof MobileCodeAction) {
+			((MobileCodeAction)a).setParams(currentParams);
+		} if (a instanceof RemoteCodeAction) {
+			((RemoteCodeAction)a).setParams(currentParams);
+		}
+		tasklist.addTask(a);
+		this.currentParams = null;
+
 		node.childrenAccept(this, null);
 		return null;
 	}

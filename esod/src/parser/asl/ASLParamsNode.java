@@ -2,7 +2,11 @@
 
 package parser.asl;
 
+import java.util.Vector;
+
 public class ASLParamsNode extends SimpleNode {
+	public Vector params;
+
 	public ASLParamsNode(int id) {
 		super(id);
 	}

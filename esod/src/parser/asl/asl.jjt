@@ -16,6 +16,7 @@ options {
  */
 PARSER_BEGIN(ASL)
 package parser.asl;
+import java.util.Vector;
 
 public class ASL {}
 PARSER_END(ASL)
@@ -288,9 +289,24 @@ void Output() #OutputNode:
 }
 
 void Params() #ParamsNode:
-{}
 {
-    <IDENTIFIER> ("," <IDENTIFIER>)*
+	String param = null;
+	Vector params = new Vector();
+}
+{
+    ( param = param() { params.add(param); } ("," ( param = param() ) { params.add(param); } )* )
+    {
+    	jjtn000.params = params;
+    }
+}
+
+String param() #void:
+{
+	String str;
+}
+{
+	<IDENTIFIER> { return token.image; } |
+	<STRING_LITERAL> { str = token.image; return str.substring(1, str.length() - 1); }
 }
 
 ASLStartNode Input() #InputNode:

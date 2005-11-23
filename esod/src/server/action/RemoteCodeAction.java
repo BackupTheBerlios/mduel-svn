@@ -11,6 +11,8 @@ public class RemoteCodeAction extends BaseAction {
 	private String uri;
 
 	private String task;
+	
+	private Object[] params = null;
 
 	/**
 	 * class constructor
@@ -27,7 +29,12 @@ public class RemoteCodeAction extends BaseAction {
 		this.uri = uri;
 		this.task = task;
 	}
-
+	
+	public void setParams(Object[] p)
+	{
+		this.params = p;
+	}
+	
 	/**
 	 * executes remote code
 	 * 
@@ -38,7 +45,7 @@ public class RemoteCodeAction extends BaseAction {
 		try {
 			Task t = (Task) RMIClassLoader.loadClass(
 					"http://" + this.uri + ":2005/", task).newInstance();
-			return t.run(agent);
+			return t.run(agent, this.params);
 		} catch (Exception e) {
 			System.out.println("unable to run: " + this.task + " from "
 					+ this.uri);
