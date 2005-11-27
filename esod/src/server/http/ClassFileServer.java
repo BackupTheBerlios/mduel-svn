@@ -11,6 +11,7 @@
 package server.http;
 
 import java.io.*;
+import java.net.InetAddress;
 
 /**
  * The ClassFileServer implements a ClassServer that reads class files from the
@@ -45,7 +46,7 @@ public class ClassFileServer extends ClassServer {
 	 */
 	public byte[] getBytes(String path) throws IOException,
 			ClassNotFoundException {
-		System.out.println("reading: " + path);
+		//System.out.println("reading: " + path);
 		File f = new File(classpath + File.separator
 				+ path.replace('.', File.separatorChar) + ".class");
 		int length = (int) (f.length());
@@ -103,6 +104,7 @@ public class ClassFileServer extends ClassServer {
 
 		try {
 			new ClassFileServer(port, classpath);
+			System.out.println("starting HTTP class file server on " + InetAddress.getLocalHost().getHostAddress().toString() + ":" + port);
 		} catch (IOException e) {
 			System.out
 					.println("Unable to start ClassServer: " + e.getMessage());

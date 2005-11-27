@@ -1,0 +1,36 @@
+
+EXECUÇÃO
+========
+
+A execução do trabalho passa por correr em quatro terminais diferentes os
+scripts submetidos na raíz do directório do código fonte. Assim, devem ser
+lançados, por ordem:
+
+$ rmiregistry
+$ sh run_server.sh
+$ sh run_mediator.sh
+$ sh run_repository.sh
+$ sh run_client.sh
+
+um possível script para execução é o
+
+	scripts/simple.txt
+
+COMPILAÇÃO
+==========
+
+Para compilar o trabalho, deverá estar instalado o JavaCC e o Apache ANT,
+com os respectivos /bin na PATH.
+
+JAVACC: https://javacc.dev.java.net/files/documents/17/685/javacc-3.2.tar.gz
+ANT: http://apache.telepac.pt/ant/binaries/apache-ant-1.6.5-bin.zip
+
+Também deverá ser alterada a variável ${javacc.home} no ficheiro build.xml
+de forma a apontar para a instalação do JavaCC.
+
+Uma vez instalados os dois programas, basta executar o comando
+
+$ ant clean; ant dist;
+
+na raíz do directório do projecto.
+

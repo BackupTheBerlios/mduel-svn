@@ -1,10 +1,9 @@
 package server.agent;
 
-import server.AgentHost;
-import java.rmi.Remote;
-import java.rmi.RemoteException;
+import java.io.Serializable;
 
-public interface AgentFactory extends Remote {
-	public Agent create(AgentHost host, String scriptFile)
-			throws RemoteException;
+import server.AgentHost;
+
+public interface AgentFactory extends Serializable {
+	public Agent create(AgentHost host, String scriptFile);
 }

@@ -1,14 +1,11 @@
 package client;
 
-import java.net.MalformedURLException;
 import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import server.AgentHost;
-import server.AgentHostImpl;
 import server.action.Action;
 import server.action.MigrateAction;
 import server.agent.Agent;
@@ -18,9 +15,9 @@ import server.repository.AgentReport;
 import server.repository.HostReport;
 import server.repository.Repository;
 
-public class Client extends AgentHostImpl {
+public class Client {
 
-	private static final long serialVersionUID = -6989670203285660532L;
+	private AgentHost localHost;
 
 	private Mediator mediator;
 
@@ -28,62 +25,39 @@ public class Client extends AgentHostImpl {
 
 	private LinkedList list;
 
-	/**
-	 * gets the repository private member
-	 * 
-	 * @return				repository reference
-	 */
+	public AgentHost getLocalHost() {
+		return localHost;
+	}
+
 	public Repository getRepository() {
 		return repository;
 	}
 
-	/**
-	 * gets the mediator private member
-	 * 
-	 * @return				mediator reference
-	 */
 	public Mediator getMediator() {
 		return mediator;
 	}
 
-	/**
-	 * gets the list private member
-	 * 
-	 * @return				a list of agent identifiers
-	 */
 	public LinkedList getList() {
 		return list;
 	}
 
-	/**
-	 * prepares and launches an agent
-	 * 
-	 * @param script		what to do
-	 * @return				0 if no exception ocurs
-	 */
 	public int startAgent(String script) {
 		try {
-			Agent agent = mediator.getAgentFactory().create(this, script);
+			Agent agent = mediator.getAgentFactory().create(localHost, script);
 			agent.setMediator(mediator);
 			agent.setRepository(repository);
 			mediator.registerAgent(agent, new AgentInfo(agent.getID(), agent
 					.getScript().getActions()));
 			AgentHost startHost = (AgentHost) Naming.lookup("//"
 					+ agent.getNewHost() + "/" + AgentHost.class.getName());
-			agent.setHome(this);
+			agent.setHome(localHost);
 			startHost.accept(agent);
 		} catch (Exception e) {
-			e.getMessage();
+			e.printStackTrace();
 		}
 		return 0;
 	}
 
-	/**
-	 * updates the private member list
-	 * with a list of active agents
-	 * sent by the mediator
-	 *
-	 */
 	public void listMediatorAgents() {
 		int n = 0;
 
@@ -100,11 +74,6 @@ public class Client extends AgentHostImpl {
 		}
 	}
 
-	/**
-	 * updates the private member list
-	 * with a list of active and inactive agents
-	 * sent by the repository
-	 */
 	public void listRepositoryAgents() {
 		int n = 0;
 
@@ -122,35 +91,18 @@ public class Client extends AgentHostImpl {
 		}
 	}
 
-	/**
-	 * class constructor
-	 * 
-	 * @throws RemoteException
-	 */
-	public Client() throws RemoteException {
-
+	public Client() throws Exception {
 		System.out.println("> starting Client...");
 		System.out.println("> rebinding... ");
 
-		try {
-
-			mediator = (Mediator) Naming.lookup("//localhost/"
-					+ Mediator.class.getName());
-			repository = (Repository) Naming.lookup("//localhost/"
-					+ Repository.class.getName());
-
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		} catch (NotBoundException e) {
-			e.printStackTrace();
-		}
+		localHost = (AgentHost) Naming.lookup("//localhost/"
+				+ AgentHost.class.getName());
+		mediator = (Mediator) Naming.lookup("//localhost/"
+				+ Mediator.class.getName());
+		repository = (Repository) Naming.lookup("//localhost/"
+				+ Repository.class.getName());
 	}
 
-	/**
-	 * displays a simple menu for user interface
-	 */
 	public static void menuInit() {
 		System.out.println("--------CONSOLA DE CONTROLO DO AGENTE--------");
 		System.out.println("1	lançar agente.");
@@ -162,8 +114,15 @@ public class Client extends AgentHostImpl {
 	}
 
 	public static void main(String[] args) throws RemoteException {
+		Client client = null;
+		
+		try {
+			client = new Client();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return;
+		}
 
-		Client client = new Client();
 		char c = '.';
 		String script = null;
 		int i;
@@ -180,7 +139,7 @@ public class Client extends AgentHostImpl {
 					script = SavitchIn.readWord();
 					client.startAgent(script);
 				} catch (Exception e) {
-					e.getMessage();
+					e.printStackTrace();
 				}
 
 				menuInit();
@@ -200,7 +159,7 @@ public class Client extends AgentHostImpl {
 
 				try {
 					Action migrateHome = new MigrateAction(
-							client.getHostname(), true);
+							client.getLocalHost().getHostname(), true);
 					client.getMediator().interrupt(
 							(String) client.getList().get(i), migrateHome);
 					System.out.println("Agente terminado com sucesso.");

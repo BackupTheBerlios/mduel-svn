@@ -1,5 +1,7 @@
 #!/bin/bash
 
 unset CLASSPATH
+export DYLD_LIBRARY_PATH=`pwd`/bin/server/tasks/
+export LD_LIBRARY_PATH=`pwd`/bin/server/tasks/
 
-java -Djava.security.policy=security.policy -Djava.rmi.server.codebase="file:`pwd`/dist/client.jar" -jar dist/client.jar $1
+java -cp bin/ -Djava.security.policy=security.policy -jar dist/client.jar

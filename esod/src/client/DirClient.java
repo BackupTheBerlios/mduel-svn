@@ -1,29 +1,21 @@
 package client;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.rmi.Naming;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
+
 import parser.ASLParser;
 import server.AgentHost;
-import server.AgentHostImpl;
 import server.agent.AgentScript;
 import server.agent.DirAgentImpl;
 import server.mediator.AgentInfo;
 import server.mediator.Mediator;
 import server.repository.Repository;
 
-public class DirClient extends AgentHostImpl {
-	private static final long serialVersionUID = -5319810192723832184L;
-
-	public DirClient() throws RemoteException {
-		super();
-	}
-	public static void main(String[] args) throws RemoteException {
+public class DirClient {
+	public static void main(String[] args) {
 		try {
-			DirClient c = new DirClient();
-
+			AgentHost agentHost = (AgentHost) Naming.lookup("//localhost/"
+					+ AgentHost.class.getName());
 			Mediator mediator = (Mediator) Naming.lookup("//localhost/"
 					+ Mediator.class.getName());
 			Repository repository = (Repository) Naming.lookup("//localhost/"
@@ -34,7 +26,7 @@ public class DirClient extends AgentHostImpl {
 			AgentScript script = null;
 			ASLParser parser = new ASLParser();
 			script = parser.LoadScript(args[0]);
-			agent.setHost(c);
+			agent.setHost(agentHost);
 			agent.setScript(script);
 			agent.setMediator(mediator);
 			agent.setRepository(repository);
@@ -42,13 +34,9 @@ public class DirClient extends AgentHostImpl {
 					.getScript().getActions()));
 			AgentHost startHost = (AgentHost) Naming.lookup("//"
 					+ agent.getNewHost() + "/" + AgentHost.class.getName());
-			agent.setHome(c);
+			agent.setHome(agentHost);
 			startHost.accept(agent);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		} catch (NotBoundException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

@@ -3,15 +3,16 @@ package server.mediator;
 import server.action.Action;
 import server.agent.*;
 
-import java.net.MalformedURLException;
-import java.rmi.server.*;
 import java.rmi.*;
+import java.rmi.activation.*;
 import java.util.*;
 
-public class MediatorImpl extends UnicastRemoteObject implements Mediator {
+public class MediatorImpl extends Activatable implements Mediator {
 	private static final long serialVersionUID = -5563370450807830696L;
 
 	private Hashtable agentTable;
+	
+	private AgentFactory agentFactory;
 
 	/**
 	 * class constructor
@@ -19,15 +20,11 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 	 * @throws RemoteException
 	 * 
 	 */
-	public MediatorImpl() throws RemoteException {
-		agentTable = new Hashtable();
-		AgentFactory agentFactory = new AgentFactoryImpl();
+	public MediatorImpl(ActivationID id, MarshalledObject data) throws RemoteException {
+		super(id, 0);
 
-		try {
-			Naming.rebind(AgentFactory.class.getName(), agentFactory);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
+		agentTable = new Hashtable();
+		agentFactory = new AgentFactoryImpl();
 	}
 
 	/**
@@ -130,6 +127,10 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 		AgentInfo ai = (AgentInfo) this.agentTable.get(agent.getID());
 		return ai.getActionList();
 	}
+	
+	public AgentFactory getAgentFactory() {
+		return agentFactory;
+	}
 
 	/**
 	 * fetches the AgentInfo of a specific agent and removes the
@@ -144,29 +145,6 @@ public class MediatorImpl extends UnicastRemoteObject implements Mediator {
 		list.removeFirst();
 		ai.setActionList(list);
 		this.agentTable.put(agent.getID(), ai);
-	}
-
-	/**
-	 * returns a factory to create agents
-	 * 
-	 * @throws RemoteException
-	 * @return				factory to create agents
-	 */
-	public AgentFactory getAgentFactory() throws RemoteException {
-		AgentFactory agentFactory = null;
-
-		try {
-			agentFactory = (AgentFactory) Naming.lookup("//localhost/"
-					+ AgentFactory.class.getName());
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		} catch (NotBoundException e) {
-			e.printStackTrace();
-		}
-
-		return agentFactory;
 	}
 
 	/**

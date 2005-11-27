@@ -4,10 +4,16 @@ NOTAS
 
 - criar uma task de soma de dois numeros num servidor mediante input de utilizador
 - interface swing (mvc)
-- ao arrancar um agentserver, contactor o mediator e dar o IP+hostname de forma a fazer
+- serviço de nomes
+- factory's só fazem sentido para interfaces de objectos remotos, que não tem construtor
+- alteração da consola de forma a invocar um frontend
+- utilizar exemplos de callback para os relatórios (register, etc...)
+- limpar o interface do agente, de forma a torná-lo mais genérico
+- definir vários tipos de agentes
+- client stubs que fazem o download do código do servidor de agentes remotamente
+
 
 ** CLONE action
-** getHistory(), getRoute() -- no agente
 ** comando WHO executa um mŽétodo nos agentes estacionados num nó e devolve:
 	* o id do agente
 	* lista de nós onde passou

@@ -1,112 +1,132 @@
 <project name="esod" default="dist" basedir=".">
 
-  <property name="src" location="src"/>
-  <property name="javacc.home" location="${user.home}/java/javacc"/>
-  <property name="docs" location="docs"/>
-  <property name="build" location="bin"/>
-  <property name="dist" location="dist"/>
-  <property name="debug" value="false"/>
+	<property name="src" location="src"/>
+	<property name="javacc.home" location="${user.home}/java/javacc"/>
+	<property name="docs" location="docs"/>
+	<property name="build" location="bin"/>
+	<property name="dist" location="dist"/>
+	<property name="debug" value="false"/>
 
-  <target name="init">
-    <tstamp/>
-    <mkdir dir="${build}"/>
-  </target>
+	<target name="init">
+		<tstamp/>
+		<mkdir dir="${build}"/>
+	</target>
 
-  <target name="debug">
-  	<property name="debug" value="true"/>
-  </target>
+	<target name="debug">
+		<property name="debug" value="true"/>
+	</target>
 
-  <target name="docs">
-    <mkdir dir="${docs}"/>
-   	<javadoc packagenames="*" classpath="${build}/../3rdparty/activation.jar:${build}/../3rdparty/mail.jar" sourcepath="${src}" destdir="${docs}">
-   	</javadoc>
-  </target>
+	<target name="docs">
+		<mkdir dir="${docs}"/>
+		<javadoc packagenames="*" classpath="${build}/../3rdparty/activation.jar:${build}/../3rdparty/mail.jar" sourcepath="${src}" destdir="${docs}" />
+	</target>
 
-  <target name="compile" depends="init" description="compile the source " >
-  	<!-- generate parser -->
-  	<jjtree javacchome="${javacc.home}" target="${src}/parser/asl/asl.jjt" outputdirectory="${src}/parser/asl"/>
-  	<javacc javacchome="${javacc.home}" target="${src}/parser/asl/asl.jj" outputdirectory="${src}/parser/asl"/>
-  	
-  	<!-- compile source code -->
-    <javac
-    		debug="${debug}"
-    		classpath="${build}/../3rdparty/activation.jar:${build}/../3rdparty/mail.jar" debuglevel="source" srcdir="${src}" destdir="${build}"/>
+	<target name="compile" depends="init" description="compile the source " >
+		<!-- generate parser -->
+		<jjtree javacchome="${javacc.home}" target="${src}/parser/asl/asl.jjt" outputdirectory="${src}/parser/asl"/>
+		<javacc javacchome="${javacc.home}" target="${src}/parser/asl/asl.jj" outputdirectory="${src}/parser/asl"/>
 
-  	<!-- generate stubs -->
-  	<rmic classpath="${src}" classname="server.AgentHostImpl" base="${build}"/>
-  	<rmic classpath="${src}" classname="server.agent.AgentFactoryImpl" base="${build}"/>
-   	<rmic classpath="${src}" classname="server.mediator.MediatorImpl" base="${build}"/>
+		<!-- compile source code -->
+		<javac
+			debug="${debug}"
+			classpath="${build}/../3rdparty/activation.jar:${build}/../3rdparty/mail.jar"
+			debuglevel="source"
+			srcdir="${src}"
+			destdir="${build}" />
 
-  	<!-- JNI code -->
-  	<javah classpath="${build}" destdir="${src}/server/tasks">
-  		<class name="server.tasks.JNIGetEnvPathTask"/>
-  	</javah>
-  	<!-- if MacOSX -->
-  	<exec executable="cc" dir="${build}/server/tasks" os="Mac OS X">
-  		<arg line="-bundle -o libjnitasks.jnilib -framework JavaVM -I${java.home}/include ${src}/server/tasks/JNIGetEnvPathTask.c"/>
-  	</exec>
-  	<!-- if Linux -->
-  	<exec executable="cc" dir="${build}/server/tasks" os="Linux">
-  		<arg line="-shared -o libjnitasks.so -I${java.home}/include -I${java.home}/include/linux ${src}/server/tasks/JNIGetEnvPathTask.c"/>
-  	</exec>
+		<!-- generate stubs -->
+		<rmic classpath="${src}" classname="server.AgentHostImpl" base="${build}"/>
+		<rmic classpath="${src}" classname="server.mediator.MediatorImpl" base="${build}"/>
+		<rmic classpath="${src}" classname="server.repository.RepositoryImpl" base="${build}"/>
 
-  </target>
+		<!-- JNI code -->
+		<javah classpath="${build}" destdir="${src}/server/tasks">
+ 			<class name="server.tasks.JNIGetEnvPathTask"/>
+		</javah>
 
-  <target name="dist" depends="compile" description="generate the distribution" >
-    <mkdir dir="${dist}"/>
-  	<!-- we could be more verbose about what classes to include in each jar, but we won't... -->
-  	<!-- just don't include the tasks, so they can be remotely loaded -->
-    <jar jarfile="${dist}/agentserver.jar" manifest="META-INF/AgentServer.MF">
-    		<fileset dir="${build}">
-    			<include name="parser/**"/>
-    			<include name="server/*.*"/>
-    			<include name="server/agent/**"/>
-    			<include name="server/action/**"/>
-    			<include name="server/mediator/**"/>
-    			<include name="server/repository/**"/>
-    			<include name="server/http/**"/>
-    			<include name="server/tasks/Task.class"/>
-    		</fileset>
-  	</jar>
-    <jar jarfile="${dist}/mediatorserver.jar" manifest="META-INF/MediatorServer.MF">
-    		<fileset dir="${build}">
-    			<include name="parser/**"/>
-    			<include name="server/*.*"/>
-    			<include name="server/agent/**"/>
-    			<include name="server/action/**"/>
-    			<include name="server/mediator/**"/>
-    			<include name="server/repository/**"/>
-    			<include name="server/tasks/Task.class"/>
-        	</fileset>
-   	</jar>
-    <jar jarfile="${dist}/repositoryserver.jar" manifest="META-INF/RepositoryServer.MF">
-    		<fileset dir="${build}">
-    			<include name="parser/**"/>
-    			<include name="server/*.*"/>
-    			<include name="server/agent/**"/>
-    			<include name="server/action/**"/>
-    			<include name="server/mediator/**"/>
-    			<include name="server/repository/**"/>
-    			<include name="server/tasks/Task.class"/>
-        	</fileset>
-   	</jar>
-    <jar jarfile="${dist}/client.jar" manifest="META-INF/Client.MF">
-    		<fileset dir="${build}">
-    			<include name="client/**"/>
-    			<include name="parser/**"/>
-    			<include name="server/*.*"/>
-    			<include name="server/agent/**"/>
-    			<include name="server/action/**"/>
-    			<include name="server/mediator/**"/>
-    			<include name="server/repository/**"/>
-    			<include name="server/tasks/Task.class"/>
-        	</fileset>
-   	</jar>
-  </target>
+		<!-- if MacOSX -->
+		<exec executable="cc" dir="${build}/server/tasks" os="Mac OS X">
+			<arg line="-bundle -o libjnitasks.jnilib -framework JavaVM -I${java.home}/include ${src}/server/tasks/JNIGetEnvPathTask.c"/>
+		</exec>
+		
+		<!-- if Linux -->
+		<exec executable="cc" dir="${build}/server/tasks" os="Linux">
+			<arg line="-shared -o libjnitasks.so -I${java.home}/include -I${java.home}/include/linux ${src}/server/tasks/JNIGetEnvPathTask.c"/>
+		</exec>
+	</target>
 
-  <target name="clean" description="clean up" >
-    <delete dir="${build}"/>
-    <delete dir="${dist}"/>
-    <delete dir="${docs}"/>
-  </target>
+	<target name="dist" depends="compile" description="generate the distribution" >
+		<mkdir dir="${dist}"/>
+		
+		<!-- we could be more verbose about what classes to include in each jar, but we won't... -->
+		<!-- just don't include the tasks, so they can be remotely loaded -->
+		<jar jarfile="${dist}/agentserver.jar" manifest="META-INF/AgentServer.MF">
+			<fileset dir="${build}">
+				<include name="parser/**"/>
+				<include name="server/*.*"/>
+				<include name="server/agent/**"/>
+				<include name="server/action/**"/>
+				<include name="server/mediator/**"/>
+				<include name="server/repository/**"/>
+				<include name="server/http/**"/>
+				<include name="server/tasks/Task.class"/>
+			</fileset>
+		</jar>
+		
+		<jar jarfile="${dist}/mediatorserver.jar" manifest="META-INF/MediatorServer.MF">
+			<fileset dir="${build}">
+				<include name="parser/**"/>
+				<include name="server/*.*"/>
+				<include name="server/agent/**"/>
+				<include name="server/action/**"/>
+				<include name="server/mediator/**"/>
+				<include name="server/repository/**"/>
+				<include name="server/tasks/Task.class"/>
+			</fileset>
+		</jar>
+		
+		<jar jarfile="${dist}/repositoryserver.jar" manifest="META-INF/RepositoryServer.MF">
+			<fileset dir="${build}">
+				<include name="parser/**"/>
+				<include name="server/*.*"/>
+				<include name="server/agent/**"/>
+				<include name="server/action/**"/>
+				<include name="server/mediator/**"/>
+				<include name="server/repository/**"/>
+				<include name="server/tasks/Task.class"/>
+			</fileset>
+		</jar>
+
+		<jar jarfile="${dist}/client.jar" manifest="META-INF/Client.MF">
+			<fileset dir="${build}">
+				<include name="client/**"/>
+				<include name="parser/**"/>
+				<include name="server/*.*"/>
+				<include name="server/agent/**"/>
+				<include name="server/action/**"/>
+				<include name="server/mediator/**"/>
+				<include name="server/repository/**"/>
+				<include name="server/tasks/Task.class"/>
+			</fileset>
+		</jar>
+
+		<jar jarfile="${dist}/dir_client.jar" manifest="META-INF/DirClient.MF">
+			<fileset dir="${build}">
+				<include name="client/**"/>
+				<include name="parser/**"/>
+				<include name="server/*.*"/>
+				<include name="server/agent/**"/>
+				<include name="server/action/**"/>
+				<include name="server/mediator/**"/>
+				<include name="server/repository/**"/>
+				<include name="server/tasks/Task.class"/>
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="clean" description="clean up" >
+		<delete dir="${build}"/>
+		<delete dir="${dist}"/>
+		<delete dir="${docs}"/>
+	</target>
 </project>

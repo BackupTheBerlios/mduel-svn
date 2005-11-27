@@ -3,13 +3,14 @@ package server;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.rmi.*;
-import java.rmi.server.*;
+import java.rmi.activation.*;
 import java.util.LinkedList;
+
 import server.agent.Agent;
 import server.repository.AgentReport;
 import server.repository.HostReport;
 
-public class AgentHostImpl extends UnicastRemoteObject implements AgentHost {
+public class AgentHostImpl extends Activatable implements AgentHost {
 	private static final long serialVersionUID = 3257001064375988534L;
 
 	private LinkedList agentList;
@@ -19,8 +20,8 @@ public class AgentHostImpl extends UnicastRemoteObject implements AgentHost {
 	 * 
 	 * @throws RemoteException
 	 */
-	public AgentHostImpl() throws RemoteException {
-		super();
+	public AgentHostImpl(ActivationID id, MarshalledObject data) throws RemoteException {
+		super(id, 0);
 		agentList = new LinkedList();
 	}
 
@@ -129,7 +130,7 @@ public class AgentHostImpl extends UnicastRemoteObject implements AgentHost {
 	public void reportBack(AgentReport report) throws RemoteException {
 		report.printReport();
 	}
-	
+
 	public void reportBackLast(HostReport report) throws RemoteException {
 		report.printReport();
 	}

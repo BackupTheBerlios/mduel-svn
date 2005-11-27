@@ -1,15 +1,16 @@
 package server.repository;
 
 import java.io.Serializable;
+import java.rmi.*;
+import java.rmi.activation.*;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import server.AgentHost;
 
-public class RepositoryImpl extends UnicastRemoteObject implements Repository,
+public class RepositoryImpl extends Activatable implements Repository,
 		Serializable {
 	private static final long serialVersionUID = 6893905241391990022L;
 
@@ -20,7 +21,8 @@ public class RepositoryImpl extends UnicastRemoteObject implements Repository,
 	 * 
 	 * @throws RemoteException
 	 */
-	public RepositoryImpl() throws RemoteException {
+	public RepositoryImpl(ActivationID id, MarshalledObject data) throws RemoteException {
+		super(id, 0);
 		table = new Hashtable(50);
 	}
 
