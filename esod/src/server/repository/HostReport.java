@@ -83,19 +83,4 @@ public class HostReport implements Serializable {
 		}
 		return sb.toString();
 	}
-	
-	/**
-	 * 
-	 *
-	 */
-	public void printReport() {
-
-		Iterator i = tasks.listIterator();
-
-		System.out.println("AGENT-ID: " + host.toString());
-		while (i.hasNext()) {
-			TaskReport tmp = (TaskReport) i.next();
-			System.out.println(tmp);
-		}
-	}
 }

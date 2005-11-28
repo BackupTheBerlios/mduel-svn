@@ -128,10 +128,10 @@ public class AgentHostImpl extends Activatable implements AgentHost {
 	 *            report to print
 	 */
 	public void reportBack(AgentReport report) throws RemoteException {
-		report.printReport();
+		System.out.println(report);
 	}
 
 	public void reportBackLast(HostReport report) throws RemoteException {
-		report.printReport();
+		System.out.println(report);
 	}
 }

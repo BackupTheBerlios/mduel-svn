@@ -82,19 +82,15 @@ public class AgentReport implements Serializable {
 		return -1;
 	}
 
-	/**
-	 *
-	 *
-	 */
-	public void printReport() {
-
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
 		Iterator i = tasks.listIterator();
-
-		System.out.println("AGENT-ID: " + agentID.toString());
+		
+		sb.append("AGENT-ID: " + agentID.toString());
 		while (i.hasNext()) {
 			HostReport tmp = (HostReport) i.next();
-			System.out.println(tmp);
+			sb.append(tmp);
 		}
+		return sb.toString();
 	}
-
 }
