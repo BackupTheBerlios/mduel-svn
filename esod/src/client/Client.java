@@ -46,14 +46,14 @@ public class Client {
 				break;
 
 			case '3':
-				System.out
-						.println("Indique o número do agente que quer terminar:");
+				System.out.println("Indique o número do agente que quer terminar:");
 				frontEnd.listActiveAgents();
 				i = SavitchIn.readInt();
 				frontEnd.killAgent(i);
 				break;
 
 			case '4':
+				// TODO: these are not working
 				System.out.println("Indique o número do agente a reportar:");
 				frontEnd.listAvailableReports();
 				i = SavitchIn.readInt();
@@ -61,6 +61,7 @@ public class Client {
 				break;
 
 			case '5':
+				// TODO: these are not working
 				System.out.println("Indique o número do agente a reportar:");
 				frontEnd.listAvailableReports();
 				i = SavitchIn.readInt();

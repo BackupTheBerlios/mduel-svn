@@ -1,0 +1,27 @@
+package client;
+
+import org.omg.CORBA.*;
+import org.omg.CosNaming.*;
+
+import corba.*;
+
+public class CorbaClient {
+	public static void main(String[] args) {
+		try {
+			ORB orb = ORB.init(args, null);
+			
+			org.omg.CORBA.Object objRef = orb.resolve_initial_references("NameService");
+			NamingContext ncRef = NamingContextHelper.narrow(objRef);
+			NameComponent nc = new NameComponent("AgentPlatform", "");
+			NameComponent path[] = new NameComponent [] { nc };
+
+			org.omg.CORBA.Object platformObj = ncRef.resolve(path);
+			CorbaFrontEnd platformRef = CorbaFrontEndHelper.narrow(platformObj);
+
+			platformRef.startAgent("scripts/simple.txt");
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+}

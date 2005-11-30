@@ -1,0 +1,16 @@
+definition {
+    scriptID: "abc123"
+    author: "Milton Moura"
+    date: "27.10.05"
+    comment: "teste de script simples"
+    obs: "primeiro teste com scripts"
+}
+
+execute {
+	migrate to 127.0.0.1 trace {
+		run $server.action.AgentImpl.sayHello()
+		run $server.tasks.OSDetailsTask() from 127.0.0.1
+		run $server.tasks.UserInfoTask() from 127.0.0.1
+		run $server.tasks.JNIGetEnvTask() from 127.0.0.1
+	} output
+} reportfinal
