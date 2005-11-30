@@ -31,7 +31,7 @@ public class MediatorSetup {
 			e.printStackTrace();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-		} 
+		}
 	}
 	
 	public static void main(String[] args) {

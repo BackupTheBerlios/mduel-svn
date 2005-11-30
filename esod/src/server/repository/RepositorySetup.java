@@ -13,7 +13,6 @@ public class RepositorySetup {
 		ActivationGroupID agi;
 		try {
 			agi = ActivationGroup.getSystem().registerGroup(exampleGroup);
-
 			MarshalledObject data = null;
 			ActivationDesc desc = new ActivationDesc(
 					agi,
@@ -31,7 +30,7 @@ public class RepositorySetup {
 			e.printStackTrace();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-		} 
+		}
 	}
 	
 	public static void main(String[] args) {
