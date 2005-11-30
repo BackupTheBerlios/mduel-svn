@@ -3,8 +3,6 @@ package client;
 import org.omg.CORBA.*;
 import org.omg.CosNaming.*;
 
-import corba.*;
-
 public class CorbaClient {
 	public static void main(String[] args) {
 		try {
@@ -16,9 +14,10 @@ public class CorbaClient {
 			NameComponent path[] = new NameComponent [] { nc };
 
 			org.omg.CORBA.Object platformObj = ncRef.resolve(path);
-			CorbaFrontEnd platformRef = CorbaFrontEndHelper.narrow(platformObj);
-
-			platformRef.startAgent("scripts/simple.txt");
+			Request req = platformObj._request("startAgent");
+			Any val = req.add_in_arg();
+			val.insert_string("scripts/simple.txt");
+			req.invoke();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
