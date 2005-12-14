@@ -51,12 +51,12 @@ public class AgentPlatform extends _CorbaFrontEndImplBase {
 		frontEnd.startAgent(script);
 	}
 
-	public void listActiveAgents() throws RemoteError {
-		frontEnd.listActiveAgents();
+	public String listActiveAgents() throws RemoteError {
+		return frontEnd.listActiveAgents();
 	}
 
-	public void listAvailableReports() throws RemoteError {
-		frontEnd.listActiveAgents();
+	public String listAvailableReports() throws RemoteError {
+		return frontEnd.listAvailableReports();
 	}
 
 	public String getAgentReport(int idx) throws RemoteError {

@@ -16,9 +16,27 @@ public class AgentFactoryImpl implements AgentFactory {
 	}
 
 	/**
+	 * validates a script by trying to parse it
+	 * 
+	 * @param script
+	 *  the text to parse as a valid script
+	 *  
+	 * @return boolean
+	 *  a boolean indicating if the script is valid or not
+	 */
+	public boolean validateScript(String script) {
+		try {
+			ASLParser parser = new ASLParser();
+			parser.loadScript(script);
+		} catch (Exception ex) {
+			return false;
+		}
+
+		return true;
+	}
+	/**
 	 * creates a new agent from a specified script
 	 * 
-	 * @throws RemoteException
 	 * @param host
 	 *            first host of the agent
 	 * @param scriptFile
@@ -30,7 +48,7 @@ public class AgentFactoryImpl implements AgentFactory {
 
 		try {
 			ASLParser parser = new ASLParser();
-			script = parser.LoadScript(scriptFile);
+			script = parser.loadScript(scriptFile);
 		} catch (Exception ex) {
 			System.out.println("error parsing script");
 			return null;

@@ -8,8 +8,8 @@ module corba {
 
 		boolean validateScript(in string script) raises(RemoteError);
 		oneway void startAgent(in string script);
-		void listActiveAgents() raises(RemoteError);
-		void listAvailableReports() raises(RemoteError);
+		string listActiveAgents() raises(RemoteError);
+		string listAvailableReports() raises(RemoteError);
 		string getAgentReport(in long idx) raises(RemoteError);
 		string getHostReport(in long idx) raises(RemoteError);
 	};

@@ -4,17 +4,17 @@ public class Client {
 
 	public static void menuInit() {
 		System.out.println("--------CONSOLA DE CONTROLO DO AGENTE--------");
-		System.out.println("1	lançar agente.");
-		System.out.println("2	listar agentes activos.");
-		System.out.println("3	parar a execução de um agente.");
-		System.out.println("4	relatório completo de um agente.");
-		System.out.println("5	último relatório de um agente.");
+		System.out.println("1.\tlançar agente.");
+		System.out.println("2.\tlistar agentes activos.");
+		System.out.println("3.\tparar a execução de um agente.");
+		System.out.println("4.\trelatório completo de um agente.");
+		System.out.println("5.\túltimo relatório de um agente.");
 		System.out.println("--------CONSOLA DE CONTROLO DO AGENTE--------");
 	}
 
 	public static void main(String[] args) {
-		FrontEndImpl frontEnd;
-		
+		FrontEnd frontEnd;
+
 		try {
 			frontEnd = new FrontEndImpl();
 		} catch (Exception ex) {
@@ -23,9 +23,6 @@ public class Client {
 		}
 
 		char c = '.';
-		String script = null;
-		int i;
-
 		while (true) {
 			menuInit();
 
@@ -34,7 +31,7 @@ public class Client {
 			case '1':
 				System.out.println("Indique o ficheiro de script pretendido:");
 				try {
-					script = SavitchIn.readWord();
+					String script = SavitchIn.readWord();
 					frontEnd.startAgent(script);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -42,32 +39,41 @@ public class Client {
 				break;
 
 			case '2':
-				frontEnd.listActiveAgents();
+			{
+				String str = frontEnd.listActiveAgents();
+				System.out.println(str);
 				break;
+			}
 
 			case '3':
+			{
 				System.out.println("Indique o número do agente que quer terminar:");
-				frontEnd.listActiveAgents();
-				i = SavitchIn.readInt();
+				String str = frontEnd.listActiveAgents();
+				System.out.println(str);
+				int i = SavitchIn.readInt();
 				frontEnd.killAgent(i);
 				break;
+			}
 
 			case '4':
-				// TODO: these are not working
+			{
 				System.out.println("Indique o número do agente a reportar:");
-				frontEnd.listAvailableReports();
-				i = SavitchIn.readInt();
+				String str = frontEnd.listAvailableReports();
+				System.out.println(str);
+				int i = SavitchIn.readInt();
 				System.out.println(frontEnd.getAgentReport(i));
 				break;
+			}
 
 			case '5':
-				// TODO: these are not working
+			{
 				System.out.println("Indique o número do agente a reportar:");
-				frontEnd.listAvailableReports();
-				i = SavitchIn.readInt();
+				String str = frontEnd.listAvailableReports();
+				System.out.println(str);
+				int i = SavitchIn.readInt();
 				System.out.println(frontEnd.getHostReport(i));
 				break;
-
+			}
 			default:
 				break;
 			}

@@ -28,7 +28,12 @@ public class FrontEndImpl implements FrontEnd {
 	}
 
 	public boolean validateScript(String script) {
-		// TODO: do this
+		try {
+			return mediator.getAgentFactory().validateScript(script);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+
 		return false;
 	}
 
@@ -48,40 +53,47 @@ public class FrontEndImpl implements FrontEnd {
 		}
 	}
 	
-	public void listActiveAgents() {
+	public String listActiveAgents() {
 		int n = 0;
+		StringBuffer sb = new StringBuffer();
 
 		try {
 			LinkedList list = mediator.getInfo();
 			Iterator i = list.iterator();
-			System.out.println("NUM		AGENT-ID");
+			sb.append("NUM\tAGENT-ID\n");
 			while (i.hasNext()) {
-				System.out.println(n + "	" + i.next());
 				n++;
+				sb.append(n + "\t" + i.next() + "\n");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		return sb.toString();
 	}
 	
-	public void listAvailableReports() {
+	public String listAvailableReports() {
 		int n = 0;
+		StringBuffer sb = new StringBuffer();
 
 		try {
 			LinkedList list = repository.getInfo();
 			Iterator i = list.iterator();
-			System.out.println("NUM		AGENT-ID");
+			sb.append("NUM\tAGENT-ID\n");
 			while (i.hasNext()) {
-				System.out.println(n + "	" + i.next());
 				n++;
+				sb.append(n + "\t" + i.next() + "\n");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		return sb.toString();
 	}
 
 	public void killAgent(int idx) {
 		try {
+			idx --;
 			Action migrateHome = new MigrateAction(localHost.getHostname(), true);
 			mediator.interrupt(mediator.getInfo().get(idx).toString(), migrateHome);
 			System.out.println("Agente terminado com sucesso.");
@@ -93,7 +105,8 @@ public class FrontEndImpl implements FrontEnd {
 	
 	public String getAgentReport(int idx) {
 		try {
-			return repository.getFinalReport(mediator.getInfo().get(idx).toString()).toString();
+			idx --;
+			return repository.getFinalReport(repository.getInfo().get(idx).toString()).toString();
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -102,6 +115,7 @@ public class FrontEndImpl implements FrontEnd {
 	
 	public String getHostReport(int idx) {
 		try {
+			idx --;
 			return repository.getLastReport(repository.getInfo().get(idx).toString()).toString();
 		} catch (RemoteException e) {
 			e.printStackTrace();

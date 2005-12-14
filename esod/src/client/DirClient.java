@@ -25,7 +25,7 @@ public class DirClient {
 			DirAgentImpl agent = new DirAgentImpl(refDir);
 			AgentScript script = null;
 			ASLParser parser = new ASLParser();
-			script = parser.LoadScript(args[0]);
+			script = parser.loadScript(args[0]);
 			agent.setHost(agentHost);
 			agent.setScript(script);
 			agent.setMediator(mediator);

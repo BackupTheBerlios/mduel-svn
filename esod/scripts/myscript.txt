@@ -7,14 +7,14 @@ definition {
 }
 
 execute {
-	migrate to 10.200.3.50 trace {
+	migrate to 192.168.1.102 trace {
 		run $server.action.AgentImpl.sayHello()
-		run $server.tasks.OSDetailsTask() from 10.200.5.246
-		run $server.tasks.UserInfoTask() from 10.200.5.246
+		run $server.tasks.OSDetailsTask() from 192.168.1.102
+		run $server.tasks.UserInfoTask() from 192.168.1.102
 	} output
-	migrate to 10.200.5.246 trace {
+	migrate to 192.168.1.101 trace {
 		run $server.action.AgentImpl.sayHello()
-		run $server.tasks.OSDetailsTask() from 10.200.5.246
-		run $server.tasks.UserInfoTask() from 10.200.5.246
+		run $server.tasks.OSDetailsTask() from 192.168.1.102
+		run $server.tasks.UserInfoTask() from 192.168.1.102
 	} reportmail miltonmoura@gmail.com smtp smtp.fct.unl.pt
 } reportfinal
