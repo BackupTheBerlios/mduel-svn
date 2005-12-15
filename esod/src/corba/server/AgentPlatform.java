@@ -1,7 +1,8 @@
 package corba.server;
 
-import org.omg.CosNaming.*;
 import org.omg.CORBA.*;
+import org.omg.CosNaming.*;
+import org.omg.PortableServer.*;
 
 import client.FrontEnd;
 import client.FrontEndImpl;
@@ -9,38 +10,51 @@ import client.FrontEndImpl;
 import corba.*;
 import corba.CorbaFrontEndPackage.RemoteError;
 
-public class AgentPlatform extends _CorbaFrontEndImplBase {
+public class AgentPlatform extends CorbaFrontEndPOA {
 	private static final long serialVersionUID = -6067824094010540108L;
 
 	private FrontEnd frontEnd;
+	
+	private ORB orb;
 
 	public static void main(String[] args) {
 		try {
 			ORB orb = ORB.init(args, null);
-			AgentPlatform ap = new AgentPlatform();
+			AgentPlatform ap = new AgentPlatform(orb);
 			
-			orb.connect(ap);
+			org.omg.CORBA.Object objPOA = orb.resolve_initial_references("RootPOA");
+			POA rootpoa = POAHelper.narrow(objPOA);
+
+			Policy[] policy = new Policy[1];
+			policy[0] = rootpoa.create_lifespan_policy(LifespanPolicyValue.PERSISTENT);
+			
+			POA poa = rootpoa.create_POA("childPOA", null, policy);
+			poa.the_POAManager().activate();
+			poa.activate_object(ap);
+			
 			org.omg.CORBA.Object objRef = orb.resolve_initial_references("NameService");
-			NamingContext ncRef = NamingContextHelper.narrow(objRef);
-			NameComponent nc = new NameComponent("AgentPlatform", "");
-			NameComponent path[] = new NameComponent[] { nc };
-			ncRef.rebind(path, ap);
+			NamingContextExt ncRef = NamingContextExtHelper.narrow(objRef);
+			NameComponent[] nc = ncRef.to_name("AgentPlatform");
+			ncRef.rebind(nc, poa.servant_to_reference(ap));
 			
-			java.lang.Object sync = new java.lang.Object();
-			synchronized(sync) {
-				sync.wait();
-			}
+			System.out.println("started the corba server...");
+			orb.run();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
-	public AgentPlatform() {
+	public AgentPlatform(ORB orb) {
 		try {
+			this.orb = orb;
 			frontEnd = new FrontEndImpl();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void shutdown() {
+		orb.shutdown(false);
 	}
 	
 	public boolean validateScript(String script) throws RemoteError {

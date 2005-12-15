@@ -12,8 +12,15 @@ public class CorbaClient {
 	private NameComponent path[];
 
 	public static void main(String[] args) {
-		CorbaClient client = new CorbaClient();
-		client.corba_init(args);
+		CorbaClient client = null;
+
+		try {
+			client = new CorbaClient();
+			client.corba_init(args);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return;
+		}
 
 		char c = '.';
 		while (true) {
@@ -60,7 +67,7 @@ public class CorbaClient {
 		}
 	}
 
-	public void corba_init(String[] args) {
+	public void corba_init(String[] args) throws Exception {
 		try {
 			orb = ORB.init(args, null);
 
@@ -71,7 +78,7 @@ public class CorbaClient {
 
 			platformObj = ncRef.resolve(path);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			throw new Exception(ex);
 		}
 	}
 
