@@ -26,6 +26,20 @@ public class FrontEndImpl implements FrontEnd {
 		repository = (Repository) Naming.lookup("//localhost/"
 				+ Repository.class.getName());
 	}
+	
+	public boolean helloPlatform() {
+		boolean result = true;
+
+		try {
+			localHost.getHostname();
+			mediator.getAgentFactory();
+			repository.getInfo();
+		} catch (Exception ex) {
+			result = false;
+		}
+
+		return result;
+	}
 
 	public boolean validateScript(String script) {
 		try {

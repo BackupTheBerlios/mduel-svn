@@ -1,6 +1,7 @@
 package client;
 
 public interface FrontEnd {
+	boolean helloPlatform();
 	boolean validateScript(String script);
 	void startAgent(String script);
 	void killAgent(int idx);

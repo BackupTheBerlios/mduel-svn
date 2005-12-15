@@ -6,6 +6,7 @@ module corba {
 			string errorMessage;
 		};
 
+		boolean helloPlatform();
 		boolean validateScript(in string script) raises(RemoteError);
 		oneway void startAgent(in string script);
 		string listActiveAgents() raises(RemoteError);

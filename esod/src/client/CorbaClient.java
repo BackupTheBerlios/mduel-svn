@@ -18,7 +18,7 @@ public class CorbaClient {
 			client = new CorbaClient();
 			client.corba_init(args);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			System.out.println("erro ao iniciar o cliente! verifique que o orbd está em execução!");
 			return;
 		}
 
@@ -28,6 +28,16 @@ public class CorbaClient {
 				
 			c = SavitchIn.readNonwhiteChar();
 			switch (c) {
+				case '0':
+				{
+					try {
+						client.corba_hello_platform();
+					} catch (Exception e) {
+						client.handleException(e);
+					}
+					break;
+				}
+
 				case '1':
 				{
 					System.out.println("Indique o ficheiro de script a validar:");
@@ -35,7 +45,8 @@ public class CorbaClient {
 						String script = SavitchIn.readWord();
 						client.corba_validate_script(script);
 					} catch (Exception e) {
-						e.printStackTrace();
+						client.handleException(e);
+						return;
 					}
 					break;
 				}
@@ -47,7 +58,8 @@ public class CorbaClient {
 						String script = SavitchIn.readWord();
 						client.corba_start_agent(script);
 					} catch (Exception e) {
-						e.printStackTrace();
+						client.handleException(e);
+						return;
 					}
 					break;
 				}
@@ -55,9 +67,14 @@ public class CorbaClient {
 				case '3':
 				{
 					System.out.println("Indique o número do agente a reportar:");
-					client.corba_list_available_reports();
-					int i = SavitchIn.readInt();
-					client.corba_get_agent_report(i);
+					try {
+						client.corba_list_available_reports();
+						int i = SavitchIn.readInt();
+						client.corba_get_agent_report(i);
+					} catch (Exception e) {
+						client.handleException(e);
+						return;
+					}
 					break;
 				}
 
@@ -68,18 +85,26 @@ public class CorbaClient {
 	}
 
 	public void corba_init(String[] args) throws Exception {
-		try {
-			orb = ORB.init(args, null);
+		orb = ORB.init(args, null);
 
-			objRef = orb.resolve_initial_references("NameService");
-			ncRef = NamingContextHelper.narrow(objRef);
-			nc = new NameComponent("AgentPlatform", "");
-			path = new NameComponent [] { nc };
+		objRef = orb.resolve_initial_references("NameService");
+		ncRef = NamingContextHelper.narrow(objRef);
+		nc = new NameComponent("AgentPlatform", "");
+		path = new NameComponent [] { nc };
 
-			platformObj = ncRef.resolve(path);
-		} catch (Exception ex) {
-			throw new Exception(ex);
-		}
+		platformObj = ncRef.resolve(path);
+	}
+	
+	public void corba_hello_platform() {
+		Request req = platformObj._request("helloPlatform");
+		req.set_return_type(orb.get_primitive_tc(TCKind.tk_boolean));
+		req.invoke();
+		Any retval = req.return_value();
+		boolean ok = retval.extract_boolean();
+		if (ok)
+			System.out.println("=> a plataform está disponível!");
+		else
+			System.out.println("=> a plataforma não está disponível!");
 	}
 
 	public void corba_validate_script(String script) {
@@ -145,9 +170,33 @@ public class CorbaClient {
 		Any retval = req.return_value();
 		System.out.println(retval.extract_string());
 	}
+	
+	public void handleException(Exception ex) {
+		SystemException sex = (SystemException)ex;
+		switch (sex.minor) {
+			case 201:
+			{
+				System.out.println("erro de comunicações. verifique que o orbd está em execução!");
+				return;
+			}
+
+			case 0:
+			{
+				System.out.println("não foi possível invocar o método! verifique que o servidor corba está activo!");
+				return;
+			}
+		
+			default:
+			{
+				sex.printStackTrace();
+				return;
+			}
+		}
+	}
 
 	public void show_menu() {
 		System.out.println("--------CONSOLA DE CONTROLO DO AGENTE (CORBA) --------");
+		System.out.println("0.\tverificar disponibilidade da plataforma.");
 		System.out.println("1.\tvalidar script de execução.");
 		System.out.println("2.\tlançar agente.");
 		System.out.println("3.\trelatório completo de um agente.");

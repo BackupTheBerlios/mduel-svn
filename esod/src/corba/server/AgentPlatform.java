@@ -18,8 +18,9 @@ public class AgentPlatform extends CorbaFrontEndPOA {
 	private ORB orb;
 
 	public static void main(String[] args) {
+		ORB orb = ORB.init(args, null);
+
 		try {
-			ORB orb = ORB.init(args, null);
 			AgentPlatform ap = new AgentPlatform(orb);
 			
 			org.omg.CORBA.Object objPOA = orb.resolve_initial_references("RootPOA");
@@ -37,26 +38,26 @@ public class AgentPlatform extends CorbaFrontEndPOA {
 			NameComponent[] nc = ncRef.to_name("AgentPlatform");
 			ncRef.rebind(nc, poa.servant_to_reference(ap));
 			
-			System.out.println("started the corba server...");
 			orb.run();
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			orb.shutdown(true);
+			orb.destroy();
 		}
 	}
 
-	public AgentPlatform(ORB orb) {
-		try {
-			this.orb = orb;
-			frontEnd = new FrontEndImpl();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public AgentPlatform(ORB orb) throws Exception {
+		this.orb = orb;
+		frontEnd = new FrontEndImpl();
 	}
 	
 	public void shutdown() {
 		orb.shutdown(false);
 	}
-	
+
+	public boolean helloPlatform() {
+		return frontEnd.helloPlatform();
+	}
+
 	public boolean validateScript(String script) throws RemoteError {
 		return frontEnd.validateScript(script);
 	}
