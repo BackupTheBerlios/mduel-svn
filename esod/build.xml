@@ -58,45 +58,6 @@
 	<target name="dist" depends="compile" description="generate the distribution" >
 		<mkdir dir="${dist}"/>
 		
-		<!-- we could be more verbose about what classes to include in each jar, but we won't... -->
-		<!-- just don't include the tasks, so they can be remotely loaded -->
-		<jar jarfile="${dist}/agentserver.jar" manifest="META-INF/AgentServer.MF">
-			<fileset dir="${build}">
-				<include name="parser/**"/>
-				<include name="server/*.*"/>
-				<include name="server/agent/**"/>
-				<include name="server/action/**"/>
-				<include name="server/mediator/**"/>
-				<include name="server/repository/**"/>
-				<include name="server/http/**"/>
-				<include name="server/tasks/Task.class"/>
-			</fileset>
-		</jar>
-		
-		<jar jarfile="${dist}/mediatorserver.jar" manifest="META-INF/MediatorServer.MF">
-			<fileset dir="${build}">
-				<include name="parser/**"/>
-				<include name="server/*.*"/>
-				<include name="server/agent/**"/>
-				<include name="server/action/**"/>
-				<include name="server/mediator/**"/>
-				<include name="server/repository/**"/>
-				<include name="server/tasks/Task.class"/>
-			</fileset>
-		</jar>
-		
-		<jar jarfile="${dist}/repositoryserver.jar" manifest="META-INF/RepositoryServer.MF">
-			<fileset dir="${build}">
-				<include name="parser/**"/>
-				<include name="server/*.*"/>
-				<include name="server/agent/**"/>
-				<include name="server/action/**"/>
-				<include name="server/mediator/**"/>
-				<include name="server/repository/**"/>
-				<include name="server/tasks/Task.class"/>
-			</fileset>
-		</jar>
-
 		<jar jarfile="${dist}/client.jar" manifest="META-INF/Client.MF">
 			<fileset dir="${build}">
 				<include name="client/**"/>
