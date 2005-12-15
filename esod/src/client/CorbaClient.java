@@ -73,7 +73,6 @@ public class CorbaClient {
 						client.corba_get_agent_report(i);
 					} catch (Exception e) {
 						client.handleException(e);
-						return;
 					}
 					break;
 				}
@@ -174,23 +173,21 @@ public class CorbaClient {
 	public void handleException(Exception ex) {
 		SystemException sex = (SystemException)ex;
 		switch (sex.minor) {
-			case 201:
-			{
-				System.out.println("erro de comunicações. verifique que o orbd está em execução!");
-				return;
-			}
 
 			case 0:
 			{
 				System.out.println("não foi possível invocar o método! verifique que o servidor corba está activo!");
 				return;
 			}
-		
-			default:
+
+			case 201:
 			{
-				sex.printStackTrace();
+				System.out.println("erro de comunicações. verifique que o orbd está em execução!");
 				return;
 			}
+		
+			default:
+				break;
 		}
 	}
 
