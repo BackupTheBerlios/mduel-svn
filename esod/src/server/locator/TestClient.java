@@ -34,8 +34,8 @@ public class TestClient {
 		
 		Method[] methods = tmp.getClass().getMethods();
 		for(int j=0; j< methods.length; j++) {
-			if (methods[j].toString().contains("Invocable"))
-				invocable.add(methods[j].toString().replace("Invocable()", ""));
+			if (methods[j].toString().indexOf("Invocable") > 0)
+				invocable.add(methods[j].toString().replaceAll("Invocable()", ""));
 		}
 	}
 	
