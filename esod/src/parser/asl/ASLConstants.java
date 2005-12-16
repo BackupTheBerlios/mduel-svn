@@ -14,41 +14,42 @@ public interface ASLConstants {
   int MIGRATE = 13;
   int TO = 14;
   int TRACE = 15;
-  int CLONE = 16;
-  int WAIT = 17;
-  int RUN = 18;
-  int FROM = 19;
-  int SLEEP = 20;
-  int REPORTNOW = 21;
-  int REPORTCALLBACK = 22;
-  int REPORTMAIL = 23;
-  int SMTP = 24;
-  int REPORTFINAL = 25;
-  int OUTPUTCALLBACK = 26;
-  int OUTPUT = 27;
-  int DECIMAL_LITERAL = 28;
-  int CHARACTER_LITERAL = 29;
-  int DATE_LITERAL = 30;
-  int STRING_LITERAL = 31;
-  int IDENTIFIER = 32;
-  int LETTER = 33;
-  int DIGIT = 34;
-  int LPAREN = 35;
-  int RPAREN = 36;
-  int LBRACE = 37;
-  int RBRACE = 38;
-  int LBRACKET = 39;
-  int RBRACKET = 40;
-  int SEMICOLON = 41;
-  int COMMA = 42;
-  int DOT = 43;
-  int AT = 44;
-  int CLASSNAME = 45;
-  int HOSTNAME = 46;
-  int EMAIL = 47;
-  int URLDIR = 48;
-  int MSECONDS = 49;
-  int IP_ADDRESS = 50;
+  int PROXY = 16;
+  int CLONE = 17;
+  int WAIT = 18;
+  int RUN = 19;
+  int FROM = 20;
+  int SLEEP = 21;
+  int REPORTNOW = 22;
+  int REPORTCALLBACK = 23;
+  int REPORTMAIL = 24;
+  int SMTP = 25;
+  int REPORTFINAL = 26;
+  int OUTPUTCALLBACK = 27;
+  int OUTPUT = 28;
+  int DECIMAL_LITERAL = 29;
+  int CHARACTER_LITERAL = 30;
+  int DATE_LITERAL = 31;
+  int STRING_LITERAL = 32;
+  int IDENTIFIER = 33;
+  int LETTER = 34;
+  int DIGIT = 35;
+  int LPAREN = 36;
+  int RPAREN = 37;
+  int LBRACE = 38;
+  int RBRACE = 39;
+  int LBRACKET = 40;
+  int RBRACKET = 41;
+  int SEMICOLON = 42;
+  int COMMA = 43;
+  int DOT = 44;
+  int AT = 45;
+  int CLASSNAME = 46;
+  int HOSTNAME = 47;
+  int EMAIL = 48;
+  int URLDIR = 49;
+  int MSECONDS = 50;
+  int IP_ADDRESS = 51;
 
   int DEFAULT = 0;
 
@@ -69,6 +70,7 @@ public interface ASLConstants {
     "\"migrate\"",
     "\"to\"",
     "\"trace\"",
+    "\"proxy\"",
     "\"clone\"",
     "\"wait\"",
     "\"run\"",

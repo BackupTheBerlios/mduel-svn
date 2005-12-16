@@ -66,19 +66,19 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
         Token obs = null;
     try {
       jj_consume_token(SCRIPTID);
-      jj_consume_token(51);
+      jj_consume_token(52);
       scriptID = jj_consume_token(STRING_LITERAL);
       jj_consume_token(AUTHOR);
-      jj_consume_token(51);
+      jj_consume_token(52);
       author = jj_consume_token(STRING_LITERAL);
       jj_consume_token(DATE);
-      jj_consume_token(51);
+      jj_consume_token(52);
       date = jj_consume_token(DATE_LITERAL);
       jj_consume_token(COMMENT);
-      jj_consume_token(51);
+      jj_consume_token(52);
       comment = jj_consume_token(STRING_LITERAL);
       jj_consume_token(OBSERVATIONS);
-      jj_consume_token(51);
+      jj_consume_token(52);
       obs = jj_consume_token(STRING_LITERAL);
       jjtree.closeNodeScope(jjtn000, true);
       jjtc000 = false;
@@ -139,6 +139,7 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
         boolean jjtc000 = true;
         jjtree.openNodeScope(jjtn000);Token ipAddress = null;
         Token trace = null;
+        Token proxy = null;
     try {
       jj_consume_token(MIGRATE);
       jj_consume_token(TO);
@@ -151,6 +152,14 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
         jj_la1[2] = jj_gen;
         ;
       }
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case PROXY:
+        proxy = jj_consume_token(PROXY);
+        break;
+      default:
+        jj_la1[3] = jj_gen;
+        ;
+      }
       jj_consume_token(LBRACE);
       label_2:
       while (true) {
@@ -161,7 +170,7 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
           ;
           break;
         default:
-          jj_la1[3] = jj_gen;
+          jj_la1[4] = jj_gen;
           break label_2;
         }
         Action();
@@ -186,13 +195,13 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
           Output();
           break;
         default:
-          jj_la1[4] = jj_gen;
+          jj_la1[5] = jj_gen;
           jj_consume_token(-1);
           throw new ParseException();
         }
         break;
       default:
-        jj_la1[5] = jj_gen;
+        jj_la1[6] = jj_gen;
         ;
       }
       jjtree.closeNodeScope(jjtn000, true);
@@ -200,6 +209,8 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
                 jjtn000.ipAddress = ipAddress.image;
                 if (trace != null)
                         jjtn000.trace = trace.image;
+                if (proxy != null)
+                        jjtn000.proxy = proxy.image;
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -239,7 +250,7 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
           wait = jj_consume_token(WAIT);
           break;
         default:
-          jj_la1[6] = jj_gen;
+          jj_la1[7] = jj_gen;
           ;
         }
         jj_consume_token(LBRACE);
@@ -256,7 +267,7 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
           Params();
           break;
         default:
-          jj_la1[7] = jj_gen;
+          jj_la1[8] = jj_gen;
           ;
         }
         jj_consume_token(RPAREN);
@@ -266,7 +277,7 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
           urldir = jj_consume_token(IP_ADDRESS);
           break;
         default:
-          jj_la1[8] = jj_gen;
+          jj_la1[9] = jj_gen;
           ;
         }
         break;
@@ -275,7 +286,7 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
         time = jj_consume_token(MSECONDS);
         break;
       default:
-        jj_la1[9] = jj_gen;
+        jj_la1[10] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -341,12 +352,12 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
           host = jj_consume_token(HOSTNAME);
           break;
         default:
-          jj_la1[10] = jj_gen;
+          jj_la1[11] = jj_gen;
           ;
         }
         break;
       default:
-        jj_la1[11] = jj_gen;
+        jj_la1[12] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -381,7 +392,7 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
         output = jj_consume_token(OUTPUT);
         break;
       default:
-        jj_la1[12] = jj_gen;
+        jj_la1[13] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -411,7 +422,7 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
           ;
           break;
         default:
-          jj_la1[13] = jj_gen;
+          jj_la1[14] = jj_gen;
           break label_3;
         }
         jj_consume_token(COMMA);
@@ -454,7 +465,7 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
                            str = token.image; {if (true) return str.substring(1, str.length() - 1);}
       break;
     default:
-      jj_la1[14] = jj_gen;
+      jj_la1[15] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -499,7 +510,7 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
   public Token token, jj_nt;
   private int jj_ntk;
   private int jj_gen;
-  final private int[] jj_la1 = new int[15];
+  final private int[] jj_la1 = new int[16];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static {
@@ -507,10 +518,10 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
       jj_la1_1();
    }
    private static void jj_la1_0() {
-      jj_la1_0 = new int[] {0x2e00000,0x2000,0x8000,0x150000,0xee00000,0xee00000,0x20000,0x80000000,0x80000,0x150000,0x0,0x2e00000,0xc000000,0x0,0x80000000,};
+      jj_la1_0 = new int[] {0x5c00000,0x2000,0x8000,0x10000,0x2a0000,0x1dc00000,0x1dc00000,0x40000,0x0,0x100000,0x2a0000,0x0,0x5c00000,0x18000000,0x0,0x0,};
    }
    private static void jj_la1_1() {
-      jj_la1_1 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x1,0x0,0x0,0x4000,0x0,0x0,0x400,0x1,};
+      jj_la1_1 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x3,0x0,0x0,0x8000,0x0,0x0,0x800,0x3,};
    }
 
   public ASL(java.io.InputStream stream) {
@@ -519,7 +530,7 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 15; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 16; i++) jj_la1[i] = -1;
   }
 
   public void ReInit(java.io.InputStream stream) {
@@ -529,7 +540,7 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 15; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 16; i++) jj_la1[i] = -1;
   }
 
   public ASL(java.io.Reader stream) {
@@ -538,7 +549,7 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 15; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 16; i++) jj_la1[i] = -1;
   }
 
   public void ReInit(java.io.Reader stream) {
@@ -548,7 +559,7 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 15; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 16; i++) jj_la1[i] = -1;
   }
 
   public ASL(ASLTokenManager tm) {
@@ -556,7 +567,7 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 15; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 16; i++) jj_la1[i] = -1;
   }
 
   public void ReInit(ASLTokenManager tm) {
@@ -565,7 +576,7 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 15; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 16; i++) jj_la1[i] = -1;
   }
 
   final private Token jj_consume_token(int kind) throws ParseException {
@@ -612,15 +623,15 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
 
   public ParseException generateParseException() {
     jj_expentries.removeAllElements();
-    boolean[] la1tokens = new boolean[52];
-    for (int i = 0; i < 52; i++) {
+    boolean[] la1tokens = new boolean[53];
+    for (int i = 0; i < 53; i++) {
       la1tokens[i] = false;
     }
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < 16; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -632,7 +643,7 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
         }
       }
     }
-    for (int i = 0; i < 52; i++) {
+    for (int i = 0; i < 53; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

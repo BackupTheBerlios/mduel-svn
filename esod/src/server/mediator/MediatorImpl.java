@@ -2,6 +2,7 @@ package server.mediator;
 
 import server.action.Action;
 import server.agent.*;
+import server.locator.Proxy;
 
 import java.rmi.*;
 import java.rmi.activation.*;
@@ -202,4 +203,33 @@ public class MediatorImpl extends Activatable implements Mediator {
 		AgentInfo newAI = new AgentInfo(dest.getID(), newList);
 		registerAgent(dest, newAI);
 	}
+
+	/**
+	 * 
+	 */
+	public void setLocalProxy(String agentID, Proxy agentProxy) throws RemoteException {
+		((AgentInfo)agentTable.get(agentID)).setLocalProxy(agentProxy);
+	}
+
+	/**
+	 * 
+	 */
+	public void setFixedProxy(String agentID, Proxy agentProxy) throws RemoteException {
+		((AgentInfo)agentTable.get(agentID)).setFixedProxy(agentProxy);
+	}
+
+	/**
+	 * 
+	 */
+	public Proxy getLocalProxy(String agentID) throws RemoteException {
+		return ((AgentInfo)agentTable.get(agentID)).getLocalProxy();
+	}
+
+	/**
+	 * 
+	 */
+	public Proxy getFixedProxy(String agentID) throws RemoteException {
+		return ((AgentInfo)agentTable.get(agentID)).getFixedProxy();
+	}
+
 }

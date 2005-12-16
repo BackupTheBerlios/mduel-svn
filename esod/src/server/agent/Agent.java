@@ -2,9 +2,11 @@ package server.agent;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.rmi.server.RemoteObject;
 import java.util.LinkedList;
 
 import server.AgentHost;
+import server.locator.Proxy;
 import server.mediator.Mediator;
 import server.repository.HostReport;
 import server.repository.Repository;
@@ -44,9 +46,21 @@ public interface Agent extends Serializable, Cloneable {
 
 	AgentHost getHome();
 
-	LinkedList getHistory();
+	LinkedList getHistoryInvocable();
 
-	LinkedList getRoute();
+	LinkedList getRouteInvocable();
 
 	HostReport getLastHostReport();
+	
+	Object helloPingInvocable();
+	
+	Object whoIsThereInvocable();
+	
+	Proxy getFixedProxy();
+	
+	void setFixedProxy();
+		
+	Object whereHaveYouBeenInvocable();
+	
+	//RemoteObject contactThruGateway(RemoteObject connectTo);
 }

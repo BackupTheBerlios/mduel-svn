@@ -1,6 +1,8 @@
 package server.agent;
 
 import java.rmi.RemoteException;
+import java.rmi.server.RemoteObject;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Stack;
 
@@ -8,6 +10,9 @@ import server.AgentHost;
 import server.action.Action;
 import server.action.OutputAction;
 import server.action.ReportFinalAction;
+import server.locator.FixedProxyImpl;
+import server.locator.Proxy;
+import server.locator.ProxyImpl;
 import server.mediator.AgentInfo;
 import server.mediator.Mediator;
 import server.mediator.TaskList;
@@ -31,6 +36,8 @@ public class AgentImpl implements Agent, Cloneable {
 	private Stack reportStack;
 
 	private String agentID;
+	
+	private Proxy fixedProxy;
 
 	/**
 	 * class constructor
@@ -39,6 +46,7 @@ public class AgentImpl implements Agent, Cloneable {
 	public AgentImpl() {
 		super();
 		reportStack = new Stack();
+		fixedProxy = null;
 	}
 
 	/**
@@ -51,8 +59,14 @@ public class AgentImpl implements Agent, Cloneable {
 		setHost(host);
 
 		try {
+			if (fixedProxy == null) {
 			mediator.registerAgent(this, new AgentInfo(this.getID(), mediator
 					.getActionList(this)));
+			}
+			else {
+				Object[] params = new Object[] { this, new AgentInfo(this.getID(), mediator.getActionList(this))};
+				((FixedProxyImpl)fixedProxy).runMethod( 0, params, (RemoteObject)mediator);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -70,11 +84,43 @@ public class AgentImpl implements Agent, Cloneable {
 		boolean packed = false;
 		AgentHost host = null;
 		Object actionOutput;
-
-		HostReport hostReport = new HostReport(((TaskList) mediator
-				.getActionList(this).getFirst()).getHost());
-		Action action = mediator.getNextAction(this);
-
+		Action action = null;
+		HostReport hostReport = null;
+		
+		if (fixedProxy == null) {
+			hostReport = new HostReport( ((TaskList)mediator.getActionList(this).getFirst()).getHost());
+		}
+		else {
+			try  {
+				Object[] params = new Object[] {this};
+				LinkedList tmp = (LinkedList)((FixedProxyImpl)fixedProxy).runMethod(4, params, (RemoteObject)mediator);
+				hostReport = new HostReport( ((TaskList)tmp.getFirst()).getHost() );
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if  (fixedProxy == null) {
+			action = mediator.getNextAction(this);
+		}
+		else {
+			try {
+				Object[] params = new Object[] {this};
+				action = (Action)((FixedProxyImpl)fixedProxy).runMethod(2, params, (RemoteObject)mediator);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		if (fixedProxy == null) {
+			Proxy localProxy = new ProxyImpl(this);
+			mediator.setLocalProxy(this.getID(), localProxy);
+		} else {
+			Proxy localProxy = new ProxyImpl(this);
+			((FixedProxyImpl)fixedProxy).setLocalProxy(localProxy);
+		}
+		
 		while (action != null) {
 
 			Action previousAction = action;
@@ -83,17 +129,36 @@ public class AgentImpl implements Agent, Cloneable {
 				System.out.println("> executed " + action + " at "
 						+ this.agentHost.getHostname());
 
-			action = mediator.getNextAction(this);
+			if (fixedProxy == null) {
+				action = mediator.getNextAction(this);
+			}
+			else {
+				try {
+					Object[] params = new Object[] {this};
+					action = (Action)((FixedProxyImpl)fixedProxy).runMethod(2, params, (RemoteObject)mediator);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			
 			TaskReport task = new TaskReport(previousAction, actionOutput,
 					String.valueOf(System.currentTimeMillis()));
 			hostReport.setTask(task);
 
 			if ((action instanceof OutputAction) || action instanceof ReportFinalAction || (action == null && !packed)) {
-				try {
+
+				if (fixedProxy == null) {
 					repository.setHostReport(this.getID(), hostReport);
-				} catch (Exception e) {
-					e.getMessage();
 				}
+				else {
+					try {
+						Object[] params = new Object[] {this.getID(), hostReport};
+						((FixedProxyImpl)fixedProxy).runMethod(0, params, (RemoteObject)repository);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				
 				reportStack.push(hostReport);
 				packed = true;
 			}
@@ -110,8 +175,14 @@ public class AgentImpl implements Agent, Cloneable {
 	 */
 	public void finish() {
 		try {
-			getRepository().publishReport(getID());
-			mediator.unregisterAgent(this);
+			if (fixedProxy == null) {
+				getRepository().publishReport(getID());
+				mediator.unregisterAgent(this);
+			}
+			else {
+				((FixedProxyImpl)fixedProxy).runMethod(1, new Object[] {getID()}, (RemoteObject)repository );
+				((FixedProxyImpl)fixedProxy).runMethod(1, new Object[] {this}, (RemoteObject)mediator);
+			}
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -172,9 +243,17 @@ public class AgentImpl implements Agent, Cloneable {
 	 */
 	public String getNewHost() {
 		try {
-			return ((TaskList) mediator.getActionList(this).getFirst())
-					.getHost();
+			
+			if (fixedProxy == null) {
+				return ((TaskList) mediator.getActionList(this).getFirst()).getHost();
+			}
+			else {
+				Object[] params = new Object[] {this};
+				LinkedList tmp = (LinkedList)((FixedProxyImpl)fixedProxy).runMethod(4, params, (RemoteObject)mediator);
+				return ((TaskList)tmp.getFirst()).getHost();
+			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -271,7 +350,7 @@ public class AgentImpl implements Agent, Cloneable {
 	 * 
 	 * @return list of host reports
 	 */
-	public LinkedList getHistory() {
+	public LinkedList getHistoryInvocable() {
 
 		LinkedList history = new LinkedList();
 		HostReport tmp = null;
@@ -289,7 +368,7 @@ public class AgentImpl implements Agent, Cloneable {
 	 * 
 	 * @return list of visited hosts
 	 */
-	public LinkedList getRoute() {
+	public LinkedList getRouteInvocable() {
 
 		LinkedList route = new LinkedList();
 		String tmp = null;
@@ -318,4 +397,98 @@ public class AgentImpl implements Agent, Cloneable {
 	public HostReport getLastHostReport() {
 		return (HostReport) reportStack.peek();
 	}
+	
+	public void setFixedProxy() {
+		
+		if (this.fixedProxy == null) {
+			this.fixedProxy = new FixedProxyImpl(this, mediator, repository, home);
+			Proxy localProxy = new ProxyImpl(this);
+		
+			try {
+				
+				((FixedProxyImpl)fixedProxy).setLocalProxy(localProxy);
+				mediator.setFixedProxy(this.getID(), fixedProxy);
+			
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			
+			FixedProxyImpl tmp = new FixedProxyImpl(this, mediator, repository, home);
+			Proxy localProxy = new ProxyImpl(this);
+			((FixedProxyImpl)tmp).setLocalProxy(localProxy);
+			try {
+				((FixedProxyImpl)this.fixedProxy).setNextProxy(tmp);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			((FixedProxyImpl)tmp).setPreviousProxy(fixedProxy);
+			this.fixedProxy = tmp;
+			
+			try {
+				mediator.setFixedProxy(this.getID(), tmp);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
+	public Proxy getFixedProxy() {
+		return fixedProxy;
+	}
+	
+	/**
+	 * 
+	 */
+	public Object helloPingInvocable() {
+		try {
+			return agentHost.getHostname();
+		} catch (Exception e) {
+			
+		}
+		return null;
+	}
+
+	/**
+	 * 
+	 */
+	public Object whoIsThereInvocable() {
+		
+		LinkedList result = new LinkedList();
+		try {
+			result = agentHost.getAgentsList();
+		} catch (Exception e) {
+			//do nothing...
+		}
+		
+		result.remove(this);
+		return result;
+	}
+	
+	/**
+	 * 
+	 */
+	public Object whereHaveYouBeenInvocable() {
+		
+		LinkedList agents = new LinkedList();
+		try {
+			agents = agentHost.getAgentsList();
+		}
+		catch (Exception e) {
+			//do nothing
+		}
+		
+		LinkedList result = new LinkedList();
+		Agent tmp;
+		agents.remove(this);
+		
+		Iterator i = agents.iterator();
+		while (i.hasNext()) {
+			tmp = (Agent)i.next();
+			result.add(tmp.getRouteInvocable());
+		}
+		return result;
+	}
+	
 }

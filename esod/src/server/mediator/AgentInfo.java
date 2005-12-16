@@ -3,6 +3,8 @@ package server.mediator;
 import java.io.Serializable;
 import java.util.*;
 
+import server.locator.Proxy;
+
 public class AgentInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -15,7 +17,13 @@ public class AgentInfo implements Serializable {
 	private boolean runComplete;
 
 	private int actionCounter;
+	
+	private Proxy fixedProxy;
+	
+	private Proxy localProxy;
 
+
+	
 	/**
 	 * class constructor
 	 * 
@@ -108,5 +116,20 @@ public class AgentInfo implements Serializable {
 	public void setRunComplete(boolean b) {
 		runComplete = b;
 	}
-
+	
+	public void setLocalProxy(Proxy p) {
+		this.localProxy = p;
+	}
+	
+	public void setFixedProxy(Proxy p) {
+		this.fixedProxy = p;
+	}
+	
+	public Proxy getLocalProxy() {
+		return localProxy;
+	}
+	
+	public Proxy getFixedProxy() {
+		return fixedProxy;
+	}
 }

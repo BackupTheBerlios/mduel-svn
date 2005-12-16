@@ -101,6 +101,12 @@ public class ASLVisitorImpl implements ASLVisitor {
 		} else {
 			doTrace = false;
 		}
+		
+		if (node.proxy != null) {
+			System.out.println("setting a fixed proxy on " + node.ipAddress);
+			MobileCodeAction action = new MobileCodeAction("server.agent.AgentImpl.setFixedProxy", doTrace);
+			tasklist.addTask(action);			
+		}
 
 		node.childrenAccept(this, null);
 		return null;

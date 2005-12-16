@@ -134,4 +134,8 @@ public class AgentHostImpl extends Activatable implements AgentHost {
 	public void reportBackLast(HostReport report) throws RemoteException {
 		System.out.println(report);
 	}
+	
+	public LinkedList getAgentsList() throws RemoteException {
+		return agentList;
+	}
 }

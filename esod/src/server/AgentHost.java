@@ -2,6 +2,7 @@ package server;
 
 import java.io.Serializable;
 import java.rmi.*;
+import java.util.LinkedList;
 
 import server.agent.Agent;
 import server.repository.AgentReport;
@@ -19,4 +20,6 @@ public interface AgentHost extends Serializable, Remote {
 	public void reportBack(AgentReport report) throws RemoteException;
 	
 	public void reportBackLast(HostReport report) throws RemoteException;
+	
+	public LinkedList getAgentsList() throws RemoteException;
 }

@@ -48,6 +48,7 @@ TOKEN :
     <MIGRATE: "migrate"> |
     <TO: "to"> |
     <TRACE: "trace"> |
+    <PROXY: "proxy"> |
     <CLONE: "clone"> |
     <WAIT: "wait"> |
     <RUN: "run"> |
@@ -215,14 +216,17 @@ void Migrate() #MigrateNode:
 {
 	Token ipAddress = null;
 	Token trace = null;
+	Token proxy = null;
 }
 {
-    ( ("migrate" "to" ipAddress = <IP_ADDRESS>) (trace = <TRACE>)?
+    ( ("migrate" "to" ipAddress = <IP_ADDRESS>) (trace = <TRACE>)? (proxy = <PROXY>)?
     <LBRACE> ( Action() )* <RBRACE> ( Report() | Output() )? )
     {
     		jjtn000.ipAddress = ipAddress.image;
     		if (trace != null)
 	    		jjtn000.trace = trace.image;
+	    	if (proxy != null)
+	    		jjtn000.proxy = proxy.image;
     }
 }
 

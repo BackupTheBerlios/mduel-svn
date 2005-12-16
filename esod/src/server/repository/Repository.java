@@ -12,7 +12,7 @@ public interface Repository extends Remote {
 	public void registerFrontEnd(FrontEnd fe) throws RemoteException;
 	
 	public void unregisterFrontEnd(FrontEnd fe) throws RemoteException;
-	
+
 	public void setHostReport(String agentID, HostReport report)
 			throws RemoteException;
 

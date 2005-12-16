@@ -38,6 +38,7 @@
 		<rmic classpath="${src}" classname="server.AgentHostImpl" base="${build}"/>
 		<rmic classpath="${src}" classname="server.mediator.MediatorImpl" base="${build}"/>
 		<rmic classpath="${src}" classname="server.repository.RepositoryImpl" base="${build}"/>
+		<rmic classpath="${src}" classname="server.locator.ProxyImpl" base="${build}"/>
 
 		<!-- JNI code -->
 		<javah classpath="${build}" destdir="${src}/server/tasks">
@@ -48,10 +49,9 @@
 		<exec executable="cc" dir="${build}/server/tasks" os="Mac OS X">
 			<arg line="-bundle -o libjnitasks.jnilib -framework JavaVM -I${java.home}/include ${src}/server/tasks/JNIGetEnvPathTask.c"/>
 		</exec>
-		
 		<!-- if Linux -->
 		<exec executable="cc" dir="${build}/server/tasks" os="Linux">
-			<arg line="-shared -o libjnitasks.so -I${java.home}/include -I${java.home}/include/linux ${src}/server/tasks/JNIGetEnvPathTask.c"/>
+			<arg line="-shared -o libjnitasks.so -I${java.home}/../include -I${java.home}/../include/linux ${src}/server/tasks/JNIGetEnvPathTask.c"/>
 		</exec>
 	</target>
 
@@ -68,6 +68,7 @@
 				<include name="server/action/**"/>
 				<include name="server/mediator/**"/>
 				<include name="server/repository/**"/>
+				<include name="server/locator/**"/>
 				<include name="server/http/**"/>
 				<include name="server/tasks/Task.class"/>
 			</fileset>
@@ -81,6 +82,7 @@
 				<include name="server/action/**"/>
 				<include name="server/mediator/**"/>
 				<include name="server/repository/**"/>
+				<include name="server/locator/**"/>
 				<include name="server/tasks/Task.class"/>
 			</fileset>
 		</jar>
@@ -93,6 +95,7 @@
 				<include name="server/action/**"/>
 				<include name="server/mediator/**"/>
 				<include name="server/repository/**"/>
+				<include name="server/locator/**"/>
 				<include name="server/tasks/Task.class"/>
 				<include name="client/FrontEnd.class"/>
 			</fileset>
@@ -107,6 +110,7 @@
 				<include name="server/action/**"/>
 				<include name="server/mediator/**"/>
 				<include name="server/repository/**"/>
+				<include name="server/locator/**"/>
 				<include name="server/tasks/Task.class"/>
 			</fileset>
 		</jar>
@@ -120,6 +124,7 @@
 				<include name="server/action/**"/>
 				<include name="server/mediator/**"/>
 				<include name="server/repository/**"/>
+				<include name="server/locator/**"/>
 				<include name="server/tasks/Task.class"/>
 			</fileset>
 		</jar>
