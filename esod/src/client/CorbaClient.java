@@ -3,10 +3,16 @@ package client;
 import org.omg.CORBA.*;
 import org.omg.CosNaming.*;
 
-public class CorbaClient {
+import corba.*;
+import corba.CorbaFrontEndPackage.RemoteError;
+
+public class CorbaClient extends _CorbaReportReceiverImplBase {
+	private static final long serialVersionUID = 7858849629691126259L;
+
 	private ORB orb;
 	private org.omg.CORBA.Object objRef;
 	private org.omg.CORBA.Object platformObj;
+	private CorbaFrontEnd cfe;
 	private NamingContext ncRef;
 	private NameComponent nc;
 	private NameComponent path[];
@@ -77,6 +83,17 @@ public class CorbaClient {
 					break;
 				}
 
+				case '4':
+				{
+					try {
+						client.corba_shutdown();
+						return;
+					} catch (Exception e) {
+						client.handleException(e);
+					}
+					break;
+				}
+				
 				default:
 					break;
 			}
@@ -92,8 +109,12 @@ public class CorbaClient {
 		path = new NameComponent [] { nc };
 
 		platformObj = ncRef.resolve(path);
+
+		cfe = CorbaFrontEndHelper.narrow(platformObj);
+		orb.connect(this);
+		cfe.register(this);
 	}
-	
+
 	public void corba_hello_platform() {
 		Request req = platformObj._request("helloPlatform");
 		req.set_return_type(orb.get_primitive_tc(TCKind.tk_boolean));
@@ -121,53 +142,28 @@ public class CorbaClient {
 	}
 
 	public void corba_start_agent(String script) {
-		Request req = platformObj._request("startAgent");
-		Any val = req.add_in_arg();
-		val.insert_string(script);
-		req.invoke();
+		cfe.startAgent(script);
 	}
 
-	public void corba_list_active_agents() {
-		Request req = platformObj._request("listActiveAgents");
-		req.set_return_type(orb.get_primitive_tc(TCKind.tk_string));
-		req.invoke();
-		Any retval = req.return_value();
-		System.out.println(retval.extract_string());
-	}
-	
-	public void corba_kill_agent(int idx) {
-		Request req = platformObj._request("killAgent");
-		Any val = req.add_in_arg();
-		val.insert_long(idx);
-		req.invoke();
-	}
-	
 	public void corba_list_available_reports() {
-		Request req = platformObj._request("listAvailableReports");
-		req.set_return_type(orb.get_primitive_tc(TCKind.tk_string));
-		req.invoke();
-		Any retval = req.return_value();
-		System.out.println(retval.extract_string());
+		try {
+			System.out.println(cfe.listAvailableReports());
+		} catch (RemoteError e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void corba_get_agent_report(int idx) {
-		Request req = platformObj._request("getAgentReport");
-		Any val = req.add_in_arg();
-		val.insert_long(idx);
-		req.set_return_type(orb.get_primitive_tc(TCKind.tk_string));
-		req.invoke();
-		Any retval = req.return_value();
-		System.out.println(retval.extract_string());
+		try {
+			System.out.println(cfe.getAgentReport(idx));
+		} catch (RemoteError e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void corba_get_host_report(int idx) {		
-		Request req = platformObj._request("getHostReport");
-		Any val = req.add_in_arg();
-		val.insert_long(idx);
-		req.set_return_type(orb.get_primitive_tc(TCKind.tk_string));
-		req.invoke();
-		Any retval = req.return_value();
-		System.out.println(retval.extract_string());
+	public void corba_shutdown() {
+		cfe.unregister(this);
+		cfe.shutdown();
 	}
 	
 	public void handleException(Exception ex) {
@@ -187,6 +183,7 @@ public class CorbaClient {
 			}
 		
 			default:
+				sex.printStackTrace();
 				break;
 		}
 	}
@@ -197,6 +194,12 @@ public class CorbaClient {
 		System.out.println("1.\tvalidar script de execução.");
 		System.out.println("2.\tlançar agente.");
 		System.out.println("3.\trelatório completo de um agente.");
+		System.out.println("4.\tsair.");
 		System.out.println("--------CONSOLA DE CONTROLO DO AGENTE--------");
+	}
+
+	public void handleReport(String report) {
+		if (report.length() >= 1)
+			System.out.println(report);
 	}
 }

@@ -6,7 +6,7 @@ import java.rmi.activation.*;
 
 public class RepositorySetup {
 
-	public RepositorySetup() {
+	public RepositorySetup(String codebase) {
 		System.setSecurityManager(new RMISecurityManager());
 
 		ActivationGroupDesc exampleGroup = new ActivationGroupDesc(null, null);
@@ -17,7 +17,7 @@ public class RepositorySetup {
 			ActivationDesc desc = new ActivationDesc(
 					agi,
 					RepositoryImpl.class.getName(),
-					null,
+					codebase,
 					data);
 
 			Repository r = (Repository)Activatable.register(desc);
@@ -34,6 +34,12 @@ public class RepositorySetup {
 	}
 	
 	public static void main(String[] args) {
-		new RepositorySetup();
+		if (args.length < 1) {
+			System.out.println("usage: " + RepositorySetup.class.getName() + " <codebase>");
+			return;
+		}
+		else {
+			new RepositorySetup(args[0]);
+		}
 	}
 }

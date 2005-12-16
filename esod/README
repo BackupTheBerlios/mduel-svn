@@ -2,19 +2,32 @@
 EXECUÇÃO
 ========
 
-A execução do trabalho passa por correr em quatro terminais diferentes os
-scripts submetidos na raíz do directório do código fonte. Assim, devem ser
-lançados, por ordem:
+A execução do trabalho passa pela execução de um conjunto de scripts:
 
-$ rmiregistry
-$ sh run_server.sh
-$ sh run_mediator.sh
-$ sh run_repository.sh
-$ sh run_client.sh
+$ sh set_env.sh
+$ sh run_http_server.sh
+$ sh base_setup.sh
+$ sh run_client.sh 
+
+OU no caso de haver interesse em testar o cliente CORBA:
+
+$ sh set_env.sh
+$ sh run_http_server.sh
+$ sh base_setup.sh
+$ sh run_corba_server.sh
+$ sh run_corba_client.sh
 
 um possível script para execução é o
 
 	scripts/simple.txt
+
+A configuração da plataforma de agentes em outras máquinas
+passa pela cópia do 'dist/agentserver.jar' para a máquina em
+questão, bem como script 'server_setup.sh'
+
+Para a plataforma ficar à espera de agentes, executar o script:
+
+$ sh server_setup http://<endereço_http_class_server_>:2005/
 
 COMPILAÇÃO
 ==========
@@ -33,4 +46,3 @@ Uma vez instalados os dois programas, basta executar o comando
 $ ant clean; ant dist;
 
 na raíz do directório do projecto.
-

@@ -11,6 +11,6 @@ execute {
 		run $server.agent.AgentImpl.sayHello()
 		run $server.tasks.OSDetailsTask() from 127.0.0.1
 		run $server.tasks.UserInfoTask() from 127.0.0.1
-		sleep 10000ms
+		sleep 1000ms
 	} output
 } reportfinal

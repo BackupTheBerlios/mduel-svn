@@ -1,17 +1,24 @@
 
 module corba {
+
+	interface CorbaReportReceiver {
+		void handleReport(in string report);
+	};
+
 	interface CorbaFrontEnd {
 
 		exception RemoteError {
 			string errorMessage;
 		};
 
+		void register(in CorbaReportReceiver crr);
+		void unregister(in CorbaReportReceiver crr);
 		boolean helloPlatform();
 		boolean validateScript(in string script) raises(RemoteError);
 		oneway void startAgent(in string script);
 		string listActiveAgents() raises(RemoteError);
 		string listAvailableReports() raises(RemoteError);
 		string getAgentReport(in long idx) raises(RemoteError);
-		string getHostReport(in long idx) raises(RemoteError);
+		oneway void shutdown();
 	};
 };

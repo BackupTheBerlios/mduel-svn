@@ -6,17 +6,18 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import server.AgentHost;
-import server.action.Action;
-import server.action.MigrateAction;
+import server.action.*;
 import server.agent.Agent;
 import server.mediator.AgentInfo;
 import server.mediator.Mediator;
 import server.repository.Repository;
 
 public class FrontEndImpl implements FrontEnd {
+	private static final long serialVersionUID = 532466498007890898L;
 	private AgentHost localHost;
 	private Mediator mediator;
 	private Repository repository;
+	private boolean reportAvailable = false;
 
 	public FrontEndImpl() throws Exception {
 		localHost = (AgentHost) Naming.lookup("//localhost/"
@@ -25,15 +26,17 @@ public class FrontEndImpl implements FrontEnd {
 				+ Mediator.class.getName());
 		repository = (Repository) Naming.lookup("//localhost/"
 				+ Repository.class.getName());
+
+		repository.registerFrontEnd(this);
 	}
 	
 	public boolean helloPlatform() {
 		boolean result = true;
 
 		try {
-			localHost.getHostname();
-			mediator.getAgentFactory();
-			repository.getInfo();
+			localHost.toString();
+			mediator.toString();
+			repository.toString();
 		} catch (Exception ex) {
 			result = false;
 		}
@@ -135,5 +138,19 @@ public class FrontEndImpl implements FrontEnd {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public synchronized void newReport(String str) {
+		System.out.println("got a report for " + str);
+		reportAvailable = true;
+	}
+	
+	public synchronized String getNewReport() {
+		if (reportAvailable) {
+			reportAvailable = false;
+			return "got something!";
+		}
+		else
+			return "";
 	}
 }

@@ -40,38 +40,54 @@ public class Client {
 
 			case '2':
 			{
-				String str = frontEnd.listActiveAgents();
-				System.out.println(str);
+				try {
+					String str = frontEnd.listActiveAgents();
+					System.out.println(str);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 				break;
 			}
 
 			case '3':
 			{
-				System.out.println("Indique o número do agente que quer terminar:");
-				String str = frontEnd.listActiveAgents();
-				System.out.println(str);
-				int i = SavitchIn.readInt();
-				frontEnd.killAgent(i);
+				try {
+					System.out.println("Indique o número do agente que quer terminar:");
+					String str = frontEnd.listActiveAgents();
+					System.out.println(str);
+					int i = SavitchIn.readInt();
+					frontEnd.killAgent(i);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 				break;
 			}
 
 			case '4':
 			{
-				System.out.println("Indique o número do agente a reportar:");
-				String str = frontEnd.listAvailableReports();
-				System.out.println(str);
-				int i = SavitchIn.readInt();
-				System.out.println(frontEnd.getAgentReport(i));
+				try {
+					System.out.println("Indique o número do agente a reportar:");
+					String str = frontEnd.listAvailableReports();
+					System.out.println(str);
+					int i = SavitchIn.readInt();
+					System.out.println(frontEnd.getAgentReport(i));
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 				break;
 			}
 
 			case '5':
 			{
+				try {
 				System.out.println("Indique o número do agente a reportar:");
 				String str = frontEnd.listAvailableReports();
 				System.out.println(str);
 				int i = SavitchIn.readInt();
 				System.out.println(frontEnd.getHostReport(i));
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 				break;
 			}
 			default:

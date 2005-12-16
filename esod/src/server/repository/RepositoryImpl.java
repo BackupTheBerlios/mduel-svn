@@ -5,9 +5,12 @@ import java.rmi.*;
 import java.rmi.activation.*;
 import java.rmi.RemoteException;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
+
+import client.FrontEnd;
 import server.AgentHost;
 
 public class RepositoryImpl extends Activatable implements Repository,
@@ -15,6 +18,7 @@ public class RepositoryImpl extends Activatable implements Repository,
 	private static final long serialVersionUID = 6893905241391990022L;
 
 	private Hashtable table;
+	private HashSet observers;
 
 	/**
 	 * class constructor 
@@ -24,6 +28,7 @@ public class RepositoryImpl extends Activatable implements Repository,
 	public RepositoryImpl(ActivationID id, MarshalledObject data) throws RemoteException {
 		super(id, 0);
 		table = new Hashtable(50);
+		observers = new HashSet();
 	}
 
 	/**
@@ -63,7 +68,6 @@ public class RepositoryImpl extends Activatable implements Repository,
 	 * @return			the full report of the specified agent
 	 */
 	public AgentReport getFinalReport(Object agentID) throws RemoteException {
-
 		return (AgentReport) table.get(agentID);
 	}
 
@@ -108,4 +112,27 @@ public class RepositoryImpl extends Activatable implements Repository,
 		return result;
 	}
 
+	public void publishReport(String agentID) throws RemoteException {
+		Iterator iter = observers.iterator();
+		
+		while (iter.hasNext()) {
+			FrontEnd fe = (FrontEnd) iter.next();
+			
+			try {
+				synchronized (fe) {
+					fe.newReport(agentID);
+				}
+			} catch (Exception ex) {
+				iter.remove();
+			}
+		}
+	}
+
+	public void registerFrontEnd(FrontEnd fe) throws RemoteException {
+		observers.add(fe);
+	}
+
+	public void unregisterFrontEnd(FrontEnd fe) throws RemoteException {
+		observers.remove(fe);
+	}
 }

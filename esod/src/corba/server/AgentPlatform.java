@@ -1,5 +1,9 @@
 package corba.server;
 
+import java.rmi.RemoteException;
+import java.util.Enumeration;
+import java.util.Vector;
+
 import org.omg.CORBA.*;
 import org.omg.CosNaming.*;
 import org.omg.PortableServer.*;
@@ -12,6 +16,8 @@ import corba.CorbaFrontEndPackage.RemoteError;
 
 public class AgentPlatform extends CorbaFrontEndPOA {
 	private static final long serialVersionUID = -6067824094010540108L;
+	
+	private Vector observers;
 
 	private FrontEnd frontEnd;
 	
@@ -40,45 +46,138 @@ public class AgentPlatform extends CorbaFrontEndPOA {
 			
 			orb.run();
 		} catch (Exception ex) {
-			orb.shutdown(true);
-			orb.destroy();
+			ex.printStackTrace();
 		}
 	}
 
 	public AgentPlatform(ORB orb) throws Exception {
 		this.orb = orb;
 		frontEnd = new FrontEndImpl();
+		this.observers = new Vector();
+
+		ReportSender rs = new ReportSender();
+		Thread cbThread = new Thread(rs);
+		cbThread.start();
 	}
 	
 	public void shutdown() {
 		orb.shutdown(false);
 	}
 
+	public void register(CorbaReportReceiver crr) {
+		Enumeration e = observers.elements();
+		
+		while (e.hasMoreElements()) {
+			CorbaReportReceiver r = (CorbaReportReceiver) e.nextElement();
+			if (r._is_equivalent(crr)) return;
+		}
+		observers.addElement(crr);
+	}
+
+	public void unregister(CorbaReportReceiver crr) {
+		Enumeration e = observers.elements();
+		
+		while (e.hasMoreElements()) {
+			CorbaReportReceiver r = (CorbaReportReceiver) e.nextElement();
+			if (r._is_equivalent(crr)) {
+				observers.removeElement(r);
+				return;
+			}
+		}
+	}
+
 	public boolean helloPlatform() {
-		return frontEnd.helloPlatform();
+		try {
+			return frontEnd.helloPlatform();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	public boolean validateScript(String script) throws RemoteError {
-		return frontEnd.validateScript(script);
+		try {
+			return frontEnd.validateScript(script);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	public void startAgent(String script) {
-		frontEnd.startAgent(script);
+		try {
+			frontEnd.startAgent(script);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public String listActiveAgents() throws RemoteError {
-		return frontEnd.listActiveAgents();
+		try {
+			return frontEnd.listActiveAgents();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public String listAvailableReports() throws RemoteError {
-		return frontEnd.listAvailableReports();
+		try {
+			return frontEnd.listAvailableReports();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public String getAgentReport(int idx) throws RemoteError {
-		return frontEnd.getAgentReport(idx);
+		try {
+			return frontEnd.getAgentReport(idx);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public String getHostReport(int idx) throws RemoteError {
-		return frontEnd.getHostReport(idx);
+		try {
+			return frontEnd.getHostReport(idx);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	class ReportSender implements Runnable {
+		public void run()  {
+			for (;;) {
+				Enumeration e = observers.elements();
+				Vector itemsToRemove = null;
+
+				while (e.hasMoreElements()) {
+					CorbaReportReceiver crr = (CorbaReportReceiver)e.nextElement();
+
+					try {
+						synchronized (frontEnd) {
+							crr.handleReport(frontEnd.getNewReport());
+						}
+					} catch (Exception ex) {
+						if (itemsToRemove == null)
+							itemsToRemove = new Vector();
+
+						itemsToRemove.addElement(crr);
+					}
+				}
+
+				if (itemsToRemove != null) {
+					e = itemsToRemove.elements();
+					while (e.hasMoreElements()) {
+						observers.removeElement(e.nextElement());
+					}
+				}
+
+				try { Thread.sleep(10); } catch (Exception ex) {}
+			}
+		}
 	}
 }

@@ -6,7 +6,7 @@ import java.rmi.activation.*;
 
 public class MediatorSetup {
 
-	public MediatorSetup() {
+	public MediatorSetup(String codebase) {
 		System.setSecurityManager(new RMISecurityManager());
 
 		ActivationGroupDesc exampleGroup = new ActivationGroupDesc(null, null);
@@ -18,7 +18,7 @@ public class MediatorSetup {
 			ActivationDesc desc = new ActivationDesc(
 					agi,
 					MediatorImpl.class.getName(),
-					null,
+					codebase,
 					data);
 
 			Mediator m = (Mediator)Activatable.register(desc);
@@ -35,6 +35,12 @@ public class MediatorSetup {
 	}
 	
 	public static void main(String[] args) {
-		new MediatorSetup();
+		if (args.length < 1) {
+			System.out.println("usage: " + MediatorSetup.class.getName() + " <codebase>");
+			return;
+		}
+		else {
+			new MediatorSetup(args[0]);
+		}
 	}
 }

@@ -6,7 +6,7 @@ import java.rmi.activation.*;
 
 public class AgentHostSetup {
 
-	public AgentHostSetup() {
+	public AgentHostSetup(String codebase) {
 		System.setSecurityManager(new RMISecurityManager());
 
 		ActivationGroupDesc exampleGroup = new ActivationGroupDesc(null, null);
@@ -18,7 +18,7 @@ public class AgentHostSetup {
 			ActivationDesc desc = new ActivationDesc(
 					agi,
 					AgentHostImpl.class.getName(),
-					null,
+					codebase,
 					data);
 
 			AgentHost ah = (AgentHost)Activatable.register(desc);
@@ -35,6 +35,12 @@ public class AgentHostSetup {
 	}
 	
 	public static void main(String[] args) {
-		new AgentHostSetup();
+		if (args.length < 1) {
+			System.out.println("usage: " + AgentHostSetup.class.getName() + " <codebase>");
+			return;
+		}
+		else {
+			new AgentHostSetup(args[0]);
+		}
 	}
 }

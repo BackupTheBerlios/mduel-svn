@@ -110,6 +110,7 @@ public class AgentImpl implements Agent, Cloneable {
 	 */
 	public void finish() {
 		try {
+			getRepository().publishReport(getID());
 			mediator.unregisterAgent(this);
 		} catch (RemoteException e) {
 			e.printStackTrace();
