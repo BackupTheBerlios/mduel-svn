@@ -53,6 +53,7 @@ public class AgentPlatform extends CorbaFrontEndPOA {
 	public AgentPlatform(ORB orb) throws Exception {
 		this.orb = orb;
 		frontEnd = new FrontEndImpl();
+		frontEnd.register();
 		this.observers = new Vector();
 
 		ReportSender rs = new ReportSender();
@@ -65,6 +66,7 @@ public class AgentPlatform extends CorbaFrontEndPOA {
 	}
 
 	public void register(CorbaReportReceiver crr) {
+		System.out.println("adding " + crr + " to observer list...");
 		Enumeration e = observers.elements();
 		
 		while (e.hasMoreElements()) {
@@ -75,6 +77,7 @@ public class AgentPlatform extends CorbaFrontEndPOA {
 	}
 
 	public void unregister(CorbaReportReceiver crr) {
+		System.out.println("removing " + crr + " from observer list...");
 		Enumeration e = observers.elements();
 		
 		while (e.hasMoreElements()) {

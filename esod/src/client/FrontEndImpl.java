@@ -26,8 +26,22 @@ public class FrontEndImpl implements FrontEnd {
 				+ Mediator.class.getName());
 		repository = (Repository) Naming.lookup("//localhost/"
 				+ Repository.class.getName());
-
-		repository.registerFrontEnd(this);
+	}
+	
+	public void register() {
+		try {
+			repository.registerFrontEnd(this);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void unregister() {
+		try {
+			repository.unregisterFrontEnd(this);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public boolean helloPlatform() {

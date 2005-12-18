@@ -3,10 +3,8 @@ package server.locator;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.RemoteObject;
-import java.lang.reflect.Method;
 
 import server.AgentHost;
-import server.action.Action;
 import server.agent.Agent;
 import server.mediator.AgentInfo;
 import server.mediator.Mediator;

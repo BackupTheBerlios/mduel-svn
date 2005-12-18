@@ -238,7 +238,7 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
         boolean jjtc000 = true;
         jjtree.openNodeScope(jjtn000);Token clone = null;
         Token wait = null;
-        Token time = null;
+        Token sleep = null;
         Token classname = null;
         Token urldir = null;
     try {
@@ -262,6 +262,7 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
         classname = jj_consume_token(CLASSNAME);
         jj_consume_token(LPAREN);
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case DECIMAL_LITERAL:
         case STRING_LITERAL:
         case IDENTIFIER:
           Params();
@@ -282,8 +283,10 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
         }
         break;
       case SLEEP:
-        jj_consume_token(SLEEP);
-        time = jj_consume_token(MSECONDS);
+        sleep = jj_consume_token(SLEEP);
+        jj_consume_token(LPAREN);
+        Params();
+        jj_consume_token(RPAREN);
         break;
       default:
         jj_la1[10] = jj_gen;
@@ -300,8 +303,8 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
                         jjtn000.classname = classname.image;
                 if (urldir != null)
                         jjtn000.urldir = urldir.image;
-                if (time != null)
-                        jjtn000.time = time.image;
+                if (sleep != null)
+                        jjtn000.sleep = sleep.image;
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -464,6 +467,10 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
       jj_consume_token(STRING_LITERAL);
                            str = token.image; {if (true) return str.substring(1, str.length() - 1);}
       break;
+    case DECIMAL_LITERAL:
+      jj_consume_token(DECIMAL_LITERAL);
+                            {if (true) return token.image;}
+      break;
     default:
       jj_la1[15] = jj_gen;
       jj_consume_token(-1);
@@ -518,7 +525,7 @@ public class ASL/*@bgen(jjtree)*/implements ASLTreeConstants, ASLConstants {/*@b
       jj_la1_1();
    }
    private static void jj_la1_0() {
-      jj_la1_0 = new int[] {0x5c00000,0x2000,0x8000,0x10000,0x2a0000,0x1dc00000,0x1dc00000,0x40000,0x0,0x100000,0x2a0000,0x0,0x5c00000,0x18000000,0x0,0x0,};
+      jj_la1_0 = new int[] {0x5c00000,0x2000,0x8000,0x10000,0x2a0000,0x1dc00000,0x1dc00000,0x40000,0x20000000,0x100000,0x2a0000,0x0,0x5c00000,0x18000000,0x0,0x20000000,};
    }
    private static void jj_la1_1() {
       jj_la1_1 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x3,0x0,0x0,0x8000,0x0,0x0,0x800,0x3,};

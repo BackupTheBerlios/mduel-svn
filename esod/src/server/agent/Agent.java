@@ -2,7 +2,6 @@ package server.agent;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.rmi.server.RemoteObject;
 import java.util.LinkedList;
 
 import server.AgentHost;
@@ -58,7 +57,7 @@ public interface Agent extends Serializable, Cloneable {
 	
 	Proxy getFixedProxy();
 	
-	void setFixedProxy();
+	Object setFixedProxy();
 		
 	Object whereHaveYouBeenInvocable();
 	

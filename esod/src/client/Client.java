@@ -1,5 +1,8 @@
 package client;
 
+import java.rmi.Naming;
+import java.rmi.RMISecurityManager;
+
 public class Client {
 
 	public static void menuInit() {
@@ -9,14 +12,18 @@ public class Client {
 		System.out.println("3.\tparar a execução de um agente.");
 		System.out.println("4.\trelatório completo de um agente.");
 		System.out.println("5.\túltimo relatório de um agente.");
+		System.out.println("6.\tsair.");
 		System.out.println("--------CONSOLA DE CONTROLO DO AGENTE--------");
 	}
 
 	public static void main(String[] args) {
+		System.setSecurityManager(new RMISecurityManager());
 		FrontEnd frontEnd;
 
 		try {
 			frontEnd = new FrontEndImpl();
+			Naming.rebind(FrontEnd.class.getName(), frontEnd);
+			frontEnd.register();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			return;
@@ -80,11 +87,23 @@ public class Client {
 			case '5':
 			{
 				try {
-				System.out.println("Indique o número do agente a reportar:");
-				String str = frontEnd.listAvailableReports();
-				System.out.println(str);
-				int i = SavitchIn.readInt();
-				System.out.println(frontEnd.getHostReport(i));
+					System.out.println("Indique o número do agente a reportar:");
+					String str = frontEnd.listAvailableReports();
+					System.out.println(str);
+					int i = SavitchIn.readInt();
+					System.out.println(frontEnd.getHostReport(i));
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+				break;
+			}
+			
+			case '6':
+			{
+				try {
+					frontEnd.unregister();
+					Naming.unbind(FrontEnd.class.getName());
+					return;
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}

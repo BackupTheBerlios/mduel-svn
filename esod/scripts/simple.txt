@@ -7,10 +7,11 @@ definition {
 }
 
 execute {
-	migrate to 127.0.0.1 trace {
+	migrate to 192.168.1.102 proxy {
 		run $server.agent.AgentImpl.sayHello()
-		run $server.tasks.OSDetailsTask() from 127.0.0.1
-		run $server.tasks.UserInfoTask() from 127.0.0.1
-		sleep 1000ms
-	} output
+		sleep (1000)
+	}
+	migrate to 192.168.1.102 {
+		run $server.tasks.OSDetailsTask() from 192.168.1.102
+	}
 } reportfinal

@@ -136,10 +136,9 @@ public class ASLVisitorImpl implements ASLVisitor {
 				System.out.println("--> from " + node.urldir);
 				tasklist.addTask(action);
 			}
-		} else if (node.time != null) {
-			System.out.println("sleeping for " + node.time);
-			tasklist.addTask(new SleepAction(Integer.parseInt(node.time
-					.replaceAll("ms", "")), doTrace));
+		} else if (node.sleep != null) {
+			System.out.println("will sleep!");
+			tasklist.addTask(new SleepAction(doTrace));
 		}
 		node.childrenAccept(this, null);
 		return null;
@@ -194,6 +193,8 @@ public class ASLVisitorImpl implements ASLVisitor {
 			((MobileCodeAction)a).setParams(currentParams);
 		} if (a instanceof RemoteCodeAction) {
 			((RemoteCodeAction)a).setParams(currentParams);
+		} if (a instanceof SleepAction) {
+			((SleepAction)a).setParams(currentParams);
 		}
 		tasklist.addTask(a);
 		this.currentParams = null;

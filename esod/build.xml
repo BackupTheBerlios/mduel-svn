@@ -39,6 +39,7 @@
 		<rmic classpath="${src}" classname="server.mediator.MediatorImpl" base="${build}"/>
 		<rmic classpath="${src}" classname="server.repository.RepositoryImpl" base="${build}"/>
 		<rmic classpath="${src}" classname="server.locator.ProxyImpl" base="${build}"/>
+		<rmic classpath="${src}" classname="client.FrontEndImpl" base="${build}"/>
 
 		<!-- JNI code -->
 		<javah classpath="${build}" destdir="${src}/server/tasks">
@@ -62,6 +63,7 @@
 		<!-- just don't include the tasks, so they can be remotely loaded -->
 		<jar jarfile="${dist}/agentserver.jar" manifest="META-INF/AgentServer.MF">
 			<fileset dir="${build}">
+				<include name="client/*.*"/>
 				<include name="parser/**"/>
 				<include name="server/*.*"/>
 				<include name="server/agent/**"/>
@@ -76,6 +78,7 @@
 		
 		<jar jarfile="${dist}/mediatorserver.jar" manifest="META-INF/MediatorServer.MF">
 			<fileset dir="${build}">
+				<include name="client/*.*"/>
 				<include name="parser/**"/>
 				<include name="server/*.*"/>
 				<include name="server/agent/**"/>
@@ -89,6 +92,7 @@
 			
 		<jar jarfile="${dist}/repositoryserver.jar" manifest="META-INF/RepositoryServer.MF">
 			<fileset dir="${build}">
+				<include name="client/*.*"/>
 				<include name="parser/**"/>
 				<include name="server/*.*"/>
 				<include name="server/agent/**"/>

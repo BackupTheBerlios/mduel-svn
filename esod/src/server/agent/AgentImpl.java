@@ -245,15 +245,16 @@ public class AgentImpl implements Agent, Cloneable {
 		try {
 			
 			if (fixedProxy == null) {
+				System.out.println("getting from mediator...");
 				return ((TaskList) mediator.getActionList(this).getFirst()).getHost();
 			}
 			else {
+				System.out.println("getting from proxy...");
 				Object[] params = new Object[] {this};
 				LinkedList tmp = (LinkedList)((FixedProxyImpl)fixedProxy).runMethod(4, params, (RemoteObject)mediator);
 				return ((TaskList)tmp.getFirst()).getHost();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			return null;
 		}
 	}
@@ -398,7 +399,7 @@ public class AgentImpl implements Agent, Cloneable {
 		return (HostReport) reportStack.peek();
 	}
 	
-	public void setFixedProxy() {
+	public Object setFixedProxy() {
 		
 		if (this.fixedProxy == null) {
 			this.fixedProxy = new FixedProxyImpl(this, mediator, repository, home);
@@ -431,7 +432,7 @@ public class AgentImpl implements Agent, Cloneable {
 				e.printStackTrace();
 			}
 		}
-		
+		return "instanciated a fixed proxy!";
 	}
 	
 	public Proxy getFixedProxy() {

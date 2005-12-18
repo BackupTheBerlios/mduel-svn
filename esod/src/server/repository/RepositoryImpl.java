@@ -129,10 +129,12 @@ public class RepositoryImpl extends Activatable implements Repository,
 	}
 
 	public void registerFrontEnd(FrontEnd fe) throws RemoteException {
+		System.out.println("added " + fe + " to subscribers list");
 		observers.add(fe);
 	}
 
 	public void unregisterFrontEnd(FrontEnd fe) throws RemoteException {
+		System.out.println("removed " + fe + " from subscribers list");
 		observers.remove(fe);
 	}
 }

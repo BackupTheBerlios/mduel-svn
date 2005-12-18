@@ -225,7 +225,7 @@ void Migrate() #MigrateNode:
     		jjtn000.ipAddress = ipAddress.image;
     		if (trace != null)
 	    		jjtn000.trace = trace.image;
-	    	if (proxy != null)
+    		if (proxy != null)
 	    		jjtn000.proxy = proxy.image;
     }
 }
@@ -234,14 +234,14 @@ void Action() #ActionNode:
 {
 	Token clone = null;
 	Token wait = null;
-	Token time = null;
+	Token sleep = null;
 	Token classname = null;
 	Token urldir = null;
 }
 {
     ( (clone = <CLONE>) (wait = <WAIT>)? <LBRACE> (Exec()) <RBRACE> |
     (<RUN> classname = <CLASSNAME> <LPAREN> (Params())? <RPAREN>) ("from" urldir = <IP_ADDRESS>)? |
-    <SLEEP> time = <MSECONDS> )
+    sleep = <SLEEP> <LPAREN>Params()<RPAREN> )
     {
 	    	if (clone != null)
     			jjtn000.clone = clone.image;
@@ -251,8 +251,8 @@ void Action() #ActionNode:
     			jjtn000.classname = classname.image;
     		if (urldir != null)
     			jjtn000.urldir = urldir.image;
-    		if (time != null)
-    			jjtn000.time = time.image;
+    		if (sleep != null)
+    			jjtn000.sleep = sleep.image;
     }
  }
 
@@ -310,7 +310,8 @@ String param() #void:
 }
 {
 	<IDENTIFIER> { return token.image; } |
-	<STRING_LITERAL> { str = token.image; return str.substring(1, str.length() - 1); }
+	<STRING_LITERAL> { str = token.image; return str.substring(1, str.length() - 1); } |
+	<DECIMAL_LITERAL> { return token.image; }
 }
 
 ASLStartNode Input() #InputNode:

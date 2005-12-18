@@ -6,6 +6,8 @@ public class SleepAction extends BaseAction {
 	private static final long serialVersionUID = 3547962867277455423L;
 
 	private long milliseconds;
+	
+	private Object[] params = null;
 
 	/**
 	 * class constructor
@@ -15,9 +17,14 @@ public class SleepAction extends BaseAction {
 	 * @param trace
 	 *            indicates if the action is meant to be traced
 	 */
-	public SleepAction(long ms, boolean trace) {
+	public SleepAction(boolean trace) {
 		super(trace);
-		this.milliseconds = ms;
+	}
+
+	public void setParams(Object[] p)
+	{
+		this.params = p;
+		this.milliseconds = Integer.parseInt(this.params[0].toString());
 	}
 
 	/**

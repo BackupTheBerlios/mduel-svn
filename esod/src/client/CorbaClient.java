@@ -24,6 +24,7 @@ public class CorbaClient extends _CorbaReportReceiverImplBase {
 			client = new CorbaClient();
 			client.corba_init(args);
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			System.out.println("erro ao iniciar o cliente! verifique que o orbd está em execução!");
 			return;
 		}

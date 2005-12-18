@@ -11,7 +11,7 @@ public class ASLActionNode extends SimpleNode {
 
 	public String urldir;
 
-	public String time;
+	public String sleep;
 
 	public ASLActionNode(int id) {
 		super(id);

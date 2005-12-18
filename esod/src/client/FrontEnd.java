@@ -5,6 +5,8 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface FrontEnd extends Remote, Serializable {
+	public void register() throws RemoteException;
+	public void unregister() throws RemoteException;
 	boolean helloPlatform() throws RemoteException;
 	boolean validateScript(String script) throws RemoteException;
 	void startAgent(String script) throws RemoteException;
