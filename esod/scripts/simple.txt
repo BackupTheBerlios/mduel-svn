@@ -9,7 +9,7 @@ definition {
 execute {
 	migrate to 192.168.1.102 proxy {
 		run $server.agent.AgentImpl.sayHello()
-		sleep (1000)
+		sleep (100000)
 	}
 	migrate to 192.168.1.102 {
 		run $server.tasks.OSDetailsTask() from 192.168.1.102

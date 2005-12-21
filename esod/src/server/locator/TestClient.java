@@ -115,7 +115,8 @@ public class TestClient {
 				System.out.println("Indique sobre que agente o método será invocado:");
 				j = SavitchIn.readInt();
 
-				String tmp = ((String)client.getInvocable().get(i)).concat("Invocable");
+				String strMethod = (String)client.getInvocable().get(i);
+				String tmp = strMethod.substring(0, strMethod.length()-2).concat("Invocable");
 				String method = tmp.substring(tmp.lastIndexOf(' '));
 				System.out.println("METHOD: " + method);
 				
