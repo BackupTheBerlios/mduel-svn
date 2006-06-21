@@ -1,0 +1,199 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E50DC3E3-3EBF-4436-B2F5-89427DA3F20F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>oltp2olap</RootNamespace>
+    <AssemblyName>oltp2olap</AssemblyName>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Crainiate.ERM4, Version=4.0.2210.0, Culture=neutral, PublicKeyToken=df8e50c7fad67e61">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\Crainiate.ERM4.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="controls\SelectTables.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="controls\SelectTables.Designer.cs">
+      <DependentUpon>SelectTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditWorkingTables.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditWorkingTables.Designer.cs">
+      <DependentUpon>EditWorkingTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="helpers\ErrorHelper.cs" />
+    <Compile Include="helpers\Collapse.cs" />
+    <Compile Include="helpers\SqlSchema.cs" />
+    <Compile Include="heuristics\Classification.cs" />
+    <Compile Include="heuristics\EntityTypes.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModelForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ModelForm.Designer.cs">
+      <DependentUpon>ModelForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectExplorer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProjectExplorer.Designer.cs">
+      <DependentUpon>ProjectExplorer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="wizards\ConnectionWizard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wizards\ConnectionWizard.Designer.cs">
+      <DependentUpon>ConnectionWizard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="controls\SelectTables.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SelectTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditWorkingTables.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EditWorkingTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ModelForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectExplorer.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ProjectExplorer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wizards\ConnectionWizard.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ConnectionWizard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\wizard\Header.resx">
+      <DependentUpon>Header.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\wizard\InfoContainer.resx">
+      <DependentUpon>InfoContainer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\wizard\InfoPage.resx">
+      <DependentUpon>InfoPage.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\wizard\Wizard.resx">
+      <DependentUpon>Wizard.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\wizard\WizardPage.resx">
+      <DependentUpon>WizardPage.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="controls\wizard\Header.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="controls\wizard\HeaderDesigner.cs" />
+    <Compile Include="controls\wizard\InfoContainer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="controls\wizard\InfoContainerDesigner.cs" />
+    <Compile Include="controls\wizard\InfoPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="controls\wizard\InfoPageDesigner.cs" />
+    <Compile Include="controls\wizard\PageCollection.cs" />
+    <Compile Include="controls\wizard\PageEventHandler.cs" />
+    <Compile Include="controls\wizard\Wizard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="controls\wizard\WizardDesigner.cs" />
+    <Compile Include="controls\wizard\WizardPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="controls\wizard\WizardPageDesigner.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="images\fk.png" />
+    <Content Include="images\pk.png" />
+    <Content Include="controls\wizard\Wizard.bmp" />
+    <Content Include="controls\wizard\wizBigOnlineFolder.gif" />
+    <Content Include="TODO.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
