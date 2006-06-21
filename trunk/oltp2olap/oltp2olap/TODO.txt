@@ -3,4 +3,4 @@
 - When collpsing table has children, ask user onto which children to collapse
 - Once tables are classified, keep them that way
 - Change column names when collapsed
-- test
+- test teste2
