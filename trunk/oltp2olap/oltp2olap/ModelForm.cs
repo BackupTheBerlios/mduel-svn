@@ -246,6 +246,9 @@ namespace oltp2olap
         private void collapseToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
             Elements elms = model1.SelectedElements(typeof(Table));
+            List<LinkedList<string>> clone = Classification.getMaximalHierarchies();
+            //for each eleme GetAccessibilityObjectById ele
+
             foreach (string el in elms.Keys)
             {
                 Shape table = (Shape) elms[el];

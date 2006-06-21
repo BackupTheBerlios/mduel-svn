@@ -34,6 +34,11 @@ namespace oltp2olap.heuristics
 
         public static List<LinkedList<String>> inputFromSQL;
 
+        public static List<LinkedList<string>> getMaximalHierarchies()
+        {
+            return maximalStringHierarchies;
+        }
+
         private void resetAll()
         {
             transactionEntities.Clear();
