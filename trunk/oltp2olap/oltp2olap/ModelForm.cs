@@ -56,7 +56,7 @@ namespace oltp2olap
                 t.Indent = 10;
                 t.Heading = table.TableName;
                 t.SubHeading = "Table";
-                t.MaximumSize = new SizeF(new Point(200, 1000));
+                t.MaximumSize = new SizeF(new Point(1000, 1000));
                 t.DrawExpand = true;
                 t.AllowScale = false;
 
@@ -64,6 +64,7 @@ namespace oltp2olap
                 tg.Text = "Columns";
                 t.Groups.Add(tg);
 
+                //float maxWidth = 0.0f;
                 StringBuilder sb = new StringBuilder();
                 foreach (DataColumn column in table.Columns)
                 {
@@ -76,10 +77,16 @@ namespace oltp2olap
                             row.Image = new Crainiate.ERM4.Image("Resource.protectedfield.gif", "Crainiate.ERM4.Component");
                     }
                     tg.Rows.Add(row);
-                    sb.Append(column.ColumnName + "\r\n");
+                    /*Graphics g = model1.CreateGraphics();
+                    SizeF size = g.MeasureString(row.Text, Component.Instance.DefaultFont);
+                    float width = size.Width + 50;
+                    if (width > maxWidth)
+                        maxWidth = width;*/
+                    sb.Append("\r\n" + row.Text);
                 }
-                t.Tooltip = sb.ToString();
                 model1.Shapes.Add(table.TableName, t);
+                //t.Width = maxWidth;
+                t.Tooltip = sb.ToString();
 
                 if (!entityTypes.ContainsKey(table.TableName))
                     entityTypes[table.TableName] = EntityTypes.Unclassified;
@@ -89,22 +96,27 @@ namespace oltp2olap
             foreach (DataRelation dr in dataSet.Relations)
             {
                 Connector line = new Connector((Shape)model1.Shapes[dr.ParentTable.TableName], (Shape)model1.Shapes[dr.ChildTable.TableName]);
+                line.Rounded = true;
                 line.End.Marker = new Arrow();
                 line.Tag = dr.RelationName;
                 model1.Lines.Add(model1.Lines.CreateKey(), line);
             }
+            model1.Resume();
 
             DoLayout();
         }
 
         private void DoLayout()
         {
-            Layout layout = null;
+            model1.Suspend();
             Graph graph = new Graph();
             graph.AddDiagram(model1);
 
-            layout = new HierarchicalLayout();
-
+            HierarchicalLayout layout = new HierarchicalLayout();
+            layout.ConnectedComponentDistance = 20;
+            layout.LayerDistance = 40;
+            layout.ObjectDistance = 20;
+            
             layout.DoLayout(graph);
 
             if (layout != null && layout.Status == LayoutStatus.Success)
@@ -246,7 +258,7 @@ namespace oltp2olap
         private void collapseToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
             Elements elms = model1.SelectedElements(typeof(Table));
-            List<LinkedList<string>> clone = Classification.getMaximalHierarchies();
+            //List<LinkedList<string>> clone = Classification.getMaximalHierarchies();
             //for each eleme GetAccessibilityObjectById ele
 
             foreach (string el in elms.Keys)

@@ -67,6 +67,7 @@
     <Compile Include="helpers\Collapse.cs" />
     <Compile Include="helpers\SqlSchema.cs" />
     <Compile Include="heuristics\Classification.cs" />
+    <Compile Include="heuristics\ClassificationTypes.cs" />
     <Compile Include="heuristics\EntityTypes.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

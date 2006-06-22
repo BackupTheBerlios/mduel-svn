@@ -28,13 +28,13 @@ namespace oltp2olap.heuristics
 
         // doublyLinked faz par com doublyLinkedStrings:
         // para cada doublyLinked uma LinkedStrings
-        public static List<int> doublyLinked = new List<int>();
+        public List<int> doublyLinked = new List<int>();
 
-        public static List<LinkedList<String>> doublyLinkedStrings = new List<LinkedList<String>>();
+        public List<LinkedList<String>> doublyLinkedStrings = new List<LinkedList<String>>();
 
-        public static List<LinkedList<String>> inputFromSQL;
+        public List<LinkedList<String>> inputFromSQL;
 
-        public static List<LinkedList<string>> getMaximalHierarchies()
+        public List<LinkedList<string>> getMaximalHierarchies()
         {
             return maximalStringHierarchies;
         }
@@ -476,7 +476,7 @@ namespace oltp2olap.heuristics
 
         }
 
-        public Dictionary<string, EntityTypes> ClassificateEntities(DataSet ds)
+        public Dictionary<string, EntityTypes> ClassificateEntities(DataSet ds, ClassificationTypes algorithm)
         {
             numTables = ds.Tables.Count;
 
@@ -532,8 +532,10 @@ namespace oltp2olap.heuristics
                 doubleWeighted[y] += 1;
             }
 
-            firstAlgoritmVersion();
-            //entitiesClassification();
+            if (algorithm.Equals(ClassificationTypes.AlgorithmNumber1))
+                firstAlgoritmVersion();
+            else if (algorithm.Equals(ClassificationTypes.AlgorithmNumber2))
+                entitiesClassification();
 
             Dictionary<string, EntityTypes> entities = new Dictionary<string,EntityTypes>();
             IEnumerator iter = transactionEntities.GetEnumerator();

@@ -41,8 +41,9 @@ namespace oltp2olap
         private void newDataSourceToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ConnectionWizard cwz = new ConnectionWizard();
+            DialogResult cwzResult = cwz.ShowDialog();
 
-            if (cwz.ShowDialog() == DialogResult.OK)
+            if (cwzResult == DialogResult.OK)
             {
                 DataSet ds = cwz.GetDataSet();
                 dataSets[ds.DataSetName] = ds.Clone();
@@ -70,5 +71,12 @@ namespace oltp2olap
             if (nodes.Length > 0)
                 nodes[0].Remove();
         }
+
+#if DEBUG
+        public void Go()
+        {
+            newDataSourceToolStripMenuItem_Click(null, null);
+        }
+#endif
     }
 }

@@ -29,7 +29,7 @@ namespace oltp2olap
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Project - Project1");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Project - Project1");
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.ctxMnuBase = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.newDataSourceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -41,10 +41,10 @@ namespace oltp2olap
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView1.Location = new System.Drawing.Point(0, 0);
             this.treeView1.Name = "treeView1";
-            treeNode3.Name = "Node0";
-            treeNode3.Text = "Project - Project1";
+            treeNode1.Name = "Node0";
+            treeNode1.Text = "Project - Project1";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3});
+            treeNode1});
             this.treeView1.Size = new System.Drawing.Size(236, 451);
             this.treeView1.TabIndex = 0;
             this.treeView1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseClick);
@@ -54,7 +54,7 @@ namespace oltp2olap
             this.ctxMnuBase.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newDataSourceToolStripMenuItem});
             this.ctxMnuBase.Name = "ctxMnuBase";
-            this.ctxMnuBase.Size = new System.Drawing.Size(181, 48);
+            this.ctxMnuBase.Size = new System.Drawing.Size(181, 26);
             // 
             // newDataSourceToolStripMenuItem
             // 

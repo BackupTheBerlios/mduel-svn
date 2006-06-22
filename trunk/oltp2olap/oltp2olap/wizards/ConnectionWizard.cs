@@ -85,20 +85,15 @@ namespace oltp2olap.wizards
 
         private void ConnectionWizard_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (cbDatabase.Items.Count > 0 && cbDatabase.SelectedItem != null && cbDatabase.Text != String.Empty)
+            if (cbDatabase.Items.Count > 0 && cbDatabase.SelectedItem != null && cbDatabase.Text != String.Empty && DialogResult != DialogResult.Cancel)
             {
                 DialogResult = DialogResult.OK;
-            }
-            else if (!DialogResult.Equals(DialogResult.Cancel))
-            {
-                e.Cancel = true;
             }
         }
 
         private void appWizard_CloseFromCancel(object sender, System.ComponentModel.CancelEventArgs e)
         {
             DialogResult = DialogResult.Cancel;
-            Close();
         }
     }
 }

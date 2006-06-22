@@ -49,6 +49,8 @@ namespace oltp2olap
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.customizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.algorithm1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.algorithm2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.flatSchemaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.terracedSchemaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -234,10 +236,26 @@ namespace oltp2olap
             // 
             // customizeToolStripMenuItem
             // 
+            this.customizeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.algorithm1ToolStripMenuItem,
+            this.algorithm2ToolStripMenuItem});
             this.customizeToolStripMenuItem.Name = "customizeToolStripMenuItem";
             this.customizeToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.customizeToolStripMenuItem.Text = "Classify Entities";
-            this.customizeToolStripMenuItem.Click += new System.EventHandler(this.customizeToolStripMenuItem_Click);
+            // 
+            // algorithm1ToolStripMenuItem
+            // 
+            this.algorithm1ToolStripMenuItem.Name = "algorithm1ToolStripMenuItem";
+            this.algorithm1ToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.algorithm1ToolStripMenuItem.Text = "Algorithm #1";
+            this.algorithm1ToolStripMenuItem.Click += new System.EventHandler(this.classify_Click);
+            // 
+            // algorithm2ToolStripMenuItem
+            // 
+            this.algorithm2ToolStripMenuItem.Name = "algorithm2ToolStripMenuItem";
+            this.algorithm2ToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.algorithm2ToolStripMenuItem.Text = "Algorithm #2";
+            this.algorithm2ToolStripMenuItem.Click += new System.EventHandler(this.classify_Click);
             // 
             // optionsToolStripMenuItem
             // 
@@ -292,7 +310,7 @@ namespace oltp2olap
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.aboutToolStripMenuItem.Text = "&About...";
             // 
             // toolStrip1
@@ -439,6 +457,7 @@ namespace oltp2olap
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "BDDW - OLTP2OLAP";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -493,5 +512,7 @@ namespace oltp2olap
         private System.Windows.Forms.ToolStripMenuItem starSchemaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem snowflakeSchemaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem starClusterSchemaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem algorithm1ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem algorithm2ToolStripMenuItem;
     }
 }

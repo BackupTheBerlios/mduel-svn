@@ -30,8 +30,6 @@ namespace oltp2olap.helpers
                     parents.Add(dr.ParentTable.TableName);
                 }
             }
-            //foreach (DataRelation dr in drc)
-                //dataSet.Relations.Remove(dr);
 
             return parents.ToArray();
         }
@@ -59,7 +57,9 @@ namespace oltp2olap.helpers
             List<DataColumn> columns = new List<DataColumn>();
             foreach (DataColumn c in table.Columns)
             {
-                DataColumn nc = new DataColumn(c.ColumnName, c.DataType);
+                // discard xxx.TableName
+                string tableName = table.TableName.Split('.')[1];
+                DataColumn nc = new DataColumn(tableName + "_" + c.ColumnName, c.DataType);
                 columns.Add(nc);
             }
             return columns.ToArray();
@@ -77,8 +77,16 @@ namespace oltp2olap.helpers
                         lc.Add(fkc);
                 }
             }
-            foreach (Constraint c in lc)
+            foreach (ForeignKeyConstraint c in lc)
+            {
                 dataSet.Tables[child].Constraints.Remove(c);
+                foreach (DataColumn dc in c.Columns)
+                {
+                    List<DataColumn> pk = new List<DataColumn>(c.Table.PrimaryKey);
+                    if (!pk.Contains(dc))
+                        dataSet.Tables[child].Columns.Remove(dc.ColumnName);
+                }
+            }
         }
 
         public DataSet GetResult()
