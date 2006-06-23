@@ -5,12 +5,21 @@ using System.Text;
 
 namespace oltp2olap.helpers
 {
+
     public class Collapse
     {
+        private class DataColumnInfo
+        {
+            public string OldName;
+            public string NewName;
+            public Type DataType;
+            public bool IsPK = false;
+        }
+
         private DataSet dataSet;
         private DataTable table;
         private string[] children;
-        private DataColumn[] newColumns;
+        private DataColumnInfo[] newColumns;
 
         public Collapse(DataSet ds, string t)
         {
@@ -52,20 +61,23 @@ namespace oltp2olap.helpers
             return children.ToArray();
         }
 
-        private DataColumn[] GetNewColumns()
+        private DataColumnInfo[] GetNewColumns()
         {
-            List<DataColumn> columns = new List<DataColumn>();
+            List<DataColumnInfo> columns = new List<DataColumnInfo>();
             foreach (DataColumn c in table.Columns)
             {
-                // discard xxx.TableName
                 string tableName = table.TableName.Split('.')[1];
-                DataColumn nc = new DataColumn(tableName + "_" + c.ColumnName, c.DataType);
+                string newName = tableName + "_" + c.ColumnName;
+                DataColumnInfo nc = new DataColumnInfo();
+                nc.NewName = newName;
+                nc.OldName = c.ColumnName;
+                nc.DataType = c.DataType;
                 columns.Add(nc);
             }
             return columns.ToArray();
         }
 
-        private void RemoveFKConstraints(string child)
+        private void GetPossiblePrimaryKeys(string child)
         {
             List<Constraint> lc = new List<Constraint>();
             foreach (Constraint c in dataSet.Tables[child].Constraints)
@@ -77,16 +89,70 @@ namespace oltp2olap.helpers
                         lc.Add(fkc);
                 }
             }
+
+            foreach (ForeignKeyConstraint c in lc)
+            {
+                foreach (DataColumnInfo dci in newColumns)
+                {
+                    List<DataColumn> pk = new List<DataColumn>(c.Table.PrimaryKey);
+                    foreach(DataColumn dc in pk)
+                    {
+                        if (dc.ColumnName.Equals(dci.OldName))
+                            dci.IsPK = true;
+                    }
+                }
+            }
+        }
+
+        private void SetNewPrimaryKeys(DataSet dataSet, string child)
+        {
+            foreach (DataColumnInfo dci in newColumns)
+            {
+                if (dci.IsPK)
+                {
+                    List<DataColumn> pkCols = new List<DataColumn>(dataSet.Tables[child].PrimaryKey);
+                    pkCols.Add(dataSet.Tables[child].Columns[dci.NewName]);
+                    dataSet.EnforceConstraints = false;
+                    dataSet.Tables[child].PrimaryKey = pkCols.ToArray();
+                    dataSet.EnforceConstraints = true;
+                }
+            }
+        }
+
+        private bool RemoveFKConstraints(string child)
+        {
+            bool nullable = false;
+
+            List<Constraint> lc = new List<Constraint>();
+            foreach (Constraint c in dataSet.Tables[child].Constraints)
+            {
+                if (c.GetType().Equals(typeof(ForeignKeyConstraint)))
+                {
+                    ForeignKeyConstraint fkc = (ForeignKeyConstraint)c;
+                    if (fkc.RelatedTable.TableName.Equals(table.TableName))
+                        lc.Add(fkc);
+                }
+            }
+
             foreach (ForeignKeyConstraint c in lc)
             {
                 dataSet.Tables[child].Constraints.Remove(c);
                 foreach (DataColumn dc in c.Columns)
                 {
                     List<DataColumn> pk = new List<DataColumn>(c.Table.PrimaryKey);
-                    if (!pk.Contains(dc))
-                        dataSet.Tables[child].Columns.Remove(dc.ColumnName);
+                    if (pk.Contains(dc))
+                    {
+                        pk.Remove(dc);
+                        c.Table.DataSet.EnforceConstraints = false;
+                        c.Table.DataSet.Tables[child].PrimaryKey = pk.ToArray();
+                        c.Table.DataSet.EnforceConstraints = true;
+                    }
+                    if (dc.AllowDBNull)
+                        nullable = true;
+                    dataSet.Tables[child].Columns.Remove(dc.ColumnName);
                 }
             }
+            return nullable;
         }
 
         public DataSet GetResult()
@@ -102,74 +168,28 @@ namespace oltp2olap.helpers
 
             foreach (string child in children)
             {
-                RemoveFKConstraints(child);
-                // handle name clashes??
-                foreach (DataColumn dc in newColumns)
+                GetPossiblePrimaryKeys(child);
+                bool nullable = RemoveFKConstraints(child);
+                foreach (DataColumnInfo dci in newColumns)
                 {
-                    if (!dataSet.Tables[child].Columns.Contains(dc.ColumnName))
+                    DataColumn newDc = new DataColumn(dci.NewName, dci.DataType);
+                    if (nullable)
+                        newDc.AllowDBNull = true;
+                    else
+                        newDc.AllowDBNull = false;
+
+                    if (dataSet.Tables[child].Columns.Contains(dci.NewName))
                     {
-                        DataColumn newDc = new DataColumn(dc.ColumnName, dc.DataType);
-                        dataSet.Tables[child].Columns.Add(newDc);
+                        string newName = dci.OldName + "_" + dci.NewName;
+                        newDc.ColumnName = newName;
+                        dci.NewName = newName;
                     }
+
+                    dataSet.Tables[child].Columns.Add(newDc);
                 }
+                SetNewPrimaryKeys(dataSet, child);
             }
             dataSet.Tables.Remove(table.TableName);
-            /*
-            List<DataRelation> drc = new List<DataRelation>();
-            foreach (DataRelation dr in dataSet.Relations)
-            {
-                if (dr.ParentTable.TableName.Equals(table2.TableName)
-                    && dr.ChildTable.TableName.Equals(table1.TableName))
-                {
-                    drc.Add(dr);
-                    continue;
-                }
-
-                if (dr.ParentTable.TableName.Equals(table1.TableName)
-                    && dr.ChildTable.TableName.Equals(table2.TableName))
-                {
-                    drc.Add(dr);
-                    continue;
-                }
-
-                if (dr.ParentTable.TableName.Equals(table1.TableName)
-                    || dr.ChildTable.TableName.Equals(table1.TableName))
-                {
-                    drc.Add(dr);
-                    continue;
-                }
-            }
-            
-            foreach (DataRelation dr in drc)
-            {
-                dataSet.Relations.Remove(dr);
-                DataTable t = dr.ChildTable;
-                List<Constraint> lc = new List<Constraint>();
-                foreach (Constraint c in t.Constraints)
-                {
-                    if (c.GetType() == typeof(ForeignKeyConstraint))
-                    {
-                        ForeignKeyConstraint fkc = (ForeignKeyConstraint)c;
-                        if (fkc.RelatedTable.TableName.Equals(table1.TableName))
-                            lc.Add(c);
-                    }
-                }
-                foreach (Constraint c in lc)
-                    t.Constraints.Remove(c);
-            }
-            DataTable copy = table1.Clone();
-            dataSet.Tables.Remove(table1.TableName);
-
-            foreach (DataColumn col in copy.Columns)
-            {
-                if (!table2.Columns.Contains(col.ColumnName))
-                {
-                    DataColumn c = new DataColumn(col.ColumnName, col.DataType);
-                    dataSet.Tables[table2.TableName].Columns.Add(c);
-                }
-                    
-            }
-            */
             return dataSet;
         }
     }

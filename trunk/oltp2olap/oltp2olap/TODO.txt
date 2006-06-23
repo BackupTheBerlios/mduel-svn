@@ -1,3 +1,2 @@
 
-- When collapsing, if FK allows NULL, all new columns are also NULLABLE
-- When collpsing table has children, ask user onto which children to collapse
+- When the collpsing table has children, ask user onto which children to collapse
