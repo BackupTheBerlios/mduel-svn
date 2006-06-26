@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI;
+using oltp2olap.helpers;
 using oltp2olap.heuristics;
 
 namespace oltp2olap
@@ -77,6 +78,20 @@ namespace oltp2olap
         public DockPanel DockPanel
         {
             get { return dockPanel1; }
+        }
+
+        private void saveToolStripButton_Click(object sender, EventArgs e)
+        {
+            IDockContent dock = dockPanel1.ActiveDocument;
+            if (dock == null)
+                return;
+
+            if (dock.GetType().Equals(typeof(ModelForm)))
+            {
+                ModelForm frmModel = (ModelForm)dock;
+                SqlSchema sqlSchema = frmModel.SqlSchema;
+                MessageBox.Show(sqlSchema.Database);
+            }
         }
     }
 }

@@ -14,6 +14,7 @@ namespace oltp2olap.helpers
         private string server = String.Empty;
         private string username = String.Empty;
         private string password = String.Empty;
+        private string database = String.Empty;
         
         public SqlSchema()
         {
@@ -71,17 +72,19 @@ namespace oltp2olap.helpers
         {
             DbProviderFactory factory = DbProviderFactories.GetFactory("System.Data.SqlClient");
             DataTable tableInfo;
+            this.database = database;
+            connStr.InitialCatalog = database;
 
             using (DbConnection c = factory.CreateConnection())
             {
-                c.ConnectionString = connStr.ConnectionString + ";Initial Catalog=" + database;
+                c.ConnectionString = connStr.ConnectionString;
 
                 c.Open();
                 tableInfo = c.GetSchema("Tables", null);
                 c.Close();
             }
 
-            SqlConnection conn = new SqlConnection(connStr.ConnectionString + ";Initial Catalog=" + database);
+            SqlConnection conn = new SqlConnection(connStr.ConnectionString);
 
             DataSet ds = new DataSet();
             Hashtable tableLUT = new Hashtable();
@@ -149,6 +152,12 @@ namespace oltp2olap.helpers
         {
             get { return password; }
             set { password = value; }
+        }
+
+        public string Database
+        {
+            get { return database; }
+            set { database = value; }
         }
 
         public string ConnectionString
