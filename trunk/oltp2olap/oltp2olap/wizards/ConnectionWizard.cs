@@ -95,5 +95,10 @@ namespace oltp2olap.wizards
         {
             DialogResult = DialogResult.Cancel;
         }
+
+        public SqlSchema SqlSchema
+        {
+            get { return sqlSchema; }
+        }
     }
 }

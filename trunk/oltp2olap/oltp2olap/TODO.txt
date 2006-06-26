@@ -4,7 +4,10 @@
 1. verificar se a tabela é transaccional
 2. identificar colunas numéricas e adicioná-las à lista de colunas agregáveis
 3. restantes colunas são adicionadas à lista de colunas agrupáveis
-4. a PK da nova tabela são as colunas agrupáveis seleccionadas
+4. verificar se os atributos escolhidos são válidos
+	- um atributo não agregado não pode constar da lista de agregações se não estiver
+	na lista de colunas por agrupar
+5. a PK da nova tabela são as colunas agrupáveis seleccionadas
 
 - dataset to SQL
 - derive different models

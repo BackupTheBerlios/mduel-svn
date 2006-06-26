@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace oltp2olap.helpers
 {
-    class SqlSchema
+    public class SqlSchema
     {
         private SqlConnectionStringBuilder connStr;
         private bool windowsAuthorization = true;

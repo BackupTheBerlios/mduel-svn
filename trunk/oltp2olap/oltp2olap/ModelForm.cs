@@ -14,6 +14,7 @@ namespace oltp2olap
 {
     public partial class ModelForm : DockContent
     {
+        private SqlSchema sqlSchema;
         private DataSet dataSet;
         private Dictionary<string, EntityTypes> entityTypes;
         private List<string> visibleTables;
@@ -290,6 +291,31 @@ namespace oltp2olap
                     LoadDataSet(c.GetResult());
                 }
             }
+        }
+
+        private void aggregateToolStripMenuItem_Click(object sender, System.EventArgs e)
+        {
+            Elements elms = model1.SelectedElements(typeof(Table));
+
+            foreach (string el in elms.Keys)
+            {
+                Shape table = (Shape)elms[el];
+                if (entityTypes[table.Key].Equals(EntityTypes.TransactionEntity))
+                {
+                    SelectAggregate sa = new SelectAggregate(dataSet, table.Key);
+                    DialogResult result = sa.ShowDialog();
+
+                    if (result == DialogResult.OK)
+                    {
+                    }
+                }
+            }
+        }
+
+        public SqlSchema SqlSchema
+        {
+            get { return sqlSchema; }
+            set { sqlSchema = value; }
         }
     }
 }

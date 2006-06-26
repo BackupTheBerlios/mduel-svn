@@ -36,11 +36,11 @@ namespace oltp2olap
             this.componentEntityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.classificationEntityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.manageTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableOperationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.collapseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aggregateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.manageTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -112,18 +112,6 @@ namespace oltp2olap
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(184, 6);
             // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(184, 6);
-            // 
-            // manageTablesToolStripMenuItem
-            // 
-            this.manageTablesToolStripMenuItem.Name = "manageTablesToolStripMenuItem";
-            this.manageTablesToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.manageTablesToolStripMenuItem.Text = "Add / Remove Tables";
-            this.manageTablesToolStripMenuItem.Click += new System.EventHandler(this.manageTablesToolStripMenuItem_Click);
-            // 
             // tableOperationsToolStripMenuItem
             // 
             this.tableOperationsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -145,6 +133,19 @@ namespace oltp2olap
             this.aggregateToolStripMenuItem.Name = "aggregateToolStripMenuItem";
             this.aggregateToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.aggregateToolStripMenuItem.Text = "Aggregate";
+            this.aggregateToolStripMenuItem.Click += new System.EventHandler(this.aggregateToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(184, 6);
+            // 
+            // manageTablesToolStripMenuItem
+            // 
+            this.manageTablesToolStripMenuItem.Name = "manageTablesToolStripMenuItem";
+            this.manageTablesToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.manageTablesToolStripMenuItem.Text = "Add / Remove Tables";
+            this.manageTablesToolStripMenuItem.Click += new System.EventHandler(this.manageTablesToolStripMenuItem_Click);
             // 
             // ModelForm
             // 

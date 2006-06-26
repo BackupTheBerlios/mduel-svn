@@ -51,11 +51,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="controls\AggregationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="controls\AggregationControl.Designer.cs">
+      <DependentUpon>AggregationControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="controls\SelectAggregationAttribute.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="controls\SelectAggregationAttribute.Designer.cs">
+      <DependentUpon>SelectAggregationAttribute.cs</DependentUpon>
+    </Compile>
     <Compile Include="controls\SelectCollapsableRelations.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="controls\SelectCollapsableRelations.Designer.cs">
       <DependentUpon>SelectCollapsableRelations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="controls\SelectGroupingAttributes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="controls\SelectGroupingAttributes.Designer.cs">
+      <DependentUpon>SelectGroupingAttributes.cs</DependentUpon>
     </Compile>
     <Compile Include="controls\SelectTables.cs">
       <SubType>UserControl</SubType>
@@ -130,6 +148,12 @@
     <Compile Include="ProjectExplorer.Designer.cs">
       <DependentUpon>ProjectExplorer.cs</DependentUpon>
     </Compile>
+    <Compile Include="SelectAggregate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectAggregate.Designer.cs">
+      <DependentUpon>SelectAggregate.cs</DependentUpon>
+    </Compile>
     <Compile Include="SelectCollapse.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -144,9 +168,21 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="controls\AggregationControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AggregationControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\SelectAggregationAttribute.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SelectAggregationAttribute.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="controls\SelectCollapsableRelations.resx">
       <DependentUpon>SelectCollapsableRelations.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\SelectGroupingAttributes.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SelectGroupingAttributes.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="controls\SelectTables.resx">
       <DependentUpon>SelectTables.cs</DependentUpon>
@@ -187,6 +223,10 @@
     <EmbeddedResource Include="ProjectExplorer.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ProjectExplorer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectAggregate.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SelectAggregate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SelectCollapse.resx">
       <SubType>Designer</SubType>

@@ -49,6 +49,7 @@ namespace oltp2olap
                 dataSets[ds.DataSetName] = ds.Clone();
                 MainForm mf = (MainForm) FindForm().ParentForm;
                 ModelForm frmModel = new ModelForm();
+                frmModel.SqlSchema = cwz.SqlSchema;
                 frmModel.Closed += new EventHandler(frmModel_Closed);
 
                 EditWorkingTables ewt = new EditWorkingTables(ds, new List<string>());
