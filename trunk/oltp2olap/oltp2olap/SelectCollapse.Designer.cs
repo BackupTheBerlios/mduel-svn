@@ -1,6 +1,6 @@
 namespace oltp2olap
 {
-    partial class EditWorkingTables
+    partial class SelectCollapse
     {
         /// <summary>
         /// Required designer variable.
@@ -28,62 +28,61 @@ namespace oltp2olap
         /// </summary>
         private void InitializeComponent()
         {
-            this.selectTables1 = new oltp2olap.controls.SelectTables();
-            this.btnCancel = new System.Windows.Forms.Button();
+            this.selectCollapsableRelations1 = new oltp2olap.controls.SelectCollapsableRelations();
             this.btnDone = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // selectTables1
+            // selectCollapsableRelations1
             // 
-            this.selectTables1.Location = new System.Drawing.Point(10, 12);
-            this.selectTables1.Name = "selectTables1";
-            this.selectTables1.Size = new System.Drawing.Size(493, 234);
-            this.selectTables1.TabIndex = 0;
-            // 
-            // btnCancel
-            // 
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(428, 260);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 1;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
+            this.selectCollapsableRelations1.Location = new System.Drawing.Point(12, 12);
+            this.selectCollapsableRelations1.Name = "selectCollapsableRelations1";
+            this.selectCollapsableRelations1.Size = new System.Drawing.Size(498, 213);
+            this.selectCollapsableRelations1.TabIndex = 0;
             // 
             // btnDone
             // 
             this.btnDone.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnDone.Location = new System.Drawing.Point(347, 260);
+            this.btnDone.Location = new System.Drawing.Point(351, 231);
             this.btnDone.Name = "btnDone";
             this.btnDone.Size = new System.Drawing.Size(75, 23);
-            this.btnDone.TabIndex = 2;
+            this.btnDone.TabIndex = 4;
             this.btnDone.Text = "Done";
             this.btnDone.UseVisualStyleBackColor = true;
+            this.btnDone.Click += new System.EventHandler(this.btnDone_Click);
             // 
-            // EditWorkingTables
+            // btnCancel
+            // 
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Location = new System.Drawing.Point(432, 231);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.TabIndex = 3;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            // 
+            // SelectCollapse
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(515, 295);
+            this.ClientSize = new System.Drawing.Size(519, 261);
             this.Controls.Add(this.btnDone);
             this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.selectTables1);
+            this.Controls.Add(this.selectCollapsableRelations1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "EditWorkingTables";
-            this.ShowInTaskbar = false;
+            this.Name = "SelectCollapse";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Select Working Tables";
+            this.Text = "Select the tables / relations onto which to collapse:";
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private oltp2olap.controls.SelectTables selectTables1;
-        private System.Windows.Forms.Button btnCancel;
+        private oltp2olap.controls.SelectCollapsableRelations selectCollapsableRelations1;
         private System.Windows.Forms.Button btnDone;
+        private System.Windows.Forms.Button btnCancel;
     }
 }

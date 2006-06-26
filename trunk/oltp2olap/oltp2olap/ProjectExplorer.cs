@@ -47,14 +47,14 @@ namespace oltp2olap
             {
                 DataSet ds = cwz.GetDataSet();
                 dataSets[ds.DataSetName] = ds.Clone();
-                DataSet workspace = new DataSet(ds.DataSetName);
                 MainForm mf = (MainForm) FindForm().ParentForm;
                 ModelForm frmModel = new ModelForm();
                 frmModel.Closed += new EventHandler(frmModel_Closed);
 
-                EditWorkingTables ewt = new EditWorkingTables(ds, workspace);
+                EditWorkingTables ewt = new EditWorkingTables(ds, new List<string>());
                 DialogResult result = ewt.ShowDialog();
 
+                frmModel.SetVisibleTables(ewt.VisibleTables);
                 frmModel.LoadDataSet(ewt.WorkDataSet);
                
                 frmModel.Show(mf.DockPanel);

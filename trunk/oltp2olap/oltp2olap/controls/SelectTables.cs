@@ -6,101 +6,98 @@ namespace oltp2olap.controls
 {
     public partial class SelectTables : UserControl
     {
-        private DataSet dbDataSet;
         private DataSet wsDataSet;
+        private List<string> visibleTables;
 
         public SelectTables()
         {
             InitializeComponent();
 
-            dbDataSet = null;
             wsDataSet = null;
+            visibleTables = null;
         }
 
-        public void SetTables(DataSet orig, DataSet dest)
+        public void SetTables(DataSet ds, List<string> visible)
         {
-            dbDataSet = orig.Clone();
-            wsDataSet = dest.Clone();
+            wsDataSet = ds.Clone();
+            visibleTables = visible;
         }
-        
-        public void CopySelectedTables()
+
+        private string[] GetParents(string table)
         {
-            wsDataSet = new DataSet(dbDataSet.DataSetName);
-            foreach (string str in lbWsTables.Items)
+            List<DataRelation> drc = new List<DataRelation>();
+            List<string> parents = new List<string>();
+            foreach (DataRelation dr in wsDataSet.Relations)
             {
-                wsDataSet.Tables.Add(dbDataSet.Tables[str].Clone());
+                if (dr.ChildTable.TableName.Equals(table))
+                {
+                    drc.Add(dr);
+                    parents.Add(dr.ParentTable.TableName);
+                }
             }
 
-            foreach (DataRelation dr in dbDataSet.Relations)
+            return parents.ToArray();
+        }
+
+        List<string> related = new List<string>();
+        private void RelatedTables(string table)
+        {
+            string[] parents = GetParents(table);
+            foreach (string p in parents)
             {
-                if (wsDataSet.Tables.Contains(dr.ParentTable.TableName) && wsDataSet.Tables.Contains(dr.ChildTable.TableName))
-                {
-                    string parent = dr.ParentTable.TableName;
-                    string child = dr.ChildTable.TableName;
-                    string parentCol = dr.ParentColumns[0].ColumnName;
-                    string childCol = dr.ChildColumns[0].ColumnName;
+                if (related.Contains(p))
+                    continue;
 
-                    DataColumn childData = wsDataSet.Tables[child].Columns[childCol];
-                    DataColumn parentData = wsDataSet.Tables[parent].Columns[parentCol];
-
-                    DataRelation relation = new DataRelation(dr.RelationName, parentData, childData);
-                    if (!wsDataSet.Relations.Contains(dr.RelationName))
-                        wsDataSet.Relations.Add(relation);
-                }
+                related.Add(p);
+                RelatedTables(p);
             }
         }
         
         private void SelectTables_Load(object sender, System.EventArgs e)
         {
-            if (dbDataSet == null || dbDataSet.Tables == null)
-                return;
-
             if (wsDataSet == null || wsDataSet.Tables == null)
                 return;
 
             lbDbTables.Items.Clear();
-            foreach(DataTable table in dbDataSet.Tables)
+            foreach(DataTable table in wsDataSet.Tables)
             {
-                if (!wsDataSet.Tables.Contains(table.TableName))
+                if (!visibleTables.Contains(table.TableName))
                     lbDbTables.Items.Add(table.TableName);
             }
             if (lbDbTables.Items.Count > 0)
-            {
                 btnIntoWorkspace.Enabled = true;
-                lbDbTables.SelectedIndex = 0;
-            }
 
             lbWsTables.Items.Clear();
             foreach (DataTable table in wsDataSet.Tables)
             {
-                if (!lbDbTables.Items.Contains(table.TableName))
+                if (!lbDbTables.Items.Contains(table.TableName) && visibleTables.Contains(table.TableName))
                     lbWsTables.Items.Add(table.TableName);
             }
             if (lbWsTables.Items.Count > 0)
-            {
                 btnOutWorkspace.Enabled = true;
-                lbWsTables.SelectedIndex = 0;
-            }
-
-#if DEBUG
-            while (lbDbTables.Items.Count > 0)
-                btnIntoWorkspace_Click(this, null);
-#endif
         }
 
         private void btnIntoWorkspace_Click(object sender, System.EventArgs e)
         {
-            if (cbRelatedTables.Checked)
+            List<string> selection = new List<string>();
+            foreach (object obj in lbDbTables.SelectedItems)
             {
-                //TODO: do something
+                selection.Add((string)obj);
+                if (cbRelatedTables.Checked)
+                {
+                    RelatedTables((string)obj);
+                    selection.AddRange(related);
+                }
             }
-            else
+
+            foreach (string item in selection)
             {
-                int idx = lbWsTables.Items.Add(lbDbTables.SelectedItem);
-                lbWsTables.SelectedIndex = idx;
-                lbDbTables.Items.Remove(lbDbTables.SelectedItem);
-                if (lbDbTables.Items.Count > 0)
-                    lbDbTables.SelectedIndex = 0;
+                if (!lbWsTables.Items.Contains(item))
+                {
+                    visibleTables.Add(item);
+                    lbWsTables.Items.Add(item);
+                    lbDbTables.Items.Remove(item);
+                }
             }
 
             ToggleButtons();
@@ -108,15 +105,23 @@ namespace oltp2olap.controls
 
         private void btnOutWorkspace_Click(object sender, System.EventArgs e)
         {
-            int idx = lbDbTables.Items.Add(lbWsTables.SelectedItem);
-            lbDbTables.SelectedIndex = idx;
-            lbWsTables.Items.Remove(lbWsTables.SelectedItem);
-            if (lbWsTables.Items.Count > 0)
-                lbWsTables.SelectedIndex = 0;
+            List<string> selection = new List<string>();
+            foreach (object obj in lbWsTables.SelectedItems)
+                selection.Add((string)obj);
+
+            foreach (string item in selection)
+            {
+                if (!lbDbTables.Items.Contains(item))
+                {
+                    visibleTables.Remove(item);
+                    lbDbTables.Items.Add(item);
+                    lbWsTables.Items.Remove(item);
+                }
+            }
 
             ToggleButtons();
         }
-        
+
         private void ToggleButtons()
         {
             if (lbDbTables.Items.Count == 0)
@@ -133,6 +138,11 @@ namespace oltp2olap.controls
         public DataSet WorkDataSet
         {
             get { return wsDataSet; }
+        }
+
+        public List<string> VisibleTables
+        {
+            get { return visibleTables; }
         }
     }
 }

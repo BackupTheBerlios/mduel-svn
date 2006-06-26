@@ -1,26 +1,27 @@
 
 using System.Data;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace oltp2olap
 {
     public partial class EditWorkingTables : Form
     {
-        public EditWorkingTables(DataSet orig, DataSet dest)
+        public EditWorkingTables(DataSet ds, List<string> visible)
         {
             InitializeComponent();
 
-            selectTables1.SetTables(orig, dest);
+            selectTables1.SetTables(ds, visible);
         }
-        
+
         public DataSet WorkDataSet
         {
             get { return selectTables1.WorkDataSet;  }
         }
 
-        private void btnDone_Click(object sender, System.EventArgs e)
+        public List<string> VisibleTables
         {
-            selectTables1.CopySelectedTables();
+            get { return selectTables1.VisibleTables; }
         }
     }
 }

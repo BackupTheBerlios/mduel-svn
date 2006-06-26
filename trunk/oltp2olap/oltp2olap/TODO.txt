@@ -1,2 +1,4 @@
 
-- When the collpsing table has children, ask user onto which children to collapse
+- aggregation
+- dataset to SQL
+- derive different models

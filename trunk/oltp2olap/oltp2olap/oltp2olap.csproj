@@ -51,6 +51,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="controls\SelectCollapsableRelations.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="controls\SelectCollapsableRelations.Designer.cs">
+      <DependentUpon>SelectCollapsableRelations.cs</DependentUpon>
+    </Compile>
     <Compile Include="controls\SelectTables.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -87,6 +93,12 @@
     <Compile Include="ProjectExplorer.Designer.cs">
       <DependentUpon>ProjectExplorer.cs</DependentUpon>
     </Compile>
+    <Compile Include="SelectCollapse.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectCollapse.Designer.cs">
+      <DependentUpon>SelectCollapse.cs</DependentUpon>
+    </Compile>
     <Compile Include="wizards\ConnectionWizard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -95,6 +107,10 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="controls\SelectCollapsableRelations.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SelectCollapsableRelations.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="controls\SelectTables.resx">
       <SubType>Designer</SubType>
       <DependentUpon>SelectTables.cs</DependentUpon>
@@ -114,6 +130,10 @@
     <EmbeddedResource Include="ProjectExplorer.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ProjectExplorer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectCollapse.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SelectCollapse.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="wizards\ConnectionWizard.resx">
       <SubType>Designer</SubType>

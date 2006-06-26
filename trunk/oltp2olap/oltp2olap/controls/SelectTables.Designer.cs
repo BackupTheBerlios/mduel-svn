@@ -29,8 +29,8 @@ namespace oltp2olap.controls
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lbDbTables = new System.Windows.Forms.ListBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lbWsTables = new System.Windows.Forms.ListBox();
             this.btnIntoWorkspace = new System.Windows.Forms.Button();
             this.btnOutWorkspace = new System.Windows.Forms.Button();
@@ -50,6 +50,16 @@ namespace oltp2olap.controls
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Existing Tables";
             // 
+            // lbDbTables
+            // 
+            this.lbDbTables.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbDbTables.FormattingEnabled = true;
+            this.lbDbTables.Location = new System.Drawing.Point(10, 16);
+            this.lbDbTables.Name = "lbDbTables";
+            this.lbDbTables.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
+            this.lbDbTables.Size = new System.Drawing.Size(180, 173);
+            this.lbDbTables.TabIndex = 0;
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.lbWsTables);
@@ -61,25 +71,15 @@ namespace oltp2olap.controls
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Tables In Workspace";
             // 
-            // lbDbTables
-            // 
-            this.lbDbTables.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbDbTables.FormattingEnabled = true;
-            this.lbDbTables.Location = new System.Drawing.Point(10, 16);
-            this.lbDbTables.Name = "lbDbTables";
-            this.lbDbTables.Size = new System.Drawing.Size(180, 173);
-            this.lbDbTables.TabIndex = 0;
-
-            // 
             // lbWsTables
             // 
             this.lbWsTables.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbWsTables.FormattingEnabled = true;
             this.lbWsTables.Location = new System.Drawing.Point(10, 16);
             this.lbWsTables.Name = "lbWsTables";
+            this.lbWsTables.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
             this.lbWsTables.Size = new System.Drawing.Size(180, 173);
             this.lbWsTables.TabIndex = 1;
-
             // 
             // btnIntoWorkspace
             // 
@@ -106,6 +106,8 @@ namespace oltp2olap.controls
             // cbRelatedTables
             // 
             this.cbRelatedTables.AutoSize = true;
+            this.cbRelatedTables.Checked = true;
+            this.cbRelatedTables.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbRelatedTables.Location = new System.Drawing.Point(13, 209);
             this.cbRelatedTables.Name = "cbRelatedTables";
             this.cbRelatedTables.Size = new System.Drawing.Size(122, 17);

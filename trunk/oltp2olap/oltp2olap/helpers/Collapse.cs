@@ -20,11 +20,23 @@ namespace oltp2olap.helpers
         private DataTable table;
         private string[] children;
         private DataColumnInfo[] newColumns;
+        private bool collapseAll;
+        private List<DataRelation> childrenRelations;
+        private List<string> collapsableRelations;
+        private List<string> visibleTables;
 
-        public Collapse(DataSet ds, string t)
+        public Collapse(DataSet ds, string t, List<string> relations, List<string> visible)
         {
             dataSet = ds.Clone();
             table = ds.Tables[t].Clone();
+            collapseAll = true;
+            visibleTables = visible;
+
+            if (relations.Count > 0)
+            {
+                collapseAll = false;
+                collapsableRelations = relations;
+            }
         }
 
         private string[] GetParents()
@@ -33,7 +45,7 @@ namespace oltp2olap.helpers
             List<string> parents = new List<string>();
             foreach (DataRelation dr in dataSet.Relations)
             {
-                if (dr.ChildTable.TableName.Equals(table.TableName))
+                if (dr.ChildTable.TableName.Equals(table.TableName) && visibleTables.Contains(dr.ParentTable.TableName))
                 {
                     drc.Add(dr);
                     parents.Add(dr.ParentTable.TableName);
@@ -51,10 +63,23 @@ namespace oltp2olap.helpers
             {
                 if (dr.ParentTable.TableName.Equals(table.TableName))
                 {
-                    drc.Add(dr);
-                    children.Add(dr.ChildTable.TableName);
+                    if (collapseAll)
+                    {
+                        drc.Add(dr);
+                    }
+                    else if (collapsableRelations.Contains(dr.RelationName))
+                    {
+                        drc.Add(dr);
+                    }
+
+                    if (visibleTables.Contains(dr.ChildTable.TableName))
+                        children.Add(dr.ChildTable.TableName);
                 }
+
+                if (dr.ChildTable.TableName.Equals(table.TableName))
+                    drc.Add(dr);
             }
+            childrenRelations = drc;
             foreach (DataRelation dr in drc)
                 dataSet.Relations.Remove(dr);
 
@@ -64,7 +89,7 @@ namespace oltp2olap.helpers
         private DataColumnInfo[] GetNewColumns()
         {
             List<DataColumnInfo> columns = new List<DataColumnInfo>();
-            foreach (DataColumn c in table.Columns)
+            foreach (DataColumn c in dataSet.Tables[table.TableName].Columns)
             {
                 string tableName = table.TableName.Split('.')[1];
                 string newName = tableName + "_" + c.ColumnName;
@@ -119,7 +144,7 @@ namespace oltp2olap.helpers
             }
         }
 
-        private bool RemoveFKConstraints(string child)
+        private bool RemoveFKConstraints(string child, string relationName)
         {
             bool nullable = false;
 
@@ -130,7 +155,10 @@ namespace oltp2olap.helpers
                 {
                     ForeignKeyConstraint fkc = (ForeignKeyConstraint)c;
                     if (fkc.RelatedTable.TableName.Equals(table.TableName))
-                        lc.Add(fkc);
+                    {
+                        if (fkc.ConstraintName.Equals(relationName))
+                            lc.Add(fkc);
+                    }
                 }
             }
 
@@ -149,16 +177,28 @@ namespace oltp2olap.helpers
                     }
                     if (dc.AllowDBNull)
                         nullable = true;
+
                     dataSet.Tables[child].Columns.Remove(dc.ColumnName);
                 }
             }
+
             return nullable;
         }
 
         public DataSet GetResult()
         {
+            string[] parents = GetParents();
             if (GetParents().Length != 0)
-                return dataSet;
+            {
+                foreach (string str in parents)
+                {
+                    if (dataSet.Tables[str] != null)
+                    {
+                        Collapse c = new Collapse(dataSet, str, new List<string>(), visibleTables);
+                        dataSet = c.GetResult();
+                    }
+                }
+            }
 
             children = GetChildren();
             if (children.Length == 0)
@@ -166,10 +206,14 @@ namespace oltp2olap.helpers
 
             newColumns = GetNewColumns();
 
-            foreach (string child in children)
+            foreach (DataRelation relation in childrenRelations)
             {
+                if (!collapseAll && !collapsableRelations.Contains(relation.RelationName))
+                    continue;
+
+                string child = relation.ChildTable.TableName;
                 GetPossiblePrimaryKeys(child);
-                bool nullable = RemoveFKConstraints(child);
+                bool nullable = RemoveFKConstraints(child, relation.RelationName);
                 foreach (DataColumnInfo dci in newColumns)
                 {
                     DataColumn newDc = new DataColumn(dci.NewName, dci.DataType);
@@ -189,7 +233,12 @@ namespace oltp2olap.helpers
                 }
                 SetNewPrimaryKeys(dataSet, child);
             }
-            dataSet.Tables.Remove(table.TableName);
+            dataSet.Tables[table.TableName].Constraints.Clear();
+            if (collapseAll)
+                dataSet.Tables.Remove(table.TableName);
+            else if (collapsableRelations.Count == children.Length)
+                dataSet.Tables.Remove(table.TableName);
+
             return dataSet;
         }
     }

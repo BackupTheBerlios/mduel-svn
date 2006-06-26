@@ -16,6 +16,7 @@ namespace oltp2olap
     {
         private DataSet dataSet;
         private Dictionary<string, EntityTypes> entityTypes;
+        private List<string> visibleTables;
 
         public ModelForm()
         {
@@ -47,6 +48,9 @@ namespace oltp2olap
             model1.Shapes.Clear();
             foreach (DataTable table in dataSet.Tables)
             {
+                if (!visibleTables.Contains(table.TableName))
+                    continue;
+
                 Table t = new Table();
                 t.BackColor = Color.White;
                 t.GradientColor = Color.FromArgb(96, SystemColors.Highlight);
@@ -64,7 +68,7 @@ namespace oltp2olap
                 tg.Text = "Columns";
                 t.Groups.Add(tg);
 
-                //float maxWidth = 0.0f;
+                float maxWidth = 0.0f;
                 StringBuilder sb = new StringBuilder();
                 foreach (DataColumn column in table.Columns)
                 {
@@ -77,15 +81,15 @@ namespace oltp2olap
                             row.Image = new Crainiate.ERM4.Image("Resource.protectedfield.gif", "Crainiate.ERM4.Component");
                     }
                     tg.Rows.Add(row);
-                    /*Graphics g = model1.CreateGraphics();
+                    Graphics g = model1.CreateGraphics();
                     SizeF size = g.MeasureString(row.Text, Component.Instance.DefaultFont);
                     float width = size.Width + 50;
                     if (width > maxWidth)
-                        maxWidth = width;*/
+                        maxWidth = width;
                     sb.Append("\r\n" + row.Text);
                 }
                 model1.Shapes.Add(table.TableName, t);
-                //t.Width = maxWidth;
+                t.Width = maxWidth;
                 t.Tooltip = sb.ToString();
 
                 if (!entityTypes.ContainsKey(table.TableName))
@@ -95,20 +99,24 @@ namespace oltp2olap
             model1.Lines.Clear();
             foreach (DataRelation dr in dataSet.Relations)
             {
+                if (!visibleTables.Contains(dr.ParentTable.TableName))
+                    continue;
+
+                if (!visibleTables.Contains(dr.ChildTable.TableName))
+                    continue;
+
                 Connector line = new Connector((Shape)model1.Shapes[dr.ParentTable.TableName], (Shape)model1.Shapes[dr.ChildTable.TableName]);
                 line.Rounded = true;
                 line.End.Marker = new Arrow();
                 line.Tag = dr.RelationName;
                 model1.Lines.Add(model1.Lines.CreateKey(), line);
             }
-            model1.Resume();
 
             DoLayout();
         }
 
-        private void DoLayout()
+        public void DoLayout()
         {
-            model1.Suspend();
             Graph graph = new Graph();
             graph.AddDiagram(model1);
 
@@ -127,6 +135,11 @@ namespace oltp2olap
             model1.Resume();
             model1.Refresh();
             DrawEntityTypes();
+        }
+
+        public void SetVisibleTables(List<string> tables)
+        {
+            visibleTables = tables;
         }
 
         public void SetEntityTypes(Dictionary<string, EntityTypes> entities)
@@ -248,24 +261,34 @@ namespace oltp2olap
         private void manageTablesToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
             ProjectExplorer prjExplorer = (ProjectExplorer)DockPanel.Controls.Find("Project Explorer", true)[0];
-            EditWorkingTables ewt = new EditWorkingTables(prjExplorer.DataSets[Text], dataSet);
+            EditWorkingTables ewt = new EditWorkingTables(dataSet, visibleTables);
             DialogResult result = ewt.ShowDialog();
 
             if (result == DialogResult.OK)
+            {
+                SetVisibleTables(ewt.VisibleTables);
                 LoadDataSet(ewt.WorkDataSet);
+            }
         }
 
         private void collapseToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
             Elements elms = model1.SelectedElements(typeof(Table));
-            //List<LinkedList<string>> clone = Classification.getMaximalHierarchies();
-            //for each eleme GetAccessibilityObjectById ele
 
             foreach (string el in elms.Keys)
             {
                 Shape table = (Shape) elms[el];
-                Collapse c = new Collapse(dataSet, table.Key);
-                LoadDataSet(c.GetResult());
+                SelectCollapse sc = new SelectCollapse(dataSet, table.Key, visibleTables);
+                DialogResult result = DialogResult.OK;
+                
+                if (sc.RelationCount > 1)
+                    result = sc.ShowDialog();
+    
+                if (result == DialogResult.OK)
+                {
+                    Collapse c = new Collapse(dataSet, table.Key, sc.SelectedRelations, visibleTables);
+                    LoadDataSet(c.GetResult());
+                }
             }
         }
     }
