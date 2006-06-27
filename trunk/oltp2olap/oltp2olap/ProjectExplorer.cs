@@ -54,13 +54,16 @@ namespace oltp2olap
 
                 EditWorkingTables ewt = new EditWorkingTables(ds, new List<string>());
                 DialogResult result = ewt.ShowDialog();
+                if (result == DialogResult.OK)
+                {
 
-                frmModel.SetVisibleTables(ewt.VisibleTables);
-                frmModel.LoadDataSet(ewt.WorkDataSet);
-               
-                frmModel.Show(mf.DockPanel);
-                treeView1.Nodes[0].Nodes.Add(ds.DataSetName);
-                treeView1.Nodes[0].Expand();                
+                    frmModel.SetVisibleTables(ewt.VisibleTables);
+                    frmModel.LoadDataSet(ewt.WorkDataSet);
+
+                    frmModel.Show(mf.DockPanel);
+                    treeView1.Nodes[0].Nodes.Add(ds.DataSetName);
+                    treeView1.Nodes[0].Expand();
+                }
             }
         }
 

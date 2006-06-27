@@ -307,6 +307,9 @@ namespace oltp2olap
 
                     if (result == DialogResult.OK)
                     {
+                        entityTypes[sa.ResultTable] = EntityTypes.TransactionEntity;
+                        visibleTables.Add(sa.ResultTable);
+                        LoadDataSet(sa.Result);
                     }
                 }
             }

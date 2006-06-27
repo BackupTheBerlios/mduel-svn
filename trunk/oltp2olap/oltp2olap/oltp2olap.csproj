@@ -51,12 +51,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="controls\AggregationControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="controls\AggregationControl.Designer.cs">
-      <DependentUpon>AggregationControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="controls\SelectAggregationAttribute.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -168,10 +162,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="controls\AggregationControl.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>AggregationControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="controls\SelectAggregationAttribute.resx">
       <SubType>Designer</SubType>
       <DependentUpon>SelectAggregationAttribute.cs</DependentUpon>
@@ -247,108 +237,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
-    <None Include="controls\.svn\dir-wcprops" />
-    <None Include="controls\.svn\empty-file" />
-    <None Include="controls\.svn\entries" />
-    <None Include="controls\.svn\format" />
-    <None Include="controls\.svn\prop-base\SelectTables.cs.svn-base" />
-    <None Include="controls\.svn\prop-base\SelectTables.Designer.cs.svn-base" />
-    <None Include="controls\.svn\prop-base\SelectTables.resx.svn-base" />
-    <None Include="controls\.svn\props\SelectTables.cs.svn-work" />
-    <None Include="controls\.svn\props\SelectTables.Designer.cs.svn-work" />
-    <None Include="controls\.svn\props\SelectTables.resx.svn-work" />
-    <None Include="controls\.svn\text-base\SelectCollapsableRelations.cs.svn-base" />
-    <None Include="controls\.svn\text-base\SelectCollapsableRelations.Designer.cs.svn-base" />
-    <None Include="controls\.svn\text-base\SelectCollapsableRelations.resx.svn-base" />
-    <None Include="controls\.svn\text-base\SelectTables.cs.svn-base" />
-    <None Include="controls\.svn\text-base\SelectTables.Designer.cs.svn-base" />
-    <None Include="controls\.svn\text-base\SelectTables.resx.svn-base" />
-    <None Include="controls\.svn\wcprops\SelectCollapsableRelations.cs.svn-work" />
-    <None Include="controls\.svn\wcprops\SelectCollapsableRelations.Designer.cs.svn-work" />
-    <None Include="controls\.svn\wcprops\SelectCollapsableRelations.resx.svn-work" />
-    <None Include="controls\.svn\wcprops\SelectTables.cs.svn-work" />
-    <None Include="controls\.svn\wcprops\SelectTables.Designer.cs.svn-work" />
-    <None Include="controls\.svn\wcprops\SelectTables.resx.svn-work" />
-    <None Include="controls\wizard\.svn\dir-wcprops" />
-    <None Include="controls\wizard\.svn\empty-file" />
-    <None Include="controls\wizard\.svn\entries" />
-    <None Include="controls\wizard\.svn\format" />
-    <None Include="controls\wizard\.svn\prop-base\Header.cs.svn-base" />
-    <None Include="controls\wizard\.svn\prop-base\Header.resx.svn-base" />
-    <None Include="controls\wizard\.svn\prop-base\HeaderDesigner.cs.svn-base" />
-    <None Include="controls\wizard\.svn\prop-base\InfoContainer.cs.svn-base" />
-    <None Include="controls\wizard\.svn\prop-base\InfoContainer.resx.svn-base" />
-    <None Include="controls\wizard\.svn\prop-base\InfoContainerDesigner.cs.svn-base" />
-    <None Include="controls\wizard\.svn\prop-base\InfoPage.cs.svn-base" />
-    <None Include="controls\wizard\.svn\prop-base\InfoPage.resx.svn-base" />
-    <None Include="controls\wizard\.svn\prop-base\InfoPageDesigner.cs.svn-base" />
-    <None Include="controls\wizard\.svn\prop-base\PageCollection.cs.svn-base" />
-    <None Include="controls\wizard\.svn\prop-base\PageEventHandler.cs.svn-base" />
-    <None Include="controls\wizard\.svn\prop-base\Wizard.bmp.svn-base" />
-    <None Include="controls\wizard\.svn\prop-base\Wizard.cs.svn-base" />
-    <None Include="controls\wizard\.svn\prop-base\Wizard.resx.svn-base" />
-    <None Include="controls\wizard\.svn\prop-base\WizardDesigner.cs.svn-base" />
-    <None Include="controls\wizard\.svn\prop-base\WizardPage.cs.svn-base" />
-    <None Include="controls\wizard\.svn\prop-base\WizardPage.resx.svn-base" />
-    <None Include="controls\wizard\.svn\prop-base\WizardPageDesigner.cs.svn-base" />
-    <None Include="controls\wizard\.svn\prop-base\wizBigOnlineFolder.gif.svn-base" />
-    <None Include="controls\wizard\.svn\props\Header.cs.svn-work" />
-    <None Include="controls\wizard\.svn\props\Header.resx.svn-work" />
-    <None Include="controls\wizard\.svn\props\HeaderDesigner.cs.svn-work" />
-    <None Include="controls\wizard\.svn\props\InfoContainer.cs.svn-work" />
-    <None Include="controls\wizard\.svn\props\InfoContainer.resx.svn-work" />
-    <None Include="controls\wizard\.svn\props\InfoContainerDesigner.cs.svn-work" />
-    <None Include="controls\wizard\.svn\props\InfoPage.cs.svn-work" />
-    <None Include="controls\wizard\.svn\props\InfoPage.resx.svn-work" />
-    <None Include="controls\wizard\.svn\props\InfoPageDesigner.cs.svn-work" />
-    <None Include="controls\wizard\.svn\props\PageCollection.cs.svn-work" />
-    <None Include="controls\wizard\.svn\props\PageEventHandler.cs.svn-work" />
-    <None Include="controls\wizard\.svn\props\Wizard.bmp.svn-work" />
-    <None Include="controls\wizard\.svn\props\Wizard.cs.svn-work" />
-    <None Include="controls\wizard\.svn\props\Wizard.resx.svn-work" />
-    <None Include="controls\wizard\.svn\props\WizardDesigner.cs.svn-work" />
-    <None Include="controls\wizard\.svn\props\WizardPage.cs.svn-work" />
-    <None Include="controls\wizard\.svn\props\WizardPage.resx.svn-work" />
-    <None Include="controls\wizard\.svn\props\WizardPageDesigner.cs.svn-work" />
-    <None Include="controls\wizard\.svn\props\wizBigOnlineFolder.gif.svn-work" />
-    <None Include="controls\wizard\.svn\text-base\Header.cs.svn-base" />
-    <None Include="controls\wizard\.svn\text-base\Header.resx.svn-base" />
-    <None Include="controls\wizard\.svn\text-base\HeaderDesigner.cs.svn-base" />
-    <None Include="controls\wizard\.svn\text-base\InfoContainer.cs.svn-base" />
-    <None Include="controls\wizard\.svn\text-base\InfoContainer.resx.svn-base" />
-    <None Include="controls\wizard\.svn\text-base\InfoContainerDesigner.cs.svn-base" />
-    <None Include="controls\wizard\.svn\text-base\InfoPage.cs.svn-base" />
-    <None Include="controls\wizard\.svn\text-base\InfoPage.resx.svn-base" />
-    <None Include="controls\wizard\.svn\text-base\InfoPageDesigner.cs.svn-base" />
-    <None Include="controls\wizard\.svn\text-base\PageCollection.cs.svn-base" />
-    <None Include="controls\wizard\.svn\text-base\PageEventHandler.cs.svn-base" />
-    <None Include="controls\wizard\.svn\text-base\Wizard.bmp.svn-base" />
-    <None Include="controls\wizard\.svn\text-base\Wizard.cs.svn-base" />
-    <None Include="controls\wizard\.svn\text-base\Wizard.resx.svn-base" />
-    <None Include="controls\wizard\.svn\text-base\WizardDesigner.cs.svn-base" />
-    <None Include="controls\wizard\.svn\text-base\WizardPage.cs.svn-base" />
-    <None Include="controls\wizard\.svn\text-base\WizardPage.resx.svn-base" />
-    <None Include="controls\wizard\.svn\text-base\WizardPageDesigner.cs.svn-base" />
-    <None Include="controls\wizard\.svn\text-base\wizBigOnlineFolder.gif.svn-base" />
-    <None Include="controls\wizard\.svn\wcprops\Header.cs.svn-work" />
-    <None Include="controls\wizard\.svn\wcprops\Header.resx.svn-work" />
-    <None Include="controls\wizard\.svn\wcprops\HeaderDesigner.cs.svn-work" />
-    <None Include="controls\wizard\.svn\wcprops\InfoContainer.cs.svn-work" />
-    <None Include="controls\wizard\.svn\wcprops\InfoContainer.resx.svn-work" />
-    <None Include="controls\wizard\.svn\wcprops\InfoContainerDesigner.cs.svn-work" />
-    <None Include="controls\wizard\.svn\wcprops\InfoPage.cs.svn-work" />
-    <None Include="controls\wizard\.svn\wcprops\InfoPage.resx.svn-work" />
-    <None Include="controls\wizard\.svn\wcprops\InfoPageDesigner.cs.svn-work" />
-    <None Include="controls\wizard\.svn\wcprops\PageCollection.cs.svn-work" />
-    <None Include="controls\wizard\.svn\wcprops\PageEventHandler.cs.svn-work" />
-    <None Include="controls\wizard\.svn\wcprops\Wizard.bmp.svn-work" />
-    <None Include="controls\wizard\.svn\wcprops\Wizard.cs.svn-work" />
-    <None Include="controls\wizard\.svn\wcprops\Wizard.resx.svn-work" />
-    <None Include="controls\wizard\.svn\wcprops\WizardDesigner.cs.svn-work" />
-    <None Include="controls\wizard\.svn\wcprops\WizardPage.cs.svn-work" />
-    <None Include="controls\wizard\.svn\wcprops\WizardPage.resx.svn-work" />
-    <None Include="controls\wizard\.svn\wcprops\WizardPageDesigner.cs.svn-work" />
-    <None Include="controls\wizard\.svn\wcprops\wizBigOnlineFolder.gif.svn-work" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -360,23 +248,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="controls\.svn\README.txt" />
-    <Content Include="controls\wizard\.svn\README.txt" />
     <Content Include="controls\wizard\Wizard.bmp" />
     <Content Include="controls\wizard\wizBigOnlineFolder.gif" />
     <Content Include="images\fk.png" />
     <Content Include="images\pk.png" />
     <Content Include="TODO.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="controls\.svn\tmp\prop-base\" />
-    <Folder Include="controls\.svn\tmp\props\" />
-    <Folder Include="controls\.svn\tmp\text-base\" />
-    <Folder Include="controls\.svn\tmp\wcprops\" />
-    <Folder Include="controls\wizard\.svn\tmp\prop-base\" />
-    <Folder Include="controls\wizard\.svn\tmp\props\" />
-    <Folder Include="controls\wizard\.svn\tmp\text-base\" />
-    <Folder Include="controls\wizard\.svn\tmp\wcprops\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
