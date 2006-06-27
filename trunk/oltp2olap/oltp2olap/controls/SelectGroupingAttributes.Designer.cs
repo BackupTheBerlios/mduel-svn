@@ -71,6 +71,7 @@ namespace oltp2olap.controls
             this.btnOk.TabIndex = 7;
             this.btnOk.Text = "OK";
             this.btnOk.UseVisualStyleBackColor = true;
+            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
             // SelectGroupingAttributes
             // 
@@ -81,8 +82,14 @@ namespace oltp2olap.controls
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.lbGroupBy);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "SelectGroupingAttributes";
+            this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Grouping Attributes";
+            this.Load += new System.EventHandler(this.SelectGroupingAttributes_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
