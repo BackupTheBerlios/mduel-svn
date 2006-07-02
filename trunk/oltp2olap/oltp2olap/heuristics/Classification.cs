@@ -34,9 +34,65 @@ namespace oltp2olap.heuristics
 
         public List<LinkedList<String>> inputFromSQL;
 
-        public List<LinkedList<string>> getMaximalHierarchies()
+        public Classification(DataSet ds, List<string> visible)
         {
-            return maximalStringHierarchies;
+            numTables = visible.Count;
+
+            graphTables = new int[numTables, numTables];
+            weight = new int[numTables];
+            doubleWeighted = new int[numTables];
+            hashTables = new Hashtable(numTables);
+            vectTables = new List<String>(numTables);
+            inputFromSQL = new List<LinkedList<String>>();
+
+            foreach (DataRelation rel in ds.Relations)
+            {
+                if (visible.Contains(rel.ChildTable.TableName) &&
+                    visible.Contains(rel.ParentTable.TableName))
+                {
+                    LinkedList<String> lines = new LinkedList<String>();
+                    lines.AddLast(rel.ChildTable.TableName);
+                    lines.AddLast(rel.ChildColumns[0].ColumnName);
+                    lines.AddLast(rel.ParentTable.TableName);
+                    lines.AddLast(rel.ParentColumns[0].ColumnName);
+                    lines.AddLast(rel.RelationName);
+                    inputFromSQL.Add(lines);
+                }
+            }
+
+            IEnumerator inputIt = inputFromSQL.GetEnumerator();
+            int tabs = 0;
+
+            graphVector = new List<LinkedList<int>>();
+            for (int i = 0; i < numTables; i++)
+                graphVector.Insert(i, new LinkedList<int>());
+
+            while (inputIt.MoveNext())
+            {
+                List<String> listTab = new List<string>((LinkedList<string>)inputIt.Current);
+                for (int j = 0; j < 2; j++)
+                {
+                    String table = listTab[j * 2];
+                    object found = hashTables[table];
+                    if (found == null)
+                    {
+                        vectTables.Insert(tabs, table);
+                        hashTables.Add(table, tabs);
+                        tabs++;
+                    }
+                }
+                int x = vectTables.IndexOf(listTab[0]);
+                int y = vectTables.IndexOf(listTab[2]);
+                graphTables[x, y] += 1;
+                if (graphTables[x, y] > 1 && !doublyLinked.Contains(y))
+                    doublyLinked.Add(y);
+                LinkedList<int> tmp = (LinkedList<int>)graphVector[y];
+                if (!tmp.Contains(x))
+                    tmp.AddFirst(x);
+                graphVector[y] = tmp;
+                weight[x] += 1;
+                doubleWeighted[y] += 1;
+            }
         }
 
         private void resetAll()
@@ -44,50 +100,6 @@ namespace oltp2olap.heuristics
             transactionEntities.Clear();
             componentEntities.Clear();
             classificationEntities.Clear();
-        }
-
-        private void printMatrix()
-        {
-            int i;
-            System.Console.Write("\n\n");
-            for (i = 0; i < numTables; i++)
-            {
-                System.Console.Write("{0}", "[" + i + "]");
-            }
-            for (i = 0; i < numTables; i++)
-            {
-                System.Console.WriteLine();
-                for (int j = 0; j < numTables; j++)
-                    System.Console.Write(" {0} ", graphTables[i, j]);
-                System.Console.Write("    {1}: {0}", vectTables[i], i);
-            }
-            System.Console.WriteLine();
-        }
-
-        private void printVector(List<int> someVector)
-        {
-            IEnumerator someVectorIt = someVector.GetEnumerator();
-            while (someVectorIt.MoveNext())
-            {
-                int tmp = (int)someVectorIt.Current;
-                System.Console.WriteLine(vectTables[tmp] + ": "
-                        + (doubleWeighted[tmp] + weight[tmp]));
-            }
-        }
-
-        private void printGraphVector()
-        {
-            IEnumerator it = graphVector.GetEnumerator();
-            int i = 0;
-            while (it.MoveNext())
-            {
-                System.Console.Write(i + ": [");
-                IEnumerator listIt = ((LinkedList<int>)it.Current).GetEnumerator();
-                while (listIt.MoveNext())
-                    System.Console.Write((int)listIt.Current + "; ");
-                System.Console.Write("]\n");
-                i++;
-            }
         }
 
         private void firstAlgoritmVersion()
@@ -129,8 +141,6 @@ namespace oltp2olap.heuristics
                         componentEntities.Add(i);
                 }
             }
-
-            printVector(componentEntities);
 
             // tabelas de entidades sao tabelas de "nivel 3" (tabelas ligadas as de
             // "nivel 2")
@@ -183,17 +193,6 @@ namespace oltp2olap.heuristics
                 if (doubleWeighted[j] == 0)
                 {
                     transactionEntities.Add(j);
-                    minimalEntities.Add(j);
-                }
-            }
-
-            // tabelas sem referencia em weight sao maximal
-            System.Console.WriteLine();
-            for (j = 0; j < numTables; j++)
-            {
-                if (weight[j] == 0)
-                {
-                    maximalEntities.Add(j);
                 }
             }
 
@@ -219,7 +218,6 @@ namespace oltp2olap.heuristics
             IEnumerator tmpIterator = tmpVect.GetEnumerator();
             while (tmpIterator.MoveNext())
                 transactionEntities.Add((int)tmpIterator.Current);
-            printVector(transactionEntities);
             /*
              * 
              */
@@ -239,8 +237,6 @@ namespace oltp2olap.heuristics
                         componentEntities.Add((i));
                 }
             }
-
-            printVector(componentEntities);
 
             // tabelas de entidades sao tabelas de "nivel 3" (tabelas ligadas as de
             // "nivel 2")
@@ -279,7 +275,6 @@ namespace oltp2olap.heuristics
                 if (!classificationEntities.Contains(tmp))
                     classificationEntities.Add((int)tmp);
             }
-            printVector(classificationEntities);
         }
 
         private int nextEntity(int entity, int pos)
@@ -444,14 +439,25 @@ namespace oltp2olap.heuristics
             return (List<LinkedList<String>>)res;
         }
 
-        private void MaximalHierarchies()
+        public void CalculateHierarquies()
         {
-            System.Console.WriteLine("\n##Entidades minimas:");
-            printVector(minimalEntities);
-            System.Console.WriteLine("##Entidades maximas:");
-            printVector(maximalEntities);
+            for( int j = 0; j < numTables; j++ )
+            {
+                if( doubleWeighted[ j ] == 0 )
+                {
+                    minimalEntities.Add( j );
+                }
+            }
+        
+            for( int j = 0; j < numTables; j++ )
+            {
+                if( weight[ j ] == 0 )
+                {
+                    maximalEntities.Add ( j );
+                }
 
-            System.Console.WriteLine("##Hierarquias Máximas:");
+            }
+
             IEnumerator maxEntIt = maximalEntities.GetEnumerator();
             while (maxEntIt.MoveNext())
             {
@@ -463,75 +469,11 @@ namespace oltp2olap.heuristics
             }
             populateDoublyLinkedString();
             hierarchiesValidator(maximalHierarchies);
-
-            IEnumerator maxHIt = maximalStringHierarchies.GetEnumerator();
-            while (maxHIt.MoveNext())
-            {
-                LinkedList<String> aList = (LinkedList<String>)maxHIt.Current;
-                IEnumerator listIt = aList.GetEnumerator();
-                System.Console.WriteLine();
-                while (listIt.MoveNext())
-                    System.Console.Write(listIt.Current + " - ");
-            }
-
         }
 
-        public Dictionary<string, EntityTypes> ClassificateEntities(DataSet ds, ClassificationTypes algorithm)
+
+        public Dictionary<string, EntityTypes> ClassificateEntities(ClassificationTypes algorithm)
         {
-            numTables = ds.Tables.Count;
-
-            graphTables = new int[numTables, numTables];
-            weight = new int[numTables];
-            doubleWeighted = new int[numTables];
-            hashTables = new Hashtable(numTables);
-            vectTables = new List<String>(numTables);
-            inputFromSQL = new List<LinkedList<String>>();
-
-            foreach (DataRelation rel in ds.Relations)
-            {
-                LinkedList<String> lines = new LinkedList<String>();
-                lines.AddLast(rel.ChildTable.TableName);
-                lines.AddLast(rel.ChildColumns[0].ColumnName);
-                lines.AddLast(rel.ParentTable.TableName);
-                lines.AddLast(rel.ParentColumns[0].ColumnName);
-                lines.AddLast(rel.RelationName);
-                inputFromSQL.Add(lines);
-            }
-
-            IEnumerator inputIt = inputFromSQL.GetEnumerator();
-            int tabs = 0;
-
-            graphVector = new List<LinkedList<int>>();
-            for (int i = 0; i < numTables; i++)
-                graphVector.Insert(i, new LinkedList<int>());
-
-            while (inputIt.MoveNext())
-            {
-                List<String> listTab = new List<string>((LinkedList<string>)inputIt.Current);
-                for (int j = 0; j < 2; j++)
-                {
-                    String table = listTab[j * 2];
-                    object found = hashTables[table];
-                    if (found == null)
-                    {
-                        vectTables.Insert(tabs, table);
-                        hashTables.Add(table, tabs);
-                        tabs++;
-                    }
-                }
-                int x = vectTables.IndexOf(listTab[0]);
-                int y = vectTables.IndexOf(listTab[2]);
-                graphTables[x, y] += 1;
-                if (graphTables[x, y] > 1 && !doublyLinked.Contains(y))
-                    doublyLinked.Add(y);
-                LinkedList<int> tmp = (LinkedList<int>)graphVector[y];
-                if (!tmp.Contains(x))
-                    tmp.AddFirst(x);
-                graphVector[y] = tmp;
-                weight[x] += 1;
-                doubleWeighted[y] += 1;
-            }
-
             if (algorithm.Equals(ClassificationTypes.AlgorithmNumber1))
                 firstAlgoritmVersion();
             else if (algorithm.Equals(ClassificationTypes.AlgorithmNumber2))
@@ -562,10 +504,22 @@ namespace oltp2olap.heuristics
             return entities;
         }
 
-        public Classification()
+        public List<string> MinimalEntities
         {
-            //MaximalHierarchies();
+            get {
+                List<string> tables = new List<string>();
+                foreach (int tableIdx in minimalEntities)
+                    tables.Add(vectTables[tableIdx]);
+
+                return tables;
+            }
         }
+
+        public List<LinkedList<string>> MaximalStringHierarchies
+        {
+            get { return maximalStringHierarchies; }
+        }
+
     }
 }
 

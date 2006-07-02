@@ -29,6 +29,10 @@ namespace oltp2olap
 
         public void LoadDataSet(DataSet ds)
         {
+            Route route = new Route(model1);
+            route.Avoid = true;
+            model1.Route = route;
+
             Text = ds.DataSetName;
             TabText = ds.DataSetName;
             dataSet = ds;
@@ -107,6 +111,7 @@ namespace oltp2olap
                     continue;
 
                 Connector line = new Connector((Shape)model1.Shapes[dr.ParentTable.TableName], (Shape)model1.Shapes[dr.ChildTable.TableName]);
+                line.Avoid = true;
                 line.Rounded = true;
                 line.End.Marker = new Arrow();
                 line.Tag = dr.RelationName;
@@ -122,9 +127,9 @@ namespace oltp2olap
             graph.AddDiagram(model1);
 
             HierarchicalLayout layout = new HierarchicalLayout();
-            layout.ConnectedComponentDistance = 20;
+            /*layout.ConnectedComponentDistance = 20;
             layout.LayerDistance = 40;
-            layout.ObjectDistance = 20;
+            layout.ObjectDistance = 20;*/
             
             layout.DoLayout(graph);
 
@@ -191,16 +196,23 @@ namespace oltp2olap
             entityTypes[table] = type;
         }
 
+        public void ClassifyEntities(ClassificationTypes type)
+        {
+            Classification c = new Classification(dataSet, visibleTables);
+            SetEntityTypes(c.ClassificateEntities(type));
+            DrawEntityTypes();
+        }
+
         public void SetZoom(int zoom)
         {
             model1.Zoom = zoom;
         }
 
-        public DataSet DataSet
+        /*public DataSet DataSet
         {
             get { return dataSet; }
             set { dataSet = value; }
-        }
+        }*/
 
         private void ModelForm_Load(object sender, System.EventArgs e)
         {
@@ -313,6 +325,27 @@ namespace oltp2olap
                     }
                 }
             }
+        }
+
+        public void DeriveFlatSchema()
+        {
+            FlatSchema fs = new FlatSchema(dataSet, entityTypes, visibleTables);
+            dataSet = fs.DeriveModel();
+            LoadDataSet(dataSet);
+        }
+
+        public void DeriveTerracedSchema()
+        {
+            TerracedSchema ts = new TerracedSchema(dataSet, entityTypes, visibleTables);
+            dataSet = ts.DeriveModel();
+            LoadDataSet(dataSet);
+        }
+
+        public void DeriveStarSchema()
+        {
+            StarSchema ss = new StarSchema(dataSet, entityTypes, visibleTables);
+            dataSet = ss.DeriveModel();
+            LoadDataSet(dataSet);
         }
 
         public SqlSchema SqlSchema

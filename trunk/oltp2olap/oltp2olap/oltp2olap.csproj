@@ -118,12 +118,18 @@
       <DependentUpon>EditWorkingTables.cs</DependentUpon>
     </Compile>
     <Compile Include="helpers\Aggregate.cs" />
+    <Compile Include="helpers\DataHelper.cs" />
     <Compile Include="helpers\ErrorHelper.cs" />
     <Compile Include="helpers\Collapse.cs" />
     <Compile Include="helpers\SqlSchema.cs" />
     <Compile Include="heuristics\Classification.cs" />
     <Compile Include="heuristics\ClassificationTypes.cs" />
     <Compile Include="heuristics\EntityTypes.cs" />
+    <Compile Include="heuristics\FlatSchema.cs" />
+    <Compile Include="heuristics\IOlapModel.cs" />
+    <Compile Include="heuristics\OlapModel.cs" />
+    <Compile Include="heuristics\StarSchema.cs" />
+    <Compile Include="heuristics\TerracedSchema.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

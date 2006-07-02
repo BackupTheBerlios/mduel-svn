@@ -1,10 +1,10 @@
 
-- aggregation
+- keep collapsed FK's in child tables
+- change name to OldColumnName_ColapsedColumnName
+- visualização de entidades e hierarquias
 
-4. verificar se os atributos escolhidos são válidos
-	- um atributo não agregado não pode constar da lista de agregações se não estiver
-	na lista de colunas por agrupar
-5. a PK da nova tabela são as colunas agrupáveis seleccionadas
+Star Schema
+===========
 
-- dataset to SQL
-- derive different models
+- cada tabela transaccional tem como PKs as chaves externas para os componentes
+- cada entidade componente é uma dimensão

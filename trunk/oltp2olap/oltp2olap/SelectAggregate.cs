@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using oltp2olap.controls;
+using oltp2olap.helpers;
 
 namespace oltp2olap
 {
@@ -24,29 +25,6 @@ namespace oltp2olap
             origin = table;
         }
 
-        public bool IsPrimaryKey(DataColumn dc)
-        {
-            foreach (DataColumn c in dc.Table.PrimaryKey)
-            {
-                if (c.ColumnName.Equals(dc.ColumnName))
-                    return true;
-            }
-            return false;
-        }
-
-        public bool IsForeignKey(DataColumn dc)
-        {
-            foreach (DataRelation dr in dataSet.Relations)
-            {
-                foreach (DataColumn c1 in dr.ChildColumns)
-                {
-                    if (c1.ColumnName.Equals(dc.ColumnName))
-                        return true;
-                }
-            }
-            return false;
-        }
-
         public void SetPossibleAggregationAttributes()
         {
             DataTable table = dataSet.Tables[origin].Clone();
@@ -54,7 +32,7 @@ namespace oltp2olap
 
             foreach (DataColumn dc in table.Columns)
             {
-                if (IsForeignKey(dc) || IsPrimaryKey(dc))
+                if (DataHelper.IsForeignKey(dataSet, dc) || DataHelper.IsPrimaryKey(dc))
                     continue;
 
                 Type t = dc.DataType;
@@ -108,20 +86,84 @@ namespace oltp2olap
                 List<DataColumn> pks = new List<DataColumn>(table.PrimaryKey);
                 pks.Add(table.Columns[dc.ColumnName]);
                 table.PrimaryKey = pks.ToArray();
+            }
 
-                // TODO: handle FK's
-             }
+            foreach (ListViewItem lvi in lvAggregation.Items)
+            {
+                DataColumn oldC = dataSet.Tables[origin].Columns[lvi.Text];
+                DataColumn dc = new DataColumn(lvi.SubItems[1].Text, oldC.DataType);
+                table.Columns.Add(dc);
+            }
 
-             foreach (ListViewItem lvi in lvAggregation.Items)
-             {
-                 DataColumn oldC = dataSet.Tables[origin].Columns[lvi.Text];
-                 DataColumn dc = new DataColumn(lvi.SubItems[1].Text, oldC.DataType);
-                 table.Columns.Add(dc);
-             }
             if (!dataSet.Tables.Contains(table.TableName))
                 dataSet.Tables.Add(table);
             else
                 MessageBox.Show("Já existe uma tabela com esse nome");
+
+            table = dataSet.Tables[table.TableName];
+
+            List<DataRelation> drList = new List<DataRelation>();
+            foreach (DataRelation dr in dataSet.Relations)
+                drList.Add(dr);
+
+            foreach (DataRelation dr in drList)
+            {
+                bool child = CheckForColumns(table, dr.ChildColumns);
+                bool parent = CheckForColumns(table, dr.ParentColumns);
+
+                if (child)
+                {
+                    DataRelation newDr = NewChildFKRelation(table, dr);
+                    if (!dataSet.Relations.Contains(newDr.RelationName))
+                        dataSet.Relations.Add(newDr);
+                }
+                if (parent)
+                {
+                    DataRelation newDr = NewParentFKRelation(table, dr);
+                    if (!dataSet.Relations.Contains(newDr.RelationName))
+                        dataSet.Relations.Add(newDr);
+                }
+            }
+        }
+
+        private bool CheckForColumns(DataTable table, DataColumn[] cols)
+        {
+            foreach (DataColumn c in table.Columns)
+                foreach (DataColumn cc in cols)
+                    if (cc.ColumnName.Equals(c.ColumnName) && cc.Table.TableName.Equals(origin))
+                        return true;
+
+            return false;
+        }
+
+        private DataRelation NewChildFKRelation(DataTable table, DataRelation dr)
+        {
+            List<DataColumn> cols = new List<DataColumn>();
+            foreach (DataColumn dc in dr.ChildColumns)
+                cols.Add(table.Columns[dc.ColumnName]);
+
+            DataRelation newDR = new DataRelation(
+                dr.RelationName + "_Child" + table.TableName,
+                dr.ParentColumns,
+                cols.ToArray()
+                );
+
+            return newDR;
+        }
+
+        private DataRelation NewParentFKRelation(DataTable table, DataRelation dr)
+        {
+            List<DataColumn> cols = new List<DataColumn>();
+            foreach (DataColumn dc in dr.ParentColumns)
+                cols.Add(table.Columns[dc.ColumnName]);
+
+            DataRelation newDR = new DataRelation(
+                dr.RelationName + "_Parent" + table.TableName,
+                cols.ToArray(),
+                dr.ChildColumns
+                );
+
+            return newDR;
         }
 
         private void btnAddAgg_Click(object sender, EventArgs e)
@@ -132,15 +174,8 @@ namespace oltp2olap
 
             if (result == DialogResult.OK)
             {
-                if (!lvAggregation.Items.ContainsKey(saa.Attribute))
-                {
-                    ListViewItem item = lvAggregation.Items.Add(saa.Attribute, saa.Attribute, 0);
-                    item.SubItems.Add(saa.Expression);
-                }
-                else
-                {
-                    MessageBox.Show("An attribute with the same name already exists!");
-                }
+                ListViewItem item = lvAggregation.Items.Add(saa.Attribute, saa.Attribute, 0);
+                item.SubItems.Add(saa.Expression);
             }
         }
 

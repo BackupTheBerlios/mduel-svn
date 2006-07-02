@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using WeifenLuo.WinFormsUI;
 using oltp2olap.helpers;
 using oltp2olap.heuristics;
+using System.Collections.Generic;
 
 namespace oltp2olap
 {
@@ -52,12 +53,10 @@ namespace oltp2olap
 
         private void ClassifyEntities(ClassificationTypes type)
         {
-            Classification c = new Classification();
             ModelForm frmModel = (ModelForm)dockPanel1.ActiveDocument;
             if (frmModel != null)
             {
-                frmModel.SetEntityTypes(c.ClassificateEntities(frmModel.DataSet, type));
-                frmModel.DrawEntityTypes();
+                frmModel.ClassifyEntities(type);
             }
         }
 
@@ -91,6 +90,33 @@ namespace oltp2olap
                 ModelForm frmModel = (ModelForm)dock;
                 SqlSchema sqlSchema = frmModel.SqlSchema;
                 MessageBox.Show(sqlSchema.Database);
+            }
+        }
+
+        private void flatSchemaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ModelForm frmModel = (ModelForm)dockPanel1.ActiveDocument;
+            if (frmModel != null)
+            {
+                frmModel.DeriveFlatSchema();
+            }
+        }
+
+        private void terracedSchemaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ModelForm frmModel = (ModelForm)dockPanel1.ActiveDocument;
+            if (frmModel != null)
+            {
+                frmModel.DeriveTerracedSchema();
+            }
+        }
+
+        private void starSchemaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ModelForm frmModel = (ModelForm)dockPanel1.ActiveDocument;
+            if (frmModel != null)
+            {
+                frmModel.DeriveStarSchema();
             }
         }
     }

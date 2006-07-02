@@ -274,18 +274,21 @@ namespace oltp2olap
             this.flatSchemaToolStripMenuItem.Name = "flatSchemaToolStripMenuItem";
             this.flatSchemaToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.flatSchemaToolStripMenuItem.Text = "Flat Schema";
+            this.flatSchemaToolStripMenuItem.Click += new System.EventHandler(this.flatSchemaToolStripMenuItem_Click);
             // 
             // terracedSchemaToolStripMenuItem
             // 
             this.terracedSchemaToolStripMenuItem.Name = "terracedSchemaToolStripMenuItem";
             this.terracedSchemaToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.terracedSchemaToolStripMenuItem.Text = "Terraced Schema";
+            this.terracedSchemaToolStripMenuItem.Click += new System.EventHandler(this.terracedSchemaToolStripMenuItem_Click);
             // 
             // starSchemaToolStripMenuItem
             // 
             this.starSchemaToolStripMenuItem.Name = "starSchemaToolStripMenuItem";
             this.starSchemaToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.starSchemaToolStripMenuItem.Text = "Star Schema";
+            this.starSchemaToolStripMenuItem.Click += new System.EventHandler(this.starSchemaToolStripMenuItem_Click);
             // 
             // snowflakeSchemaToolStripMenuItem
             // 
