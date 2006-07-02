@@ -361,6 +361,15 @@ namespace oltp2olap
             LoadDataSet(dataSet);
         }
 
+        public void DeriveStarClusterSchema()
+        {
+            StarClusterSchema scs = new StarClusterSchema(dataSet, entityTypes, visibleTables);
+            dataSet = scs.DeriveModel();
+            visibleTables = scs.VisibleTables;
+            entityTypes = scs.DicEntityTypes;
+            LoadDataSet(dataSet);
+        }
+
         public SqlSchema SqlSchema
         {
             get { return sqlSchema; }

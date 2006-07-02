@@ -128,5 +128,14 @@ namespace oltp2olap
                 frmModel.DeriveSnowFlakeSchema();
             }
         }
+
+        private void starClusterSchemaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ModelForm frmModel = (ModelForm)dockPanel1.ActiveDocument;
+            if (frmModel != null)
+            {
+                frmModel.DeriveStarClusterSchema();
+            }
+        }
     }
 }

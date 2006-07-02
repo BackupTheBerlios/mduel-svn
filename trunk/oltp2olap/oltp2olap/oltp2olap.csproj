@@ -129,6 +129,7 @@
     <Compile Include="heuristics\IOlapModel.cs" />
     <Compile Include="heuristics\OlapModel.cs" />
     <Compile Include="heuristics\SnowFlakeSchema.cs" />
+    <Compile Include="heuristics\StarClusterSchema.cs" />
     <Compile Include="heuristics\StarSchema.cs" />
     <Compile Include="heuristics\TerracedSchema.cs" />
     <Compile Include="MainForm.cs">

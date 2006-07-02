@@ -302,6 +302,7 @@ namespace oltp2olap
             this.starClusterSchemaToolStripMenuItem.Name = "starClusterSchemaToolStripMenuItem";
             this.starClusterSchemaToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.starClusterSchemaToolStripMenuItem.Text = "Star Cluster Schema";
+            this.starClusterSchemaToolStripMenuItem.Click += new System.EventHandler(this.starClusterSchemaToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
