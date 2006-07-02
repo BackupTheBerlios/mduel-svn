@@ -331,6 +331,7 @@ namespace oltp2olap
         {
             FlatSchema fs = new FlatSchema(dataSet, entityTypes, visibleTables);
             dataSet = fs.DeriveModel();
+            visibleTables = fs.VisibleTables;
             LoadDataSet(dataSet);
         }
 
@@ -338,6 +339,7 @@ namespace oltp2olap
         {
             TerracedSchema ts = new TerracedSchema(dataSet, entityTypes, visibleTables);
             dataSet = ts.DeriveModel();
+            visibleTables = ts.VisibleTables;
             LoadDataSet(dataSet);
         }
 
@@ -345,6 +347,17 @@ namespace oltp2olap
         {
             StarSchema ss = new StarSchema(dataSet, entityTypes, visibleTables);
             dataSet = ss.DeriveModel();
+            visibleTables = ss.VisibleTables;
+            entityTypes = ss.DicEntityTypes;
+            LoadDataSet(dataSet);
+        }
+
+        public void DeriveSnowFlakeSchema()
+        {
+            SnowFlakeSchema ss = new SnowFlakeSchema(dataSet, entityTypes, visibleTables);
+            dataSet = ss.DeriveModel();
+            visibleTables = ss.VisibleTables;
+            entityTypes = ss.DicEntityTypes;
             LoadDataSet(dataSet);
         }
 

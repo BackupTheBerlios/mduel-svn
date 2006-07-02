@@ -128,6 +128,7 @@
     <Compile Include="heuristics\FlatSchema.cs" />
     <Compile Include="heuristics\IOlapModel.cs" />
     <Compile Include="heuristics\OlapModel.cs" />
+    <Compile Include="heuristics\SnowFlakeSchema.cs" />
     <Compile Include="heuristics\StarSchema.cs" />
     <Compile Include="heuristics\TerracedSchema.cs" />
     <Compile Include="MainForm.cs">
@@ -256,8 +257,6 @@
   <ItemGroup>
     <Content Include="controls\wizard\Wizard.bmp" />
     <Content Include="controls\wizard\wizBigOnlineFolder.gif" />
-    <Content Include="images\fk.png" />
-    <Content Include="images\pk.png" />
     <Content Include="TODO.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

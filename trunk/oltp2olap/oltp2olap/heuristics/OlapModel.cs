@@ -22,5 +22,16 @@ namespace oltp2olap.heuristics
         {
             return null;
         }
+
+
+        public List<string> VisibleTables
+        {
+            get { return visibleTables; }
+        }
+
+        public Dictionary<string, EntityTypes> DicEntityTypes
+        {
+            get { return entityTypes; }
+        }
     }
 }

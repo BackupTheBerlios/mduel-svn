@@ -21,8 +21,9 @@ namespace oltp2olap.heuristics
 
             foreach (string table in minimal)
             {
-                Collapse cp = new Collapse(dataSet, table, new List<string>(), visibleTables);
+                Collapse cp = new Collapse(dataSet, table, new List<string>(), VisibleTables);
                 dataSet = cp.GetResult();
+                visibleTables = cp.VisibleTables;
             }
 
             return dataSet;

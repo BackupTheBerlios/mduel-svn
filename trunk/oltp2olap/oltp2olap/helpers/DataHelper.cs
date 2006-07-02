@@ -45,7 +45,47 @@ namespace oltp2olap.helpers
             return false;
         }
 
-        public static List<DataRelation> RemoveRelations(DataSet dataSet, string table)
+        public static bool CheckForColumns(string origin, DataTable table, DataColumn[] cols)
+        {
+            foreach (DataColumn c in table.Columns)
+                foreach (DataColumn cc in cols)
+                    if (cc.ColumnName.Equals(c.ColumnName) && cc.Table.TableName.Equals(origin))
+                        return true;
+
+            return false;
+        }
+
+        public static DataRelation NewChildFKRelation(DataTable table, DataRelation dr)
+        {
+            List<DataColumn> cols = new List<DataColumn>();
+            foreach (DataColumn dc in dr.ChildColumns)
+                cols.Add(table.Columns[dc.ColumnName]);
+
+            DataRelation newDR = new DataRelation(
+                dr.RelationName + "_Child" + table.TableName,
+                dr.ParentColumns,
+                cols.ToArray()
+                );
+
+            return newDR;
+        }
+
+        public static DataRelation NewParentFKRelation(DataTable table, DataRelation dr)
+        {
+            List<DataColumn> cols = new List<DataColumn>();
+            foreach (DataColumn dc in dr.ParentColumns)
+                cols.Add(table.Columns[dc.ColumnName]);
+
+            DataRelation newDR = new DataRelation(
+                dr.RelationName + "_Parent" + table.TableName,
+                cols.ToArray(),
+                dr.ChildColumns
+                );
+
+            return newDR;
+        }
+
+        public static List<DataRelation> GetRelations(DataSet dataSet, string table)
         {
             List<DataRelation> relations = new List<DataRelation>();
 
@@ -56,12 +96,15 @@ namespace oltp2olap.helpers
                     relations.Add(dr);
             }
 
-            foreach (DataRelation dr in relations)
-            {
-                dataSet.Relations.Remove(dr);
-            }
-
             return relations;
+        }
+
+        public static void RemoveRelations(DataSet dataSet, string table)
+        {
+            List<DataRelation> relations = GetRelations(dataSet, table);
+
+            foreach (DataRelation dr in relations)
+                dataSet.Relations.Remove(dr);
         }
 
         public static void RestoreRelations(DataSet dataSet, List<DataRelation> relations)

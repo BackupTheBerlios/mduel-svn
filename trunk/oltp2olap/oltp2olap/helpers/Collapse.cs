@@ -41,15 +41,11 @@ namespace oltp2olap.helpers
 
         private string[] GetParents()
         {
-            List<DataRelation> drc = new List<DataRelation>();
             List<string> parents = new List<string>();
             foreach (DataRelation dr in dataSet.Relations)
             {
                 if (dr.ChildTable.TableName.Equals(table.TableName) && visibleTables.Contains(dr.ParentTable.TableName))
-                {
-                    drc.Add(dr);
                     parents.Add(dr.ParentTable.TableName);
-                }
             }
 
             return parents.ToArray();
@@ -235,11 +231,22 @@ namespace oltp2olap.helpers
             }
             dataSet.Tables[table.TableName].Constraints.Clear();
             if (collapseAll)
+            {
+                visibleTables.Remove(table.TableName);
                 dataSet.Tables.Remove(table.TableName);
+            }
             else if (collapsableRelations.Count == children.Length)
+            {
+                visibleTables.Remove(table.TableName);
                 dataSet.Tables.Remove(table.TableName);
+            }
 
             return dataSet;
+        }
+        
+        public List<string> VisibleTables
+        {
+            get { return visibleTables; }
         }
     }
 }

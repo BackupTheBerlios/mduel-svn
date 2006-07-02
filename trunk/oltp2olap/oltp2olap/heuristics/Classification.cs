@@ -164,11 +164,23 @@ namespace oltp2olap.heuristics
             vectTablesClone = new List<string>(vectTables);
             transIterator = transactionEntities.GetEnumerator();
             while (transIterator.MoveNext())
-                vectTablesClone.Remove(vectTables[(int)transIterator.Current]);
+            {
+                if ((int)transIterator.Current < vectTables.Count)
+                {
+                    if (vectTablesClone.Contains(vectTables[(int)transIterator.Current]))
+                        vectTablesClone.Remove(vectTables[(int)transIterator.Current]);
+                }
+            }
 
             compIterator = componentEntities.GetEnumerator();
             while (compIterator.MoveNext())
-                vectTablesClone.Remove(vectTables[(int)compIterator.Current]);
+            {
+                if ((int)compIterator.Current < vectTables.Count)
+                {
+                    if (vectTablesClone.Contains(vectTables[(int)compIterator.Current]))
+                        vectTablesClone.Remove(vectTables[(int)compIterator.Current]);
+                }
+            }
 
             // Faz add do resto
             IEnumerator cloneIterator = vectTablesClone.GetEnumerator();
@@ -261,11 +273,24 @@ namespace oltp2olap.heuristics
             vectTablesClone = new List<string>(vectTables);
             transIterator = transactionEntities.GetEnumerator();
             while (transIterator.MoveNext())
-                vectTablesClone.Remove(vectTables[(int)transIterator.Current]);
+            {
+                if ((int)transIterator.Current < vectTables.Count)
+                {
+                    if (vectTablesClone.Contains(vectTables[(int)transIterator.Current]))
+                        vectTablesClone.Remove(vectTables[(int)transIterator.Current]);
+                }
+            }
 
             compIterator = componentEntities.GetEnumerator();
             while (compIterator.MoveNext())
-                vectTablesClone.Remove(vectTables[(int)compIterator.Current]);
+            {
+                if ((int)compIterator.Current < vectTables.Count)
+                {
+                    if (vectTablesClone.Contains(vectTables[(int)compIterator.Current]))
+                        vectTablesClone.Remove(vectTables[(int)compIterator.Current]);
+                }
+            }
+
 
             // Faz add do resto
             IEnumerator cloneIterator = vectTablesClone.GetEnumerator();
@@ -352,6 +377,9 @@ namespace oltp2olap.heuristics
                             done = true;
                     }
                 }
+                if (tmpRes.Count == 0)
+                    done = true;
+
                 res = new LinkedList<LinkedList<int>>((LinkedList<LinkedList<int>>)tmpRes);
             }
             return res;
@@ -484,21 +512,24 @@ namespace oltp2olap.heuristics
             while (iter.MoveNext())
             {
                 int tmp = (int)iter.Current;
-                entities[vectTables[tmp]] = EntityTypes.TransactionEntity;
+                if (tmp < vectTables.Count)
+                    entities[vectTables[tmp]] = EntityTypes.TransactionEntity;
             }
 
             iter = componentEntities.GetEnumerator();
             while (iter.MoveNext())
             {
                 int tmp = (int)iter.Current;
-                entities[vectTables[tmp]] = EntityTypes.ComponentEntity;
+                if (tmp < vectTables.Count)
+                    entities[vectTables[tmp]] = EntityTypes.ComponentEntity;
             }
 
             iter = classificationEntities.GetEnumerator();
             while (iter.MoveNext())
             {
                 int tmp = (int)iter.Current;
-                entities[vectTables[tmp]] = EntityTypes.ClassificationEntity;
+                if (tmp < vectTables.Count)
+                    entities[vectTables[tmp]] = EntityTypes.ClassificationEntity;
             }
 
             return entities;
@@ -507,6 +538,9 @@ namespace oltp2olap.heuristics
         public List<string> MinimalEntities
         {
             get {
+                if (vectTables.Count == 0)
+                    return new List<string>();
+
                 List<string> tables = new List<string>();
                 foreach (int tableIdx in minimalEntities)
                     tables.Add(vectTables[tableIdx]);

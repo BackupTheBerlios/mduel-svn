@@ -119,5 +119,14 @@ namespace oltp2olap
                 frmModel.DeriveStarSchema();
             }
         }
+
+        private void snowflakeSchemaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ModelForm frmModel = (ModelForm)dockPanel1.ActiveDocument;
+            if (frmModel != null)
+            {
+                frmModel.DeriveSnowFlakeSchema();
+            }
+        }
     }
 }

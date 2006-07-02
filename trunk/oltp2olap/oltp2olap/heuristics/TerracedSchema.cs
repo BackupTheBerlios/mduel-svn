@@ -35,6 +35,7 @@ namespace oltp2olap.heuristics
                     {
                         Collapse cp = new Collapse(dataSet, newTable, new List<string>(), visibleTables);
                         dataSet = cp.GetResult();
+                        visibleTables = cp.VisibleTables;
                     }
                 }
             }

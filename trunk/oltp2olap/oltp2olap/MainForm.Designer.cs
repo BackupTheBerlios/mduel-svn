@@ -295,6 +295,7 @@ namespace oltp2olap
             this.snowflakeSchemaToolStripMenuItem.Name = "snowflakeSchemaToolStripMenuItem";
             this.snowflakeSchemaToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.snowflakeSchemaToolStripMenuItem.Text = "Snowflake Schema";
+            this.snowflakeSchemaToolStripMenuItem.Click += new System.EventHandler(this.snowflakeSchemaToolStripMenuItem_Click);
             // 
             // starClusterSchemaToolStripMenuItem
             // 

@@ -3,8 +3,3 @@
 - change name to OldColumnName_ColapsedColumnName
 - visualização de entidades e hierarquias
 
-Star Schema
-===========
-
-- cada tabela transaccional tem como PKs as chaves externas para os componentes
-- cada entidade componente é uma dimensão

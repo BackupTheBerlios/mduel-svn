@@ -108,64 +108,24 @@ namespace oltp2olap
 
             foreach (DataRelation dr in drList)
             {
-                bool child = CheckForColumns(table, dr.ChildColumns);
-                bool parent = CheckForColumns(table, dr.ParentColumns);
+                bool child = DataHelper.CheckForColumns(origin, table, dr.ChildColumns);
+                bool parent = DataHelper.CheckForColumns(origin, table, dr.ParentColumns);
 
                 if (child)
                 {
-                    DataRelation newDr = NewChildFKRelation(table, dr);
+                    DataRelation newDr = DataHelper.NewChildFKRelation(table, dr);
                     if (!dataSet.Relations.Contains(newDr.RelationName))
                         dataSet.Relations.Add(newDr);
                 }
                 if (parent)
                 {
-                    DataRelation newDr = NewParentFKRelation(table, dr);
+                    DataRelation newDr = DataHelper.NewParentFKRelation(table, dr);
                     if (!dataSet.Relations.Contains(newDr.RelationName))
                         dataSet.Relations.Add(newDr);
                 }
             }
         }
-
-        private bool CheckForColumns(DataTable table, DataColumn[] cols)
-        {
-            foreach (DataColumn c in table.Columns)
-                foreach (DataColumn cc in cols)
-                    if (cc.ColumnName.Equals(c.ColumnName) && cc.Table.TableName.Equals(origin))
-                        return true;
-
-            return false;
-        }
-
-        private DataRelation NewChildFKRelation(DataTable table, DataRelation dr)
-        {
-            List<DataColumn> cols = new List<DataColumn>();
-            foreach (DataColumn dc in dr.ChildColumns)
-                cols.Add(table.Columns[dc.ColumnName]);
-
-            DataRelation newDR = new DataRelation(
-                dr.RelationName + "_Child" + table.TableName,
-                dr.ParentColumns,
-                cols.ToArray()
-                );
-
-            return newDR;
-        }
-
-        private DataRelation NewParentFKRelation(DataTable table, DataRelation dr)
-        {
-            List<DataColumn> cols = new List<DataColumn>();
-            foreach (DataColumn dc in dr.ParentColumns)
-                cols.Add(table.Columns[dc.ColumnName]);
-
-            DataRelation newDR = new DataRelation(
-                dr.RelationName + "_Parent" + table.TableName,
-                cols.ToArray(),
-                dr.ChildColumns
-                );
-
-            return newDR;
-        }
-
+                
         private void btnAddAgg_Click(object sender, EventArgs e)
         {
             SetPossibleAggregationAttributes();
