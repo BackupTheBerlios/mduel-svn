@@ -12,11 +12,9 @@ namespace oltp2olap.heuristics
         {
         }
 
-        public override DataSet DeriveModel()
+        protected override void CollapseClassificationTypes()
         {
-            CreateNewTables();
-
-            return dataSet;
+            // do nothing here :)
         }
     }
 }

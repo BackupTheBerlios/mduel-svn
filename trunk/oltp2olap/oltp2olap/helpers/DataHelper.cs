@@ -37,9 +37,12 @@ namespace oltp2olap.helpers
             {
                 foreach (DataColumn c1 in dr.ChildColumns)
                 {
-                    if (c1.ColumnName.Equals(dc.ColumnName) &&
-                        entityTypes[dr.ParentTable.TableName].Equals(EntityTypes.ComponentEntity))
-                        return true;
+                    if (entityTypes.ContainsKey(dr.ParentTable.TableName))
+                    {
+                        if (c1.ColumnName.Equals(dc.ColumnName) &&
+                            entityTypes[dr.ParentTable.TableName].Equals(EntityTypes.ComponentEntity))
+                            return true;
+                    }
                 }
             }
             return false;

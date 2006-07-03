@@ -13,7 +13,7 @@ namespace oltp2olap.heuristics
         {
         }
 
-        protected void CollapseClassificationTypes()
+        protected virtual void CollapseClassificationTypes()
         {
             Classification c = new Classification(dataSet, visibleTables);
             c.CalculateHierarquies();
