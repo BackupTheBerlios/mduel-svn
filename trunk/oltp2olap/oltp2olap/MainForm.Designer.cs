@@ -48,6 +48,7 @@ namespace oltp2olap
             this.starSchemaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.snowflakeSchemaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.starClusterSchemaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToSQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -93,6 +94,7 @@ namespace oltp2olap
             this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
             this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.newToolStripMenuItem.Text = "&New";
+            this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
@@ -102,6 +104,7 @@ namespace oltp2olap
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.openToolStripMenuItem.Text = "&Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // toolStripSeparator
             // 
@@ -116,12 +119,14 @@ namespace oltp2olap
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveToolStripMenuItem.Text = "&Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
             this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveAsToolStripMenuItem.Text = "Save &As";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
@@ -139,7 +144,8 @@ namespace oltp2olap
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.customizeToolStripMenuItem,
-            this.optionsToolStripMenuItem});
+            this.optionsToolStripMenuItem,
+            this.exportToSQLToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.toolsToolStripMenuItem.Text = "&Tools";
@@ -150,7 +156,7 @@ namespace oltp2olap
             this.algorithm1ToolStripMenuItem,
             this.algorithm2ToolStripMenuItem});
             this.customizeToolStripMenuItem.Name = "customizeToolStripMenuItem";
-            this.customizeToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.customizeToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.customizeToolStripMenuItem.Text = "Classify Entities";
             // 
             // algorithm1ToolStripMenuItem
@@ -176,7 +182,7 @@ namespace oltp2olap
             this.snowflakeSchemaToolStripMenuItem,
             this.starClusterSchemaToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.optionsToolStripMenuItem.Text = "Derive Model";
             // 
             // flatSchemaToolStripMenuItem
@@ -214,6 +220,13 @@ namespace oltp2olap
             this.starClusterSchemaToolStripMenuItem.Text = "Star Cluster Schema";
             this.starClusterSchemaToolStripMenuItem.Click += new System.EventHandler(this.starClusterSchemaToolStripMenuItem_Click);
             // 
+            // exportToSQLToolStripMenuItem
+            // 
+            this.exportToSQLToolStripMenuItem.Name = "exportToSQLToolStripMenuItem";
+            this.exportToSQLToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.exportToSQLToolStripMenuItem.Text = "Export to SQL...";
+            this.exportToSQLToolStripMenuItem.Click += new System.EventHandler(this.exportToSQLToolStripMenuItem_Click);
+            // 
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -237,6 +250,7 @@ namespace oltp2olap
             this.newToolStripButton.Name = "newToolStripButton";
             this.newToolStripButton.Size = new System.Drawing.Size(23, 22);
             this.newToolStripButton.Text = "&New";
+            this.newToolStripButton.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // openToolStripButton
             // 
@@ -246,6 +260,7 @@ namespace oltp2olap
             this.openToolStripButton.Name = "openToolStripButton";
             this.openToolStripButton.Size = new System.Drawing.Size(23, 22);
             this.openToolStripButton.Text = "&Open";
+            this.openToolStripButton.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveToolStripButton
             // 
@@ -255,7 +270,7 @@ namespace oltp2olap
             this.saveToolStripButton.Name = "saveToolStripButton";
             this.saveToolStripButton.Size = new System.Drawing.Size(23, 22);
             this.saveToolStripButton.Text = "&Save";
-            this.saveToolStripButton.Click += new System.EventHandler(this.saveToolStripButton_Click);
+            this.saveToolStripButton.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // toolStripSeparator6
             // 
@@ -347,5 +362,6 @@ namespace oltp2olap
         private System.Windows.Forms.ToolStripMenuItem starClusterSchemaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem algorithm1ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem algorithm2ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportToSQLToolStripMenuItem;
     }
 }

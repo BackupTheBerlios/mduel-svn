@@ -118,6 +118,7 @@
       <DependentUpon>EditWorkingTables.cs</DependentUpon>
     </Compile>
     <Compile Include="helpers\DataHelper.cs" />
+    <Compile Include="helpers\DumpSql.cs" />
     <Compile Include="helpers\ErrorHelper.cs" />
     <Compile Include="helpers\Collapse.cs" />
     <Compile Include="helpers\SqlSchema.cs" />

@@ -18,6 +18,10 @@ namespace oltp2olap
         private DataSet dataSet;
         private Dictionary<string, EntityTypes> entityTypes;
         private List<string> visibleTables;
+        private List<int> minimalEntities;
+        private List<int> maximalEntities;
+        private List<List<int>> maximalHierarchies;
+        private string dataBaseFileName;
 
         public ModelForm()
         {
@@ -210,12 +214,13 @@ namespace oltp2olap
         private void ModelForm_Load(object sender, System.EventArgs e)
         {
             MainForm frmMain = (MainForm)DockPanel.FindForm();
-            frmMain.ToggleZoom();
+            frmMain.SetZoomOn();
         }
 
         private void ModelForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             MainForm frmMain = (MainForm)DockPanel.FindForm();
+            frmMain.SetZoomOff();
         }
 
         private void changeEntityTypeMenuItem_Click(object sender, System.EventArgs e)
@@ -367,12 +372,57 @@ namespace oltp2olap
             ProjectExplorer prjExplorer = (ProjectExplorer)DockPanel.Controls.Find("Project Explorer", true)[0];
             Classification c = new Classification(dataSet, visibleTables);
             prjExplorer.RefreshHierarquies(dataSet.DataSetName, c);
+            minimalEntities = c.MinimalEntities;
+            maximalEntities = c.MaximalEntities;
+            maximalHierarchies = c.MaximalHierarchies;
+        }
+
+        public DataSet DataSet
+        {
+            get { return dataSet; }
+            set { dataSet = value; }
         }
 
         public SqlSchema SqlSchema
         {
             get { return sqlSchema; }
             set { sqlSchema = value; }
+        }
+
+        public Dictionary<string, EntityTypes> EntityTypesDic
+        {
+            get { return entityTypes; }
+            set { entityTypes = value; }
+        }
+
+        public List<string> VisibleTables
+        {
+            get { return visibleTables; }
+            set { visibleTables = value; }
+        }
+
+        public List<int> MinimalEntities
+        {
+            get { return minimalEntities; }
+            set { minimalEntities = value; }
+        }
+
+        public List<int> MaximalEntities
+        {
+            get { return maximalEntities; }
+            set { maximalEntities = value; }
+        }
+
+        public List<List<int>> MaximalHierarchies
+        {
+            get { return maximalHierarchies; }
+            set { maximalHierarchies = value; }
+        }
+
+        public string DataBaseFileName
+        {
+            get { return dataBaseFileName; }
+            set { dataBaseFileName = value; }
         }
     }
 }

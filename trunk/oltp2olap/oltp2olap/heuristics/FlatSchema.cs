@@ -17,7 +17,7 @@ namespace oltp2olap.heuristics
         {
             Classification c = new Classification(dataSet, visibleTables);
             c.CalculateHierarquies();
-            List<string> minimal = c.MinimalEntities;
+            List<string> minimal = c.MinimalStringEntities;
 
             foreach (string table in minimal)
             {

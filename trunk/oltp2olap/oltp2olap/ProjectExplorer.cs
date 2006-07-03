@@ -10,20 +10,11 @@ namespace oltp2olap
 {
     public partial class ProjectExplorer : DockContent
     {
-        private Dictionary<string, DataSet> dataSets;
-
-        public Dictionary<string, DataSet> DataSets
-        {
-            get { return dataSets; }
-        }
-
         public ProjectExplorer()
         {
             InitializeComponent();
 
             Name = "Project Explorer";
-
-            dataSets = new Dictionary<string, DataSet>();
         }
 
         public void RefreshHierarquies(string dataset, Classification c)
@@ -32,18 +23,18 @@ namespace oltp2olap
             treeView1.Nodes[0].Nodes[0].Nodes.Clear();
 
             TreeNode minimal = treeView1.Nodes[0].Nodes[0].Nodes.Add("Minimal Entities");
-            foreach (string str in c.MinimalEntities)
+            foreach (string str in c.MinimalStringEntities)
                 minimal.Nodes.Add(str);
 
             TreeNode maximal = treeView1.Nodes[0].Nodes[0].Nodes.Add("Maximal Entities");
-            foreach (string str in c.MaximalEntities)
+            foreach (string str in c.MaximalStringEntities)
                 maximal.Nodes.Add(str);
 
-            List<LinkedList<string>> maximalHierarchies = c.MaximalStringHierarchies;
+            List<List<string>> maximalHierarchies = c.MaximalStringHierarchies;
 
             int count = 1;
             TreeNode maxNode = treeView1.Nodes[0].Nodes[0].Nodes.Add("Maximal Hierarchies");
-            foreach (LinkedList<string> hierarchy in maximalHierarchies)
+            foreach (List<string> hierarchy in maximalHierarchies)
             {
                 TreeNode node = maxNode.Nodes.Add("Maximal Hierarchy #" + count++);
 
@@ -71,13 +62,15 @@ namespace oltp2olap
 
         private void newDataSourceToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (treeView1.Nodes[0].Nodes.Count > 0)
+                return;
+
             ConnectionWizard cwz = new ConnectionWizard();
             DialogResult cwzResult = cwz.ShowDialog();
 
             if (cwzResult == DialogResult.OK)
             {
                 DataSet ds = cwz.GetDataSet();
-                dataSets[ds.DataSetName] = ds.Clone();
                 MainForm mf = (MainForm) FindForm().ParentForm;
                 ModelForm frmModel = new ModelForm();
                 frmModel.SqlSchema = cwz.SqlSchema;
@@ -90,7 +83,8 @@ namespace oltp2olap
                     treeView1.Nodes[0].Nodes.Add(ds.DataSetName);
                     treeView1.Nodes[0].Expand();
                     frmModel.Show(mf.DockPanel);
-
+                    
+                    frmModel.SetZoom(75);
                     frmModel.SetVisibleTables(ewt.VisibleTables);
                     frmModel.LoadDataSet(ewt.WorkDataSet);
                 }
@@ -103,11 +97,14 @@ namespace oltp2olap
             treeView1.Nodes[0].Nodes.Clear();
         }
 
-#if DEBUG
         public void Go()
         {
             newDataSourceToolStripMenuItem_Click(null, null);
         }
-#endif
+
+        public TreeView TreeView
+        {
+            get { return treeView1; }
+        }
     }
 }

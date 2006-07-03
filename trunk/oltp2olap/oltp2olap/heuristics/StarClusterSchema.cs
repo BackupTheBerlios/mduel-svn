@@ -17,9 +17,9 @@ namespace oltp2olap.heuristics
         {
             Classification c = new Classification(dataSet, visibleTables);
             c.CalculateHierarquies();
-            List<LinkedList<string>> maximal = c.MaximalStringHierarchies;
+            List<List<string>> maximal = c.MaximalStringHierarchies;
 
-            foreach (LinkedList<string> hierarchy in maximal)
+            foreach (List<string> hierarchy in maximal)
             {
                 foreach (string table in hierarchy)
                 {

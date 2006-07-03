@@ -18,21 +18,21 @@ namespace oltp2olap.heuristics
         private List<int> classificationEntities = new List<int>();
         private List<int> maximalEntities = new List<int>();
         private List<int> minimalEntities = new List<int>();
-        private List<LinkedList<int>> maximalHierarchies = new List<LinkedList<int>>();
-        private List<LinkedList<string>> maximalStringHierarchies = new List<LinkedList<string>>();
+        private List<List<int>> maximalHierarchies = new List<List<int>>();
+        private List<List<string>> maximalStringHierarchies = new List<List<string>>();
         private int numTables = 0;
         private Hashtable hashTables;
         private List<String> vectTables;
         private List<String> vectTablesClone;
-        private List<LinkedList<int>> graphVector = null;
+        private List<List<int>> graphVector = null;
 
         // doublyLinked faz par com doublyLinkedStrings:
         // para cada doublyLinked uma LinkedStrings
         public List<int> doublyLinked = new List<int>();
 
-        public List<LinkedList<String>> doublyLinkedStrings = new List<LinkedList<String>>();
+        public List<List<String>> doublyLinkedStrings = new List<List<String>>();
 
-        public List<LinkedList<String>> inputFromSQL;
+        public List<List<String>> inputFromSQL;
 
         public Classification(DataSet ds, List<string> visible)
         {
@@ -43,19 +43,19 @@ namespace oltp2olap.heuristics
             doubleWeighted = new int[numTables];
             hashTables = new Hashtable(numTables);
             vectTables = new List<String>(numTables);
-            inputFromSQL = new List<LinkedList<String>>();
+            inputFromSQL = new List<List<String>>();
 
             foreach (DataRelation rel in ds.Relations)
             {
                 if (visible.Contains(rel.ChildTable.TableName) &&
                     visible.Contains(rel.ParentTable.TableName))
                 {
-                    LinkedList<String> lines = new LinkedList<String>();
-                    lines.AddLast(rel.ChildTable.TableName);
-                    lines.AddLast(rel.ChildColumns[0].ColumnName);
-                    lines.AddLast(rel.ParentTable.TableName);
-                    lines.AddLast(rel.ParentColumns[0].ColumnName);
-                    lines.AddLast(rel.RelationName);
+                    List<String> lines = new List<String>();
+                    lines.Add(rel.ChildTable.TableName);
+                    lines.Add(rel.ChildColumns[0].ColumnName);
+                    lines.Add(rel.ParentTable.TableName);
+                    lines.Add(rel.ParentColumns[0].ColumnName);
+                    lines.Add(rel.RelationName);
                     inputFromSQL.Add(lines);
                 }
             }
@@ -63,13 +63,13 @@ namespace oltp2olap.heuristics
             IEnumerator inputIt = inputFromSQL.GetEnumerator();
             int tabs = 0;
 
-            graphVector = new List<LinkedList<int>>();
+            graphVector = new List<List<int>>();
             for (int i = 0; i < numTables; i++)
-                graphVector.Insert(i, new LinkedList<int>());
+                graphVector.Insert(i, new List<int>());
 
             while (inputIt.MoveNext())
             {
-                List<String> listTab = new List<string>((LinkedList<string>)inputIt.Current);
+                List<String> listTab = new List<string>((List<string>)inputIt.Current);
                 for (int j = 0; j < 2; j++)
                 {
                     String table = listTab[j * 2];
@@ -86,9 +86,9 @@ namespace oltp2olap.heuristics
                 graphTables[x, y] += 1;
                 if (graphTables[x, y] > 1 && !doublyLinked.Contains(y))
                     doublyLinked.Add(y);
-                LinkedList<int> tmp = (LinkedList<int>)graphVector[y];
+                List<int> tmp = (List<int>)graphVector[y];
                 if (!tmp.Contains(x))
-                    tmp.AddFirst(x);
+                    tmp.Insert(0, x);
                 graphVector[y] = tmp;
                 weight[x] += 1;
                 doubleWeighted[y] += 1;
@@ -321,55 +321,55 @@ namespace oltp2olap.heuristics
                 List<String> res = new List<String>();
                 while (inputIt.MoveNext())
                 {
-                    List<String> line = new List<string>((LinkedList<string>) inputIt.Current);
+                    List<String> line = new List<string>((List<string>) inputIt.Current);
                     if (line[2].Equals(toCompare))
                     {
                         res.Add(line[1]);
                     }
                 }
-                LinkedList<string> newRes = new LinkedList<string>(res);
+                List<string> newRes = new List<string>(res);
                 doublyLinkedStrings.Add(newRes);
             }
         }
 
-        private LinkedList<LinkedList<int>> hierarchyProducer(int entity)
+        private List<List<int>> hierarchyProducer(int entity)
         {
-            LinkedList<LinkedList<int>> res = new LinkedList<LinkedList<int>>();
-            LinkedList<int> currHierarchy = new LinkedList<int>();
-            currHierarchy.AddFirst(entity);// entity received in head
-            res.AddFirst(currHierarchy);// firstOne
+            List<List<int>> res = new List<List<int>>();
+            List<int> currHierarchy = new List<int>();
+            currHierarchy.Insert(0, entity);// entity received in head
+            res.Insert(0, currHierarchy);// firstOne
             bool done = false;
             int seen = 0;
             while (!done)
             {
-                LinkedList<LinkedList<int>> tmpRes = new LinkedList<LinkedList<int>>();
+                List<List<int>> tmpRes = new List<List<int>>();
                 IEnumerator resIt = res.GetEnumerator();
                 while (resIt.MoveNext())
                 {
-                    LinkedList<int> fromRes = (LinkedList<int>)resIt.Current;
-                    int lastEntity = (int)fromRes.First.Value;
+                    List<int> fromRes = (List<int>)resIt.Current;
+                    int lastEntity = (int)fromRes[0];
                     if (!minimalEntities.Contains(lastEntity))
                     {
-                        LinkedList<int> fromGraph = graphVector[(int)lastEntity];
+                        List<int> fromGraph = graphVector[(int)lastEntity];
                         int listSize = fromGraph.Count;
                         if (listSize > 1)
                         {
                             IEnumerator fgIt = fromGraph.GetEnumerator();
                             while (fgIt.MoveNext())
                             {
-                                LinkedList<int> tmp = new LinkedList<int>((LinkedList<int>)fromRes);
+                                List<int> tmp = new List<int>((List<int>)fromRes);
                                 int lastVal = (int)fgIt.Current;
-                                tmp.AddFirst(lastVal);
-                                tmpRes.AddFirst(tmp);
+                                tmp.Insert(0, lastVal);
+                                tmpRes.Insert(0, tmp);
                                 if (minimalEntities.Contains(lastVal))
                                     seen++;
                             }
                         }
                         else
                         {
-                            int toAdd = (int)fromGraph.First.Value;
-                            fromRes.AddFirst(toAdd);
-                            tmpRes.AddFirst(fromRes);
+                            int toAdd = (int)fromGraph[0];
+                            fromRes.Insert(0, toAdd);
+                            tmpRes.Insert(0, fromRes);
                             if (minimalEntities.Contains(toAdd))
                                 seen++;
                         }
@@ -380,25 +380,25 @@ namespace oltp2olap.heuristics
                 if (tmpRes.Count == 0)
                     done = true;
 
-                res = new LinkedList<LinkedList<int>>((LinkedList<LinkedList<int>>)tmpRes);
+                res = new List<List<int>>((List<List<int>>)tmpRes);
             }
             return res;
         }
 
-        private void hierarchiesValidator(List<LinkedList<int>> vector)
+        private void hierarchiesValidator(List<List<int>> vector)
         {
             IEnumerator maxHIt = maximalHierarchies.GetEnumerator();
             while (maxHIt.MoveNext())
             {
-                LinkedList<int> aList = (LinkedList<int>)maxHIt.Current;
+                List<int> aList = (List<int>)maxHIt.Current;
                 IEnumerator listIt = aList.GetEnumerator();
-                LinkedList<String> res = new LinkedList<String>();
+                List<String> res = new List<String>();
                 while (listIt.MoveNext())
                 {
                     int value = (int)listIt.Current;
                     String toAdd;
                     toAdd = vectTables[value];
-                    res.AddFirst(toAdd);
+                    res.Insert(0, toAdd);
                 }
                 maximalStringHierarchies.Add(res);
             }
@@ -416,16 +416,16 @@ namespace oltp2olap.heuristics
                 // fazer uma lista dos q vou fazer remover, duplicate e dpx add
                 // again from
                 // maximalStringHierarchies
-                List<LinkedList<String>> toProcess = new List<LinkedList<String>>();
-                List<LinkedList<String>> maxSHClone;
-                maxSHClone = new List<LinkedList<String>>(maximalStringHierarchies);
+                List<List<String>> toProcess = new List<List<String>>();
+                List<List<String>> maxSHClone;
+                maxSHClone = new List<List<String>>(maximalStringHierarchies);
                 IEnumerator maxStrHIt = maximalStringHierarchies.GetEnumerator();
                 while (maxStrHIt.MoveNext())
                 {
-                    LinkedList<String> elem = (LinkedList<String>)maxStrHIt.Current;
+                    List<String> elem = (List<String>)maxStrHIt.Current;
                     if (elem.Contains(toSubString))
                     {
-                        toProcess = new List<LinkedList<String>>();
+                        toProcess = new List<List<String>>();
                         toProcess.Add(elem);
                         maxSHClone.Remove(elem);
                         // tenho a list, a string e a pos da ligação ;)
@@ -433,22 +433,22 @@ namespace oltp2olap.heuristics
                         IEnumerator procIt = toProcess.GetEnumerator();
                         while (procIt.MoveNext())
                         {
-                            LinkedList<String> adder = new LinkedList<string>((LinkedList<string>)procIt.Current);
+                            List<String> adder = new List<string>((List<string>)procIt.Current);
                             maxSHClone.Add(adder);
                         }
                     }
                 }
-                maximalStringHierarchies = new List<LinkedList<string>>((List<LinkedList<String>>)(maxSHClone));
+                maximalStringHierarchies = new List<List<string>>((List<List<String>>)(maxSHClone));
             }
         }
 
         //  toProcess vem sempre so com 1 elem mas vai com mais (output) 
-        private List<LinkedList<String>> multiplicateLast(List<LinkedList<String>> toProcess,
+        private List<List<String>> multiplicateLast(List<List<String>> toProcess,
                 String toSubString, int toSubstitute)
         {
             int pos = doublyLinked.IndexOf(toSubstitute);
-            LinkedList<String> subsitutes = doublyLinkedStrings[pos];
-            List<LinkedList<String>> res = new List<LinkedList<String>>();
+            List<String> subsitutes = doublyLinkedStrings[pos];
+            List<List<String>> res = new List<List<String>>();
             List<String> toManage = new List<string>(toProcess[0]);
 
             //while(hasnext) {
@@ -461,10 +461,10 @@ namespace oltp2olap.heuristics
                 String tmp = toSubString + "(" + (String)sIt.Current + ")";
                 toManage.RemoveAt(indexOf);
                 toManage.Insert(indexOf, tmp);
-                res.Add(new LinkedList<string>(toManage));
+                res.Add(new List<string>(toManage));
             }
             //    }
-            return (List<LinkedList<String>>)res;
+            return (List<List<String>>)res;
         }
 
         public void CalculateHierarquies()
@@ -490,10 +490,10 @@ namespace oltp2olap.heuristics
             while (maxEntIt.MoveNext())
             {
                 int param = (int)maxEntIt.Current;
-                LinkedList<LinkedList<int>> produced = hierarchyProducer(param);
+                List<List<int>> produced = hierarchyProducer(param);
                 IEnumerator prodIt = produced.GetEnumerator();
                 while (prodIt.MoveNext())
-                    maximalHierarchies.Add((LinkedList<int>)prodIt.Current);
+                    maximalHierarchies.Add((List<int>)prodIt.Current);
             }
             populateDoublyLinkedString();
             hierarchiesValidator(maximalHierarchies);
@@ -535,7 +535,12 @@ namespace oltp2olap.heuristics
             return entities;
         }
 
-        public List<string> MinimalEntities
+        public List<int> MinimalEntities
+        {
+            get { return minimalEntities; }
+        }
+
+        public List<string> MinimalStringEntities
         {
             get {
                 if (vectTables.Count == 0)
@@ -552,7 +557,12 @@ namespace oltp2olap.heuristics
             }
         }
 
-        public List<string> MaximalEntities
+        public List<int> MaximalEntities
+        {
+            get { return maximalEntities; }
+        }
+
+        public List<string> MaximalStringEntities
         {
             get
             {
@@ -570,11 +580,15 @@ namespace oltp2olap.heuristics
             }
         }
 
-        public List<LinkedList<string>> MaximalStringHierarchies
+        public List<List<int>> MaximalHierarchies
+        {
+            get { return maximalHierarchies; }
+        }
+
+        public List<List<string>> MaximalStringHierarchies
         {
             get { return maximalStringHierarchies; }
         }
-
     }
 }
 
