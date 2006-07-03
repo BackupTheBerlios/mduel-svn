@@ -8,7 +8,7 @@ using System.IO;
 
 namespace oltp2olap.heuristics
 {
-    class Classification
+    public class Classification
     {
         private int[,] graphTables;
         private int[] weight;
@@ -543,7 +543,28 @@ namespace oltp2olap.heuristics
 
                 List<string> tables = new List<string>();
                 foreach (int tableIdx in minimalEntities)
-                    tables.Add(vectTables[tableIdx]);
+                {
+                    if (tableIdx < vectTables.Count)
+                        tables.Add(vectTables[tableIdx]);
+                }
+
+                return tables;
+            }
+        }
+
+        public List<string> MaximalEntities
+        {
+            get
+            {
+                if (vectTables.Count == 0)
+                    return new List<string>();
+
+                List<string> tables = new List<string>();
+                foreach (int tableIdx in maximalEntities)
+                {
+                    if (tableIdx < vectTables.Count)
+                        tables.Add(vectTables[tableIdx]);
+                }
 
                 return tables;
             }

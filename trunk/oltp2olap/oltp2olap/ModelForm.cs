@@ -74,7 +74,6 @@ namespace oltp2olap
                 t.Groups.Add(tg);
 
                 float maxWidth = 0.0f;
-                StringBuilder sb = new StringBuilder();
                 foreach (DataColumn column in table.Columns)
                 {
                     TableRow row = new TableRow();
@@ -91,11 +90,9 @@ namespace oltp2olap
                     float width = size.Width + 50;
                     if (width > maxWidth)
                         maxWidth = width;
-                    sb.Append("\r\n" + row.Text);
                 }
                 model1.Shapes.Add(table.TableName, t);
                 t.Width = maxWidth;
-                t.Tooltip = sb.ToString();
 
                 if (!entityTypes.ContainsKey(table.TableName))
                     entityTypes[table.TableName] = EntityTypes.Unclassified;
@@ -119,6 +116,8 @@ namespace oltp2olap
             }
 
             DoLayout();
+
+            RefreshHierarquies();
         }
 
         public void DoLayout()
@@ -208,12 +207,6 @@ namespace oltp2olap
             model1.Zoom = zoom;
         }
 
-        /*public DataSet DataSet
-        {
-            get { return dataSet; }
-            set { dataSet = value; }
-        }*/
-
         private void ModelForm_Load(object sender, System.EventArgs e)
         {
             MainForm frmMain = (MainForm)DockPanel.FindForm();
@@ -223,7 +216,6 @@ namespace oltp2olap
         private void ModelForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             MainForm frmMain = (MainForm)DockPanel.FindForm();
-            frmMain.ToggleZoom();
         }
 
         private void changeEntityTypeMenuItem_Click(object sender, System.EventArgs e)
@@ -368,6 +360,13 @@ namespace oltp2olap
             visibleTables = scs.VisibleTables;
             entityTypes = scs.DicEntityTypes;
             LoadDataSet(dataSet);
+        }
+
+        public void RefreshHierarquies()
+        {
+            ProjectExplorer prjExplorer = (ProjectExplorer)DockPanel.Controls.Find("Project Explorer", true)[0];
+            Classification c = new Classification(dataSet, visibleTables);
+            prjExplorer.RefreshHierarquies(dataSet.DataSetName, c);
         }
 
         public SqlSchema SqlSchema

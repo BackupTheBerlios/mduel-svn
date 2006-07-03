@@ -117,7 +117,6 @@
     <Compile Include="EditWorkingTables.Designer.cs">
       <DependentUpon>EditWorkingTables.cs</DependentUpon>
     </Compile>
-    <Compile Include="helpers\Aggregate.cs" />
     <Compile Include="helpers\DataHelper.cs" />
     <Compile Include="helpers\ErrorHelper.cs" />
     <Compile Include="helpers\Collapse.cs" />

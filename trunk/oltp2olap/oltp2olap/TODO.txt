@@ -1,5 +1,2 @@
 
 - keep collapsed FK's in child tables
-- change name to OldColumnName_ColapsedColumnName
-- visualização de entidades e hierarquias
-

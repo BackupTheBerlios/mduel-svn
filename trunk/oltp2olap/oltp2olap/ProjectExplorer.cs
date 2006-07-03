@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using oltp2olap.wizards;
 using WeifenLuo.WinFormsUI;
+using oltp2olap.heuristics;
 
 namespace oltp2olap
 {
@@ -25,6 +26,35 @@ namespace oltp2olap
             dataSets = new Dictionary<string, DataSet>();
         }
 
+        public void RefreshHierarquies(string dataset, Classification c)
+        {
+            c.CalculateHierarquies();
+            treeView1.Nodes[0].Nodes[0].Nodes.Clear();
+
+            TreeNode minimal = treeView1.Nodes[0].Nodes[0].Nodes.Add("Minimal Entities");
+            foreach (string str in c.MinimalEntities)
+                minimal.Nodes.Add(str);
+
+            TreeNode maximal = treeView1.Nodes[0].Nodes[0].Nodes.Add("Maximal Entities");
+            foreach (string str in c.MaximalEntities)
+                maximal.Nodes.Add(str);
+
+            List<LinkedList<string>> maximalHierarchies = c.MaximalStringHierarchies;
+
+            int count = 1;
+            TreeNode maxNode = treeView1.Nodes[0].Nodes[0].Nodes.Add("Maximal Hierarchies");
+            foreach (LinkedList<string> hierarchy in maximalHierarchies)
+            {
+                TreeNode node = maxNode.Nodes.Add("Maximal Hierarchy #" + count++);
+
+                foreach (string table in hierarchy)
+                    node.Nodes.Add(table);
+            }
+
+            treeView1.ExpandAll();
+            maxNode.Collapse();
+        }
+
         private void ProjectExplorer_Load(object sender, EventArgs e)
         {
             treeView1.ExpandAll();
@@ -32,7 +62,8 @@ namespace oltp2olap
 
         private void treeView1_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
+            if (e.Button == MouseButtons.Right &&
+                treeView1.Nodes[0].Nodes.Count == 0)
             {
                 ctxMnuBase.Show(treeView1, e.Location);
             }
@@ -56,13 +87,12 @@ namespace oltp2olap
                 DialogResult result = ewt.ShowDialog();
                 if (result == DialogResult.OK)
                 {
+                    treeView1.Nodes[0].Nodes.Add(ds.DataSetName);
+                    treeView1.Nodes[0].Expand();
+                    frmModel.Show(mf.DockPanel);
 
                     frmModel.SetVisibleTables(ewt.VisibleTables);
                     frmModel.LoadDataSet(ewt.WorkDataSet);
-
-                    frmModel.Show(mf.DockPanel);
-                    treeView1.Nodes[0].Nodes.Add(ds.DataSetName);
-                    treeView1.Nodes[0].Expand();
                 }
             }
         }
@@ -70,10 +100,7 @@ namespace oltp2olap
         // TODO: what the fuck? find does not work?!
         void frmModel_Closed(object sender, EventArgs e)
         {
-            ModelForm frmModel = (ModelForm) sender;
-            TreeNode[] nodes = treeView1.Nodes.Find(frmModel.Text, true);
-            if (nodes.Length > 0)
-                nodes[0].Remove();
+            treeView1.Nodes[0].Nodes.Clear();
         }
 
 #if DEBUG

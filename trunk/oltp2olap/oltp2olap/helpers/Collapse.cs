@@ -5,7 +5,6 @@ using System.Text;
 
 namespace oltp2olap.helpers
 {
-
     public class Collapse
     {
         private class DataColumnInfo
@@ -82,13 +81,13 @@ namespace oltp2olap.helpers
             return children.ToArray();
         }
 
-        private DataColumnInfo[] GetNewColumns()
+        private DataColumnInfo[] GetNewColumns(string columnName)
         {
             List<DataColumnInfo> columns = new List<DataColumnInfo>();
             foreach (DataColumn c in dataSet.Tables[table.TableName].Columns)
             {
                 string tableName = table.TableName.Split('.')[1];
-                string newName = tableName + "_" + c.ColumnName;
+                string newName = columnName + "_" + c.ColumnName;
                 DataColumnInfo nc = new DataColumnInfo();
                 nc.NewName = newName;
                 nc.OldName = c.ColumnName;
@@ -200,16 +199,17 @@ namespace oltp2olap.helpers
             if (children.Length == 0)
                 return dataSet;
 
-            newColumns = GetNewColumns();
-
             foreach (DataRelation relation in childrenRelations)
             {
                 if (!collapseAll && !collapsableRelations.Contains(relation.RelationName))
                     continue;
 
+                newColumns = GetNewColumns(relation.ChildColumns[0].ColumnName);
+
                 string child = relation.ChildTable.TableName;
                 GetPossiblePrimaryKeys(child);
                 bool nullable = RemoveFKConstraints(child, relation.RelationName);
+
                 foreach (DataColumnInfo dci in newColumns)
                 {
                     DataColumn newDc = new DataColumn(dci.NewName, dci.DataType);
@@ -217,13 +217,6 @@ namespace oltp2olap.helpers
                         newDc.AllowDBNull = true;
                     else
                         newDc.AllowDBNull = false;
-
-                    if (dataSet.Tables[child].Columns.Contains(dci.NewName))
-                    {
-                        string newName = dci.OldName + "_" + dci.NewName;
-                        newDc.ColumnName = newName;
-                        dci.NewName = newName;
-                    }
 
                     dataSet.Tables[child].Columns.Add(newDc);
                 }
