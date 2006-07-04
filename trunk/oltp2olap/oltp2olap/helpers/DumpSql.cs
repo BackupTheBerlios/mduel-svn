@@ -34,6 +34,7 @@ namespace oltp2olap.helpers
 
                 //write a table
                 sw.AppendLine("\r\n--" + dt.TableName);
+                writeDroptable(sw, dt);                
                 writeTable(sw, dt);
             }
 
@@ -53,6 +54,14 @@ namespace oltp2olap.helpers
             writeSettingsOff(sw);
 
             SqlCode = sw.ToString();
+        }
+
+        public void writeDroptable(StringBuilder sw, DataTable dt)
+        {
+            string tableName;
+            tableName = dt.TableName;
+            string normalizedTable = "[" + tableName.Replace(".", "].[") + "]";
+            sw.AppendLine("DROP TABLE" + normalizedTable);            
         }
 
         public  void writeGo(StringBuilder sw)
@@ -118,6 +127,14 @@ namespace oltp2olap.helpers
             sw.AppendLine("\t[" + pk + "]" + order);
         }
 
+
+        public void writeForeignKeysWithComma(StringBuilder sw, DataColumn pk)
+        {
+            string order = " ASC,";
+            sw.AppendLine("\t[" + pk + "]" + order);
+        }
+        
+
         public void writeTable(StringBuilder sw, DataTable dt)
         {
             string tableName;
@@ -139,7 +156,10 @@ namespace oltp2olap.helpers
                 writeFKHead(sw);
                 for (int i = 0; i < pk.Length; i++)
                 {
-                    writeForeignKeys(sw, pk[i]);
+                    if ((i+1) == pk.Length)
+                        writeForeignKeys(sw, pk[i]);
+                    else
+                        writeForeignKeysWithComma(sw, pk[i]);
                 }
                 writeFKTail(sw);
             }
@@ -177,14 +197,26 @@ namespace oltp2olap.helpers
                 case "Int32":
                     res = "[int]";
                     break;
+                case "Int16":
+                    res = "[tinyint]";
+                    break;
                 case "String":
-                    res = "[nchar] (" + size.ToString() + ") COLLATE Latin1_General_CI_AS";
+                    res = "[nchar] (" + size.ToString() + ") COLLATE Latin1_General_CI_AS ";
                     break;
                 case "Decimal":
                     res = "[money]";
                     break;
                 case "DateTime":
                     res = "[datetime]";
+                    break;
+                case "Byte":
+                    res = "[bit]";
+                    break;
+                case "Boolean"://MSSQL Doesn't support the BOOLEAN type.
+                    res = "[bit]";
+                    break;
+                case "Double":
+                    res = "[float]";
                     break;
             }
             return res;

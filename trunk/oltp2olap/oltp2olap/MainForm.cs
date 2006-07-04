@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.IO;
 using System.Xml;
+using System.Xml.Schema;
 using System.Data;
 
 namespace oltp2olap
@@ -205,6 +206,21 @@ namespace oltp2olap
                 //XmlTextReader reader = new XmlTextReader(fDialog.FileName.ToString());
                 XmlDocument xdoc = new XmlDocument();
                 xdoc.Load(fDialog.FileName.ToString());
+
+
+                /////#################################################
+                /*
+                MessageBox.Show("will validate file");
+                //ValidationEventArgs
+                //http://www.codeproject.com/soap/Simple_XML_Validator.asp
+                //http://www.codeproject.com/cs/webservices/XmlSchemaValidator.asp
+                xdoc.Schemas.Add(null, @"D:\-=FCT=-\FCT-SEMESTRE PAR 2005-2006\BDDW\TI\currentState.xsd");
+                ValidationEventHandler eventHandler = new ValidationEventHandler(ValidationEventHandler);
+                xdoc.Validate(eventHandler);
+                MessageBox.Show("file validated");
+                 * */
+                /////#################################################
+
 
                 //root : ProjectStatus
                 XmlNode projectStatusNode = xdoc.SelectSingleNode("/ProjectStatus");

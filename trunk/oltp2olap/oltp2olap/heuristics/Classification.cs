@@ -322,13 +322,14 @@ namespace oltp2olap.heuristics
                 while (inputIt.MoveNext())
                 {
                     List<String> line = new List<string>((List<string>) inputIt.Current);
-                    if (line[2].Equals(toCompare))
+                    if (line[2].Equals(toCompare) && (!res.Contains(line[1])))
                     {
                         res.Add(line[1]);
                     }
                 }
                 List<string> newRes = new List<string>(res);
-                doublyLinkedStrings.Add(newRes);
+                if(!doublyLinkedStrings.Contains(newRes))
+                    doublyLinkedStrings.Add(newRes);
             }
         }
 
@@ -340,6 +341,7 @@ namespace oltp2olap.heuristics
             res.Insert(0, currHierarchy);// firstOne
             bool done = false;
             int seen = 0;
+            int see = 0;
             while (!done)
             {
                 List<List<int>> tmpRes = new List<List<int>>();
@@ -348,6 +350,11 @@ namespace oltp2olap.heuristics
                 {
                     List<int> fromRes = (List<int>)resIt.Current;
                     int lastEntity = (int)fromRes[0];
+                    if (lastEntity == 9)
+                    {
+                        string a = null;
+                        a = "sdfds";
+                    }
                     if (!minimalEntities.Contains(lastEntity))
                     {
                         List<int> fromGraph = graphVector[(int)lastEntity];
@@ -373,19 +380,35 @@ namespace oltp2olap.heuristics
                             if (minimalEntities.Contains(toAdd))
                                 seen++;
                         }
-                        if (seen == tmpRes.Count)
+                        see += tmpRes.Count;
+                        if (seen >= see)
                             done = true;
                     }
                 }
                 if (tmpRes.Count == 0)
+                {
                     done = true;
-
-                res = new List<List<int>>((List<List<int>>)tmpRes);
+                }
+                else
+                {
+                    res = new List<List<int>>((List<List<int>>)tmpRes);
+                }
+            }
+            foreach (int elem in graphVector[entity])
+            {
+                if (minimalEntities.Contains(elem))
+                {
+                    List<int> toAdd = new List<int>();
+                    toAdd.Add(elem);
+                    toAdd.Add(entity);                    
+                    if(!res.Contains(toAdd))
+                        res.Add(toAdd);
+                }
             }
             return res;
         }
 
-        private void hierarchiesValidator(List<List<int>> vector)
+        private void hierarchiesValidator(List<List<int>> maxHierarchiesList)
         {
             IEnumerator maxHIt = maximalHierarchies.GetEnumerator();
             while (maxHIt.MoveNext())
@@ -400,7 +423,8 @@ namespace oltp2olap.heuristics
                     toAdd = vectTables[value];
                     res.Insert(0, toAdd);
                 }
-                maximalStringHierarchies.Add(res);
+                if(!maximalStringHierarchies.Contains(res))
+                    maximalStringHierarchies.Add(res);
             }
             // fazer iteration da lista dos duplos e fazer sub progressivo
             // search por string!
@@ -492,11 +516,56 @@ namespace oltp2olap.heuristics
                 int param = (int)maxEntIt.Current;
                 List<List<int>> produced = hierarchyProducer(param);
                 IEnumerator prodIt = produced.GetEnumerator();
-                while (prodIt.MoveNext())
-                    maximalHierarchies.Add((List<int>)prodIt.Current);
+                while (prodIt.MoveNext()){
+                    List<int> toAdd = (List<int>)prodIt.Current;
+                    if (!maximalHierarchies.Contains(toAdd))
+                    {
+                        maximalHierarchies.Add(toAdd);
+                    }
+                }
             }
+            maximalHierarchies = removesDuplicates(maximalHierarchies);
             populateDoublyLinkedString();
             hierarchiesValidator(maximalHierarchies);
+        }
+
+        private List<List<int>> removesDuplicates(List<List<int>> maximalHierarchies)
+        {
+            List<List<int>> res = new List<List<int>>();
+            foreach (List<int> newList in maximalHierarchies)
+            {
+                bool contains = listOfListsContainsList(res, newList);
+                if (!contains)
+                {
+                    res.Add(newList);
+                }                    
+            }            
+            return res;
+        }
+
+        private bool listOfListsContainsList(List<List<int>> listOfLists, List<int> newList)
+        {
+            bool res = false;
+            foreach (List<int> l in listOfLists)
+            {
+                if (l.Count == newList.Count)
+                {
+                    int toBcountedEqual = l.Count;
+                    int equalCounted = 0;
+                    int[] l_array = l.ToArray();
+                    int[] nl_array = newList.ToArray();
+                    for (int i = 0; i < l.Count;i++ )
+                    {
+                        if (l_array[i] == nl_array[i])
+                            equalCounted++;
+                    }
+                    if (toBcountedEqual == equalCounted)
+                    {
+                        res = true;
+                    }
+                }
+            }
+            return res;
         }
 
 
