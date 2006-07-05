@@ -116,7 +116,7 @@ namespace oltp2olap.wizards
             this.cbServer.Name = "cbServer";
             this.cbServer.Size = new System.Drawing.Size(234, 21);
             this.cbServer.TabIndex = 14;
-            this.cbServer.Text = "localhost\\agm";
+            this.cbServer.Text = "localhost\\sql2005dev";
             this.cbServer.DropDown += new System.EventHandler(this.cbServer_DropDown);
             // 
             // label1

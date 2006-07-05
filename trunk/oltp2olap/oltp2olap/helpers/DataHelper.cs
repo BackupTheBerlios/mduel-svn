@@ -102,6 +102,35 @@ namespace oltp2olap.helpers
             return relations;
         }
 
+        public static List<DataRelation> GetChildRelations(DataSet dataSet, string table)
+        {
+            List<DataRelation> relations = new List<DataRelation>();
+
+            foreach (DataRelation dr in dataSet.Relations)
+            {
+                if (dr.ParentTable.TableName.Equals(table))
+                    relations.Add(dr);
+            }
+
+            return relations;
+        }
+
+        public static List<DataRelation> GetRelationsBetween(DataSet dataSet, string table1, string table2)
+        {
+            List<DataRelation> relations = new List<DataRelation>();
+
+            foreach (DataRelation dr in dataSet.Relations)
+            {
+                if ((dr.ParentTable.TableName.Equals(table1) &&
+                    dr.ChildTable.TableName.Equals(table2)) ||
+                    (dr.ParentTable.TableName.Equals(table2) &&
+                    dr.ChildTable.TableName.Equals(table1)))
+                    relations.Add(dr);
+            }
+
+            return relations;
+        }
+
         public static void RemoveRelations(DataSet dataSet, string table)
         {
             List<DataRelation> relations = GetRelations(dataSet, table);

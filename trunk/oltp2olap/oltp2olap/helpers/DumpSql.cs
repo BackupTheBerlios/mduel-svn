@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Data;
+using System.Data.SqlClient;
+using Microsoft.ApplicationBlocks.Data;
 
 namespace oltp2olap.helpers
 {
@@ -13,9 +15,8 @@ namespace oltp2olap.helpers
         public DumpSql(DataSet ds, List<string> visible)
         {
             StringBuilder sw = new StringBuilder();
-            string sqlFile = @"c:\output.sql";
 
-            writeIndex(sw, sqlFile);
+            writeIndex(sw);
             writeDBUsed(sw, ds.DataSetName);
             writeSettingsOn(sw);
 
@@ -56,38 +57,62 @@ namespace oltp2olap.helpers
             SqlCode = sw.ToString();
         }
 
+        public void CreateNewDatabase(string name, SqlSchema schema, string sqlCode)
+        {
+            try
+            {
+                SqlHelper.ExecuteNonQuery(
+                    schema.ConnectionString,
+                    CommandType.Text,
+                    "CREATE DATABASE [" + name + "];");
+
+                SqlHelper.ExecuteNonQuery(
+                    schema.ConnectionString.Replace(schema.Database, name),
+                    CommandType.Text,
+                    sqlCode);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao criar base de dados: " + ex.Message);
+            }
+        }
+
         public void writeDroptable(StringBuilder sw, DataTable dt)
         {
             string tableName;
             tableName = dt.TableName;
             string normalizedTable = "[" + tableName.Replace(".", "].[") + "]";
-            sw.AppendLine("DROP TABLE" + normalizedTable);            
+            sw.AppendLine("IF OBJECT_ID('" + normalizedTable + "', 'U') IS NOT NULL DROP TABLE " + normalizedTable);
         }
 
         public  void writeGo(StringBuilder sw)
         {
-            sw.AppendLine("GO");
+            //sw.AppendLine("GO");
         }
 
         public void writeDBUsed(StringBuilder sw, string dataBase)
         {
-            sw.AppendLine("USE [" + dataBase + "]");
+            //sw.AppendLine("USE [" + dataBase + "]");
         }
 
         public void writeSettingsOn(StringBuilder sw)
         {
+            /*
             sw.AppendLine("SET ANSI_NULLS ON");
             writeGo(sw);
             sw.AppendLine("SET QUOTED_IDENTIFIER ON");
             writeGo(sw);
             sw.AppendLine("SET ANSI_PADDING ON");
             writeGo(sw);
+            */
         }
 
         public void writeSettingsOff(StringBuilder sw)
         {
+            /*
             writeGo(sw);
             sw.AppendLine("SET ANSI_PADDING OFF");
+            */
         }
 
         public void writeHead(StringBuilder sw, string table)
@@ -174,17 +199,18 @@ namespace oltp2olap.helpers
             string end = ",";
             string nullField = "NULL";
             string nullable = "";
-            string unique = "";
+            //string unique;
             int maxSize;
 
             columnName = "\t[" + dc.ColumnName + "] ";
             dataType = dc.DataType;
-            maxSize = dc.MaxLength;
+            //maxSize = dc.MaxLength;
+            maxSize = 64;
             columnType = getType(dataType.Name, maxSize);
             if (!dc.AllowDBNull)
                 nullable = " NOT ";
-            if (dc.Unique)
-                unique = " UNIQUE";
+            /*if (dc.Unique)
+                unique = " UNIQUE";*/
             sw.AppendLine(columnName + columnType + nullable + nullField + end);
         }
 
@@ -222,7 +248,7 @@ namespace oltp2olap.helpers
             return res;
         }
 
-        public void writeIndex(StringBuilder sw, string sqlFile)
+        public void writeIndex(StringBuilder sw)
         {
             string date;
             string time;
@@ -259,33 +285,42 @@ namespace oltp2olap.helpers
 
         public void writeConstraintAndReference(StringBuilder sw, DataRelation relation)
         {
+            /*
+             * 
+             * ALTER TABLE [dbo].[SaleFeeFact]  WITH CHECK ADD  CONSTRAINT [FK_SaleFee_Sale_Childdbo.SaleFeeFact_Parentdbo.SaleFact] FOREIGN KEY([SaleID], [SaleDate], [PostedDate], [CustomerID], [LocationID])
+REFERENCES [dbo].[SaleFact] ([SaleID], [SaleDate], [PostedDate], [CustomerID], [LocationID])
+**/
             string aTable = "ALTER TABLE ";
             string wcac = "  WITH CHECK ADD  CONSTRAINT ";
             string fk = " FOREIGN KEY(";
             string end = ")";
             string refs = "REFERENCES ";
             string mid = " (";
-            string foreignKey = relation.ParentTable.PrimaryKey[0].ToString();
+            string foreignKeys = String.Empty;
+
+            foreach (DataColumn dc in relation.ParentKeyConstraint.Columns)
+            {
+                foreignKeys += "[" + dc.ColumnName + "],";
+            }
+            foreignKeys = foreignKeys.Substring(0, foreignKeys.Length - 1);
+
+            string keys = String.Empty;
+            foreach (DataColumn dc in relation.ChildKeyConstraint.Columns)
+            {
+                keys += "[" + dc.ColumnName + "],";
+            }
+            keys = keys.Substring(0, keys.Length - 1);
 
             string table = relation.ChildKeyConstraint.Table.TableName;
             string foreignTable = relation.ChildKeyConstraint.RelatedTable.TableName;
             string relationName = relation.RelationName;
             string tableName = table.Replace(".", "].[");
             string normalizedTable = table.Replace("dbo.", "");
-            string constructedFK = foreignKey;
             string foreignTableName = foreignTable.Replace(".", "].[");
             string normalizedFTable = foreignTable.Replace("dbo.", "");
 
-            if (relation.ChildKeyConstraint.RelatedTable.ChildRelations.Count > 1)
-            {
-                if (!(relation.ChildKeyConstraint.RelatedTable.ParentRelations.Count > 1))
-                {
-                    constructedFK = setForeignKey(normalizedTable, relationName, foreignKey, normalizedFTable);
-                }
-            }
-
-            string alterTable = aTable + "[" + tableName + "]" + wcac + "[" + relationName + "]" + fk + "[" + constructedFK + "]" + end;
-            string refers = refs + "[" + foreignTableName + "]" + mid + "[" + foreignKey + "]" + end + "\r\n";
+            string alterTable = aTable + "[" + tableName + "]" + wcac + "[" + relationName + "]" + fk + keys + end;
+            string refers = refs + "[" + foreignTableName + "]" + mid + foreignKeys + end + "\r\n";
 
             //ALTER TABLE
             sw.AppendLine(alterTable);

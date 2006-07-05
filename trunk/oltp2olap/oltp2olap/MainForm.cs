@@ -530,5 +530,31 @@ namespace oltp2olap
 
             System.Diagnostics.Process.Start("notepad.exe", preview);
         }
+
+        private void createDatabaseFromModelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NewDbForm f = new NewDbForm();
+            DialogResult result = f.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+                ModelForm frmModel = (ModelForm)dockPanel1.ActiveDocument;
+                if (frmModel == null)
+                    return;
+
+                try
+                {
+                    DumpSql dsql = new DumpSql(frmModel.DataSet, frmModel.VisibleTables);
+                    dsql.CreateNewDatabase(f.txtDbName.Text, frmModel.SqlSchema, dsql.SqlCode);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return;
+                }
+
+                MessageBox.Show("Database created!");
+            }
+        }
     }
 }

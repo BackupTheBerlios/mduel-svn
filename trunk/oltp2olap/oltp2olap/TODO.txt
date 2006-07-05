@@ -1,2 +1,3 @@
 
 - keep collapsed FK's in child tables
+- criar BD no servidor a partir do sql gerado

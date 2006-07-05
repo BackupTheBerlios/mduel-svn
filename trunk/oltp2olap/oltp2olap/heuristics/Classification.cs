@@ -350,11 +350,7 @@ namespace oltp2olap.heuristics
                 {
                     List<int> fromRes = (List<int>)resIt.Current;
                     int lastEntity = (int)fromRes[0];
-                    if (lastEntity == 9)
-                    {
-                        string a = null;
-                        a = "sdfds";
-                    }
+
                     if (!minimalEntities.Contains(lastEntity))
                     {
                         List<int> fromGraph = graphVector[(int)lastEntity];
@@ -420,8 +416,11 @@ namespace oltp2olap.heuristics
                 {
                     int value = (int)listIt.Current;
                     String toAdd;
-                    toAdd = vectTables[value];
-                    res.Insert(0, toAdd);
+                    if (vectTables.Count > value)
+                    {
+                        toAdd = vectTables[value];
+                        res.Insert(0, toAdd);
+                    }
                 }
                 if(!maximalStringHierarchies.Contains(res))
                     maximalStringHierarchies.Add(res);

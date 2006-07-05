@@ -141,6 +141,38 @@ namespace oltp2olap.heuristics
                 visibleTables.Remove(str);
                 visibleTables.Add(newTables[str]);
             }
+
+            // build new FK's between new fact tables
+            foreach (string table in visibleTables)
+            {
+                if (entityTypes[table].Equals(EntityTypes.TransactionEntity))
+                {
+                    // get a list of Parent Transaction Entities
+                    // & copy their FK columns to dimensions
+                    string[] ptt = GetParentTransactionEntities(table);
+                    foreach (string parent in ptt)
+                    {
+                        List<DataRelation> relations = DataHelper.GetRelationsBetween(dataSet, parent, table);
+                        foreach (DataRelation dr in relations)
+                        {
+                            List<DataColumn> parentKeys = new List<DataColumn>(dr.ParentTable.PrimaryKey);
+                            List<DataColumn> childKeys = new List<DataColumn>();
+
+                            foreach (DataColumn dc in parentKeys)
+                                childKeys.Add(dr.ChildTable.Columns[dc.ColumnName]);
+
+                            DataRelation newDr = new DataRelation(
+                                dr.RelationName,
+                                parentKeys.ToArray(),
+                                childKeys.ToArray()
+                                );
+
+                            dataSet.Relations.Remove(dr);
+                            dataSet.Relations.Add(newDr);
+                        }
+                    }
+                }
+            }
         }
 
         protected string[] GetParentTransactionEntities(string table)

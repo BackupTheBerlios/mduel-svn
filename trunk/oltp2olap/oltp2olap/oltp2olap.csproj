@@ -145,6 +145,12 @@
     <Compile Include="ModelForm.Designer.cs">
       <DependentUpon>ModelForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="NewDbForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewDbForm.Designer.cs">
+      <DependentUpon>NewDbForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProjectExplorer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -218,6 +224,10 @@
     <EmbeddedResource Include="ModelForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ModelForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewDbForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>NewDbForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProjectExplorer.resx">
       <SubType>Designer</SubType>
