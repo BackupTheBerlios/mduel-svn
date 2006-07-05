@@ -202,7 +202,7 @@ namespace oltp2olap
                 XmlDocument xdoc = new XmlDocument();
                 xdoc.Load(fDialog.FileName.ToString());
 
-                xdoc.Schemas.Add(null, @"c:\currentState.xsd");
+                xdoc.Schemas.Add(null, Application.StartupPath + @"\currentState.xsd");
                 ValidationEventHandler eventHandler = new ValidationEventHandler(MyValidationEventHandler);
                 xdoc.Validate(eventHandler);
 

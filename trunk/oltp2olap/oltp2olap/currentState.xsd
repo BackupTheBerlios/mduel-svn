@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2006 sp2 U (http://www.altova.com) by André G. Marques (-=aGM=-) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="ProjectStatus">
+		<xs:annotation>
+			<xs:documentation>Status of a given project</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProjectName" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>The name of the project</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ConnectionSettings">
+					<xs:annotation>
+						<xs:documentation>SQL's connection settings used to access the structure</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="WindowsAuthorization" type="xs:boolean">
+								<xs:annotation>
+									<xs:documentation>Set if the Windows Authorization is used or not</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Server" type="xs:string">
+								<xs:annotation>
+									<xs:documentation>Server name</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="UserName" type="xs:string">
+								<xs:annotation>
+									<xs:documentation>Login used</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Password" type="xs:string">
+								<xs:annotation>
+									<xs:documentation>Password used</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="DataSetFileName" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>DataSet's XML location</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="WorkingTables">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="TableName" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Name of the table</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="EntitiesSuggestion">
+					<xs:annotation>
+						<xs:documentation>Status of the algorithm suggestion</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="EntityTypes">
+								<xs:annotation>
+									<xs:documentation>Definition of the type of the tables</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="EntityType" minOccurs="0" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Definition of the type of the table</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="TableName" type="xs:string">
+														<xs:annotation>
+															<xs:documentation>Name of the table</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="TableType" type="xs:int">
+														<xs:annotation>
+															<xs:documentation>Entity type of the given table</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="MinimalEntities">
+								<xs:annotation>
+									<xs:documentation>Tables which are minimal entities</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="TableName" type="xs:int" minOccurs="0" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Minimal entity table</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="MaximalEntities">
+								<xs:annotation>
+									<xs:documentation>Tables which are maximal entities</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="TableName" type="xs:int" minOccurs="0" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Maximal entity table</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="MaximalHierarchies">
+								<xs:annotation>
+									<xs:documentation>Set of all maximal hierarchies</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Vector" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="List" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Elem" type="xs:int" maxOccurs="unbounded">
+																	<xs:annotation>
+																		<xs:documentation>A maximal hierarchy</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
