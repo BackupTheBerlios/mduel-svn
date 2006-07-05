@@ -122,7 +122,6 @@
     <Compile Include="helpers\ErrorHelper.cs" />
     <Compile Include="helpers\Collapse.cs" />
     <Compile Include="helpers\SqlSchema.cs" />
-    <Compile Include="helpers\XmlSchemaValidator .cs" />
     <Compile Include="heuristics\Classification.cs" />
     <Compile Include="heuristics\ClassificationTypes.cs" />
     <Compile Include="heuristics\EntityTypes.cs" />

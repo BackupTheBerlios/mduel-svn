@@ -19,6 +19,7 @@ namespace oltp2olap
         private string projectName = String.Empty;
         private string projectDirectory = String.Empty;
         private string projectExtension = ".BDDW";
+        private bool validSchema = true;
 
         public MainForm()
         {
@@ -198,29 +199,19 @@ namespace oltp2olap
                 projectDirectory = file.Directory.ToString() + "\\";
                 projectName = file.Name.ToString();
 
-                //open pode fazer validação com schema ;)
-                //pode ser o current em ultino caso se ja houver nenhum aberto
-
-                //VALIDAR COM SCHEMA == GOOD PROJECT FILE!!!!
-
-                //XmlTextReader reader = new XmlTextReader(fDialog.FileName.ToString());
                 XmlDocument xdoc = new XmlDocument();
                 xdoc.Load(fDialog.FileName.ToString());
 
-
-                /////#################################################
-                /*
-                MessageBox.Show("will validate file");
-                //ValidationEventArgs
-                //http://www.codeproject.com/soap/Simple_XML_Validator.asp
-                //http://www.codeproject.com/cs/webservices/XmlSchemaValidator.asp
-                xdoc.Schemas.Add(null, @"D:\-=FCT=-\FCT-SEMESTRE PAR 2005-2006\BDDW\TI\currentState.xsd");
-                ValidationEventHandler eventHandler = new ValidationEventHandler(ValidationEventHandler);
+                xdoc.Schemas.Add(null, @"c:\currentState.xsd");
+                ValidationEventHandler eventHandler = new ValidationEventHandler(MyValidationEventHandler);
                 xdoc.Validate(eventHandler);
-                MessageBox.Show("file validated");
-                 * */
-                /////#################################################
 
+                if (!validSchema)
+                {
+                    validSchema = true;
+                    return;
+                }
+                
 
                 //root : ProjectStatus
                 XmlNode projectStatusNode = xdoc.SelectSingleNode("/ProjectStatus");
@@ -555,6 +546,22 @@ namespace oltp2olap
 
                 MessageBox.Show("Database created!");
             }
+        }
+
+        void MyValidationEventHandler(object sender, ValidationEventArgs e)
+        {
+            switch (e.Severity)
+            {
+                case XmlSeverityType.Error:
+                    MessageBox.Show("Error: " + e.Message);
+                    validSchema = false;
+                    break;
+                case XmlSeverityType.Warning:
+                    MessageBox.Show("Warning: " + e.Message);
+                    validSchema = false;
+                    break;
+            }
+
         }
     }
 }
