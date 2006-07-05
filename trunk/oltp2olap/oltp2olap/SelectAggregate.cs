@@ -92,6 +92,7 @@ namespace oltp2olap
             {
                 DataColumn oldC = dataSet.Tables[origin].Columns[lvi.Text];
                 DataColumn dc = new DataColumn(lvi.SubItems[1].Text, oldC.DataType);
+                dc.MaxLength = oldC.MaxLength;
                 table.Columns.Add(dc);
             }
 

@@ -12,6 +12,7 @@ namespace oltp2olap.helpers
             public string OldName;
             public string NewName;
             public Type DataType;
+            public int Length;
             public bool IsPK = false;
         }
 
@@ -92,6 +93,7 @@ namespace oltp2olap.helpers
                 nc.NewName = newName;
                 nc.OldName = c.ColumnName;
                 nc.DataType = c.DataType;
+                nc.Length = c.MaxLength;
                 columns.Add(nc);
             }
             return columns.ToArray();
@@ -217,6 +219,9 @@ namespace oltp2olap.helpers
                         newDc.AllowDBNull = true;
                     else
                         newDc.AllowDBNull = false;
+
+                    if (dci.Length >= 0)
+                        newDc.MaxLength = dci.Length;
 
                     dataSet.Tables[child].Columns.Add(newDc);
                 }
