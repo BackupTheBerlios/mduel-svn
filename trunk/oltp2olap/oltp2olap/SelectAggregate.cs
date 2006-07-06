@@ -65,7 +65,7 @@ namespace oltp2olap
 
         private void SelectAggregate_Load(object sender, EventArgs e)
         {
-            txtTableName.Text = "NewTable";
+            txtTableName.Text = origin + "Agg";
             txtTableName.SelectAll();
         }
 
@@ -115,13 +115,13 @@ namespace oltp2olap
                 if (child)
                 {
                     DataRelation newDr = DataHelper.NewChildFKRelation(table, dr);
-                    if (!dataSet.Relations.Contains(newDr.RelationName))
+                    if (newDr != null && !dataSet.Relations.Contains(newDr.RelationName))
                         dataSet.Relations.Add(newDr);
                 }
                 if (parent)
                 {
                     DataRelation newDr = DataHelper.NewParentFKRelation(table, dr);
-                    if (!dataSet.Relations.Contains(newDr.RelationName))
+                    if (newDr != null && !dataSet.Relations.Contains(newDr.RelationName))
                         dataSet.Relations.Add(newDr);
                 }
             }

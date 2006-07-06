@@ -62,7 +62,13 @@ namespace oltp2olap.helpers
         {
             List<DataColumn> cols = new List<DataColumn>();
             foreach (DataColumn dc in dr.ChildColumns)
-                cols.Add(table.Columns[dc.ColumnName]);
+            {
+                if (table.Columns[dc.ColumnName] != null)
+                    cols.Add(table.Columns[dc.ColumnName]);
+            }
+
+            if (dr.ParentColumns.Length != cols.Count)
+                return null;
 
             DataRelation newDR = new DataRelation(
                 dr.RelationName + "_Child" + table.TableName,
@@ -81,6 +87,9 @@ namespace oltp2olap.helpers
                 if (table.Columns[dc.ColumnName] != null)
                     cols.Add(table.Columns[dc.ColumnName]);
             }
+
+            if (dr.ParentColumns.Length != cols.Count)
+                return null;
 
             DataRelation newDR = new DataRelation(
                 dr.RelationName + "_Parent" + table.TableName,

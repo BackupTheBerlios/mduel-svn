@@ -1,3 +1,2 @@
 
 - keep collapsed FK's in child tables
-- tentar fazer a parte de melhoria e refinamento

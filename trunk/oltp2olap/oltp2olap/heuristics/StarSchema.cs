@@ -103,13 +103,13 @@ namespace oltp2olap.heuristics
                         if (child)
                         {
                             DataRelation newDr = DataHelper.NewChildFKRelation(newTable, dr);
-                            if (!dataSet.Relations.Contains(newDr.RelationName))
+                            if (newDr != null && !dataSet.Relations.Contains(newDr.RelationName))
                                 dataSet.Relations.Add(newDr);
                         }
                         if (parent)
                         {
                             DataRelation newDr = DataHelper.NewParentFKRelation(newTable, dr);
-                            if (!dataSet.Relations.Contains(newDr.RelationName))
+                            if (newDr != null && !dataSet.Relations.Contains(newDr.RelationName))
                                 dataSet.Relations.Add(newDr);
                         }
                     }
@@ -128,7 +128,7 @@ namespace oltp2olap.heuristics
                             if (child)
                             {
                                 DataRelation newDr = DataHelper.NewChildFKRelation(newTable, dr);
-                                if (!dataSet.Relations.Contains(newDr.RelationName))
+                                if (newDr != null && !dataSet.Relations.Contains(newDr.RelationName))
                                     dataSet.Relations.Add(newDr);
                             }
                         }
