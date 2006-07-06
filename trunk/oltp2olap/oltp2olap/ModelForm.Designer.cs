@@ -32,15 +32,16 @@ namespace oltp2olap
             this.model1 = new Crainiate.ERM4.Model();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.entityTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.transactionEntityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.componentEntityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.classificationEntityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.componentEntityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.transactionEntityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.tableOperationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.collapseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aggregateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.manageTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createFactTableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -79,19 +80,19 @@ namespace oltp2olap
             // entityTypeToolStripMenuItem
             // 
             this.entityTypeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.transactionEntityToolStripMenuItem,
+            this.classificationEntityToolStripMenuItem,
             this.componentEntityToolStripMenuItem,
-            this.classificationEntityToolStripMenuItem});
+            this.transactionEntityToolStripMenuItem});
             this.entityTypeToolStripMenuItem.Name = "entityTypeToolStripMenuItem";
             this.entityTypeToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.entityTypeToolStripMenuItem.Text = "Entity Type";
             // 
-            // transactionEntityToolStripMenuItem
+            // classificationEntityToolStripMenuItem
             // 
-            this.transactionEntityToolStripMenuItem.Name = "transactionEntityToolStripMenuItem";
-            this.transactionEntityToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.transactionEntityToolStripMenuItem.Text = "Transaction Entity";
-            this.transactionEntityToolStripMenuItem.Click += new System.EventHandler(this.changeEntityTypeMenuItem_Click);
+            this.classificationEntityToolStripMenuItem.Name = "classificationEntityToolStripMenuItem";
+            this.classificationEntityToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.classificationEntityToolStripMenuItem.Text = "Classification Entity";
+            this.classificationEntityToolStripMenuItem.Click += new System.EventHandler(this.changeEntityTypeMenuItem_Click);
             // 
             // componentEntityToolStripMenuItem
             // 
@@ -100,12 +101,12 @@ namespace oltp2olap
             this.componentEntityToolStripMenuItem.Text = "Component Entity";
             this.componentEntityToolStripMenuItem.Click += new System.EventHandler(this.changeEntityTypeMenuItem_Click);
             // 
-            // classificationEntityToolStripMenuItem
+            // transactionEntityToolStripMenuItem
             // 
-            this.classificationEntityToolStripMenuItem.Name = "classificationEntityToolStripMenuItem";
-            this.classificationEntityToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.classificationEntityToolStripMenuItem.Text = "Classification Entity";
-            this.classificationEntityToolStripMenuItem.Click += new System.EventHandler(this.changeEntityTypeMenuItem_Click);
+            this.transactionEntityToolStripMenuItem.Name = "transactionEntityToolStripMenuItem";
+            this.transactionEntityToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.transactionEntityToolStripMenuItem.Text = "Transaction Entity";
+            this.transactionEntityToolStripMenuItem.Click += new System.EventHandler(this.changeEntityTypeMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -116,7 +117,8 @@ namespace oltp2olap
             // 
             this.tableOperationsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.collapseToolStripMenuItem,
-            this.aggregateToolStripMenuItem});
+            this.aggregateToolStripMenuItem,
+            this.createFactTableToolStripMenuItem});
             this.tableOperationsToolStripMenuItem.Name = "tableOperationsToolStripMenuItem";
             this.tableOperationsToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.tableOperationsToolStripMenuItem.Text = "Table Operations";
@@ -124,14 +126,14 @@ namespace oltp2olap
             // collapseToolStripMenuItem
             // 
             this.collapseToolStripMenuItem.Name = "collapseToolStripMenuItem";
-            this.collapseToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.collapseToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.collapseToolStripMenuItem.Text = "Collapse";
             this.collapseToolStripMenuItem.Click += new System.EventHandler(this.collapseToolStripMenuItem_Click);
             // 
             // aggregateToolStripMenuItem
             // 
             this.aggregateToolStripMenuItem.Name = "aggregateToolStripMenuItem";
-            this.aggregateToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aggregateToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.aggregateToolStripMenuItem.Text = "Aggregate";
             this.aggregateToolStripMenuItem.Click += new System.EventHandler(this.aggregateToolStripMenuItem_Click);
             // 
@@ -146,6 +148,13 @@ namespace oltp2olap
             this.manageTablesToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.manageTablesToolStripMenuItem.Text = "Add / Remove Tables";
             this.manageTablesToolStripMenuItem.Click += new System.EventHandler(this.manageTablesToolStripMenuItem_Click);
+            // 
+            // createFactTableToolStripMenuItem
+            // 
+            this.createFactTableToolStripMenuItem.Name = "createFactTableToolStripMenuItem";
+            this.createFactTableToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.createFactTableToolStripMenuItem.Text = "Create Fact Table";
+            this.createFactTableToolStripMenuItem.Click += new System.EventHandler(this.createFactTableToolStripMenuItem_Click);
             // 
             // ModelForm
             // 
@@ -178,5 +187,6 @@ namespace oltp2olap
         private System.Windows.Forms.ToolStripMenuItem tableOperationsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem collapseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aggregateToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem createFactTableToolStripMenuItem;
     }
 }

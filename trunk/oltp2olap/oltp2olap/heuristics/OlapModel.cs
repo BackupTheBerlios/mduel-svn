@@ -16,6 +16,13 @@ namespace oltp2olap.heuristics
             dataSet = ds;
             entityTypes = types;
             visibleTables = visible;
+
+            foreach (string table in entityTypes.Keys)
+            {
+                if (visibleTables.Contains(table))
+                    if (entityTypes[table].Equals(EntityTypes.Unclassified))
+                        throw new Exception("Nem todas as entidades estão classificadas!");
+            }
         }
 
         public virtual DataSet DeriveModel()

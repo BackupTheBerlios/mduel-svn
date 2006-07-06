@@ -40,7 +40,7 @@ namespace oltp2olap.heuristics
             }
         }
 
-        protected void CreateNewTables()
+        protected void CreateFactTables()
         {
             Dictionary<string, string> newTables = new Dictionary<string, string>();
 
@@ -59,7 +59,7 @@ namespace oltp2olap.heuristics
 
                     // get a list of Parent Transaction Entities
                     // & copy their FK columns to dimensions
-                    string[] ptt = GetParentTransactionEntities(table);
+                    string[] ptt = DataHelper.GetParentTransactionEntities(dataSet, table, entityTypes, visibleTables);
                     foreach (string tbl in ptt)
                     {
                         foreach (DataColumn dc in dataSet.Tables[tbl].Columns)
@@ -149,7 +149,7 @@ namespace oltp2olap.heuristics
                 {
                     // get a list of Parent Transaction Entities
                     // & copy their FK columns to dimensions
-                    string[] ptt = GetParentTransactionEntities(table);
+                    string[] ptt = DataHelper.GetParentTransactionEntities(dataSet, table, entityTypes, visibleTables);
                     foreach (string parent in ptt)
                     {
                         List<DataRelation> relations = DataHelper.GetRelationsBetween(dataSet, parent, table);
@@ -175,26 +175,10 @@ namespace oltp2olap.heuristics
             }
         }
 
-        protected string[] GetParentTransactionEntities(string table)
-        {
-            List<string> parents = new List<string>();
-            foreach (DataRelation dr in dataSet.Relations)
-            {
-                if (dr.ChildTable.TableName.Equals(table) &&
-                    visibleTables.Contains(dr.ParentTable.TableName) &&
-                    entityTypes[dr.ParentTable.TableName].Equals(EntityTypes.TransactionEntity))
-                {
-                    parents.Add(dr.ParentTable.TableName);
-                }
-            }
-
-            return parents.ToArray();
-        }
-
         public override DataSet DeriveModel()
         {
             CollapseClassificationTypes();
-            CreateNewTables();
+            CreateFactTables();
 
             return dataSet;
         }

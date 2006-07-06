@@ -18,7 +18,7 @@ namespace oltp2olap
         private ProjectExplorer prjExplorer = new ProjectExplorer();
         private string projectName = String.Empty;
         private string projectDirectory = String.Empty;
-        private string projectExtension = ".BDDW";
+        private string projectExtension = ".bddw";
         private bool validSchema = true;
 
         public MainForm()
@@ -147,7 +147,7 @@ namespace oltp2olap
                 string filename = projectDirectory + projectName + projectExtension;
                 string dataSetName = frmModel.DataSet.DataSetName;
                 string dataSetFileName = projectDirectory + dataSetName + projectExtension;
-                //                frmModel.DataSet.WriteXml(dataSetFileName, System.Data.XmlWriteMode.WriteSchema);
+                //frmModel.DataSet.WriteXml(dataSetFileName, System.Data.XmlWriteMode.WriteSchema);
                 writeProjectStatus(filename, frmModel);
             }
 

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using oltp2olap.helpers;
 using oltp2olap.heuristics;
 using System.Text;
+using System;
 
 namespace oltp2olap
 {
@@ -324,47 +325,100 @@ namespace oltp2olap
             }
         }
 
+        private void createFactTableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Elements elms = model1.SelectedElements(typeof(Table));
+
+            foreach (string el in elms.Keys)
+            {
+                Shape table = (Shape)elms[el];
+                if (entityTypes[table.Key].Equals(EntityTypes.TransactionEntity))
+                {
+                    CreateFactTable cft = new CreateFactTable(dataSet, table.Key, entityTypes, visibleTables);
+                    entityTypes = cft.DicEntityTypes;
+                    visibleTables = cft.VisibleTables;
+                    LoadDataSet(cft.DataSet);
+                }
+            }
+        }
+
         public void DeriveFlatSchema()
         {
-            FlatSchema fs = new FlatSchema(dataSet, entityTypes, visibleTables);
-            dataSet = fs.DeriveModel();
-            visibleTables = fs.VisibleTables;
-            LoadDataSet(dataSet);
+            try
+            {
+                FlatSchema fs = new FlatSchema(dataSet, entityTypes, visibleTables);
+                dataSet = fs.DeriveModel();
+                visibleTables = fs.VisibleTables;
+                LoadDataSet(dataSet);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         public void DeriveTerracedSchema()
         {
-            TerracedSchema ts = new TerracedSchema(dataSet, entityTypes, visibleTables);
-            dataSet = ts.DeriveModel();
-            visibleTables = ts.VisibleTables;
-            LoadDataSet(dataSet);
+            try
+            {
+                TerracedSchema ts = new TerracedSchema(dataSet, entityTypes, visibleTables);
+                dataSet = ts.DeriveModel();
+                visibleTables = ts.VisibleTables;
+                LoadDataSet(dataSet);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         public void DeriveStarSchema()
         {
-            StarSchema ss = new StarSchema(dataSet, entityTypes, visibleTables);
-            dataSet = ss.DeriveModel();
-            visibleTables = ss.VisibleTables;
-            entityTypes = ss.DicEntityTypes;
-            LoadDataSet(dataSet);
+            try
+            {
+                StarSchema ss = new StarSchema(dataSet, entityTypes, visibleTables);
+                dataSet = ss.DeriveModel();
+                visibleTables = ss.VisibleTables;
+                entityTypes = ss.DicEntityTypes;
+                LoadDataSet(dataSet);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
         public void DeriveSnowFlakeSchema()
         {
-            SnowFlakeSchema ss = new SnowFlakeSchema(dataSet, entityTypes, visibleTables);
-            dataSet = ss.DeriveModel();
-            visibleTables = ss.VisibleTables;
-            entityTypes = ss.DicEntityTypes;
-            LoadDataSet(dataSet);
+            try
+            {
+                SnowFlakeSchema ss = new SnowFlakeSchema(dataSet, entityTypes, visibleTables);
+                dataSet = ss.DeriveModel();
+                visibleTables = ss.VisibleTables;
+                entityTypes = ss.DicEntityTypes;
+                LoadDataSet(dataSet);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         public void DeriveStarClusterSchema()
         {
-            StarClusterSchema scs = new StarClusterSchema(dataSet, entityTypes, visibleTables);
-            dataSet = scs.DeriveModel();
-            visibleTables = scs.VisibleTables;
-            entityTypes = scs.DicEntityTypes;
-            LoadDataSet(dataSet);
+            try
+            {
+                StarClusterSchema scs = new StarClusterSchema(dataSet, entityTypes, visibleTables);
+                dataSet = scs.DeriveModel();
+                visibleTables = scs.VisibleTables;
+                entityTypes = scs.DicEntityTypes;
+                LoadDataSet(dataSet);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         public void RefreshHierarquies()

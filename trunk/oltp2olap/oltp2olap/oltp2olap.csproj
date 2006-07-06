@@ -117,6 +117,7 @@
     <Compile Include="EditWorkingTables.Designer.cs">
       <DependentUpon>EditWorkingTables.cs</DependentUpon>
     </Compile>
+    <Compile Include="helpers\CreateFactTable.cs" />
     <Compile Include="helpers\DataHelper.cs" />
     <Compile Include="helpers\DumpSql.cs" />
     <Compile Include="helpers\ErrorHelper.cs" />

@@ -77,7 +77,10 @@ namespace oltp2olap.helpers
         {
             List<DataColumn> cols = new List<DataColumn>();
             foreach (DataColumn dc in dr.ParentColumns)
-                cols.Add(table.Columns[dc.ColumnName]);
+            {
+                if (table.Columns[dc.ColumnName] != null)
+                    cols.Add(table.Columns[dc.ColumnName]);
+            }
 
             DataRelation newDR = new DataRelation(
                 dr.RelationName + "_Parent" + table.TableName,
@@ -129,6 +132,23 @@ namespace oltp2olap.helpers
             }
 
             return relations;
+        }
+
+
+        public static string[] GetParentTransactionEntities(DataSet dataSet, string table, Dictionary<string, EntityTypes> entityTypes, List<string> visibleTables)
+        {
+            List<string> parents = new List<string>();
+            foreach (DataRelation dr in dataSet.Relations)
+            {
+                if (dr.ChildTable.TableName.Equals(table) &&
+                    visibleTables.Contains(dr.ParentTable.TableName) &&
+                    entityTypes[dr.ParentTable.TableName].Equals(EntityTypes.TransactionEntity))
+                {
+                    parents.Add(dr.ParentTable.TableName);
+                }
+            }
+
+            return parents.ToArray();
         }
 
         public static void RemoveRelations(DataSet dataSet, string table)

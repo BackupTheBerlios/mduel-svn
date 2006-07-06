@@ -199,7 +199,7 @@ namespace oltp2olap.helpers
             string end = ",";
             string nullField = "NULL";
             string nullable = "";
-            string unique;
+            //string unique;
             int maxSize;
 
             columnName = "\t[" + dc.ColumnName + "] ";
@@ -208,8 +208,8 @@ namespace oltp2olap.helpers
             columnType = getType(dataType.Name, maxSize);
             if (!dc.AllowDBNull)
                 nullable = " NOT ";
-            if (dc.Unique)
-                unique = " UNIQUE";
+            //if (dc.Unique)
+            //    unique = " UNIQUE";
             sw.AppendLine(columnName + columnType + nullable + nullField + end);
         }
 
