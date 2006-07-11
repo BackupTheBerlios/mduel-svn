@@ -227,7 +227,7 @@ namespace oltp2olap.helpers
                 }
                 SetNewPrimaryKeys(dataSet, child);
             }
-            dataSet.Tables[table.TableName].Constraints.Clear();
+            //dataSet.Tables[table.TableName].Constraints.Clear();
             if (collapseAll)
             {
                 visibleTables.Remove(table.TableName);
