@@ -368,7 +368,7 @@ namespace oltp2olap
             xmlWriter.WriteEndElement(); // /ConnectionSettings
 
             //DataSetFileName
-            String dsFileName = projectDirectory + frmModel.DataSet.DataSetName + projectExtension;
+            String dsFileName = projectDirectory + Path.GetFileNameWithoutExtension(fileName) + "_" + frmModel.DataSet.DataSetName + projectExtension;
             dsFileName.Replace("&", "&amp;");
             dsFileName.Replace("'", "&apos;");
             xmlWriter.WriteElementString("DataSetFileName", dsFileName);
